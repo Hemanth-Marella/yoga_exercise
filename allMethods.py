@@ -512,68 +512,26 @@ class allmethods:
             return True
             
         return self.after_40 
-
-    # def sleep_position_detect(self,frames,llist):
-
-    #     nose_x = llist[0][1]
-
-    #     left_shoulder_x,left_shoulder_y,left_shoulder_z = llist[11][1:]
-    #     right_shoulder_x,right_shoulder_y,right_shoulder_z = llist[12][1:]
-    #     shoulder_difference = abs((right_shoulder_z)-(left_shoulder_z))
-    #     print(left_shoulder_z)
-    #     print('right shoulder',right_shoulder_z)
-    #     # print(shoulder_difference)
-
-    #     right_hip_z = llist[24][3]
-    #     left_hip_z = llist[23][3]
-
-    #     hip_difference = abs((right_hip_z)-(left_hip_z))
-
-    #     sleep_side_view_check = self.findSideView(frame=frames,FLAG_HEAD_OR_TAIL_POSITION="head",head=nose_x)
-
-    #     if sleep_side_view_check == "left":
-
-
-
-    #         # if sleep_side_view_check == "left":
-    #         cv.putText(frames,f'shoulder==>{str((shoulder_difference))}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(255,0,255),2)
-    #         cv.putText(frames,f'hip==>{str((hip_difference))}',(10,250),cv.FONT_HERSHEY_PLAIN,2,(255,0,255),2)
-
-        # return shoulder_difference,hip_difference
     
-    def camera_distance(self,frames,llist):
-        
-        if not llist:
+    def all_x_values(self,frames,llist):
+
+        if len(llist) == 0:
             return None
         
-        # elif None in (l_ankle_x,l_ankle_y,l_ankle_z,r_ankle_x,r_ankle_y,r_ankle_z):
-        #     return 
+        self.head_x = llist[0][1]
+        self.l_hip_x = llist[23][1]
+        self.r_hip_x = llist[24][1]
+        self.l_knee_x = llist[25][1]
+        self.r_knee_x = llist[26][1]
+        self.l_ankle_x = llist[27][1]
+        self.r_ankle_x = llist[27][1]
+        self.l_elbow_x = llist[13][1]
+        self.r_elbow_x = llist[14][1]
+        self.l_wrist_x = llist[15][1]
+        self.r_wrist_x = llist[16][1]
+        self.l_shoulder_x = llist[11][1]
+        self.r_shoulder_x = llist[12][1]
 
-        nose_x,nose_y,nose_z = llist[0][1:]
-        l_ankle_x,l_ankle_y,l_ankle_z = llist[27][1:]
-        r_ankle_x,r_ankle_y,r_ankle_z = llist[28][1:]
-
-        if not nose_x and not nose_y and not nose_z:
-            return 
-
-        max_ankle_y = max(l_ankle_y,r_ankle_y)
-        max_ankle_x = max(l_ankle_x,r_ankle_x)
-
-        if not (nose_x, nose_y, nose_z):
-            return 
-        
-        elif None in (l_ankle_x,l_ankle_y,l_ankle_z,r_ankle_x,r_ankle_y,r_ankle_z):
-            return 
-        
-        distance_total_body = abs(math.sqrt(
-            (nose_x - max_ankle_x) ** 2 +
-            (nose_y - max_ankle_y) ** 2
-        ))
-
-        # total_body = ()
-
-        cv.putText(frames,f'shoulder==>{str((distance_total_body))}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(255,0,255),2)
-      
 
 def main():
     video_capture = cv.VideoCapture(0)

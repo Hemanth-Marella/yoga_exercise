@@ -158,9 +158,22 @@ class dhanurasana:
     
     def wrong_left(self,frames,llist,height,width):
 
+        count = 0
+
         left_shoulder_x,left_shoulder_y,left_shoulder_z = llist[11][1:]
         right_shoulder_x,right_shoulder_y,right_shoulder_z = llist[12][1:]
         tolerance = abs(left_shoulder_z - right_shoulder_z)
+
+
+        #check legs is in forward side
+        check_left_knee = (self.all_methods.l_hip_x < self.all_methods.l_knee_x)
+        check_right_knee = (self.all_methods.l_hip_x < self.all_methods.r_knee_x)
+
+        #check hands is in forward side
+        check_left_hand = (self.all_methods.l_hip_x < self.all_methods.l_elbow_x and 
+                      self.all_methods.l_hip_x < self.all_methods.l_wrist_x)
+        check_right_hand = (self.all_methods.l_hip_x < self.all_methods.r_elbow_x and 
+                      self.all_methods.l_hip_x < self.all_methods.r_wrist_x)
 
         #left slope condition
         self.left_shoulder_hip = self.all_methods.slope(frames=frames,lmlist=llist,point1=11,point2=23,height=height,width=width,draw=False)
@@ -305,6 +318,16 @@ class dhanurasana:
 
         if not self.right_hip and not self.right_elbow and not self.right_knee and not self.right_shoulder and not self.left_knee1 and not right_shoulder_z and not left_shoulder_z:
             return
+        
+        #check legs is in forward side
+        check_left_knee = (self.all_methods.l_hip_x < self.all_methods.l_knee_x)
+        check_right_knee = (self.all_methods.l_hip_x < self.all_methods.r_knee_x)
+
+        #check hands is in forward side
+        check_left_hand = (self.all_methods.l_hip_x < self.all_methods.l_elbow_x and 
+                      self.all_methods.l_hip_x < self.all_methods.l_wrist_x)
+        check_right_hand = (self.all_methods.l_hip_x < self.all_methods.r_elbow_x and 
+                      self.all_methods.l_hip_x < self.all_methods.r_wrist_x)
         
         #right slope condition
         self.right_shoulder_hip = self.all_methods.slope(frames=frames,lmlist=llist,point1=12,point2=24,height=height,width=width,draw=False)
