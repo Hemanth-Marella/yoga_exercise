@@ -119,11 +119,6 @@ class vajrasana:
         if self.head_position is None or self.left_ear is None or self.right_ear is None or self.head is None:
             return 
         
-        # self.right_wrist_y = llist[16][2]
-        # self.right_knee_y = llist[26][2]
-        # self.right_knee_min_y = self.right_knee_y - 80
-        # self.ground_right = self.all_methods.ground_distance_right(frames=frames,lmlist=llist)
-        # self.ground_right_min = self.ground_right - 50
         
         self.right_elbow, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=elbow,lmList=llist)
         self.right_hip, hip_coords = self.all_methods.calculate_angle(frames=frames, points=hip,lmList=llist)
@@ -240,11 +235,11 @@ class vajrasana:
                                             if self.left_shoulder:
                                                 if 0 <= self.left_shoulder <= 26:
                                                     self.all_methods.reset_after_40_sec()
-                                                    self.all_methods.play_after_40_sec(["move your hands little up and keep straight"], llist=llist)
+                                                    self.all_methods.play_after_40_sec(["move your hands little up forward and keep straight"], llist=llist)
                                                     return
                                                 elif 41 <= self.left_shoulder <= 180:
                                                     self.all_methods.reset_after_40_sec()
-                                                    self.all_methods.play_after_40_sec(["move your hands inwards slight"], llist=llist)
+                                                    self.all_methods.play_after_40_sec(["move your hands forward inwards slight"], llist=llist)
                                                     return
                                     
                                                 else:
@@ -350,11 +345,11 @@ class vajrasana:
                                                 if self.right_shoulder:
                                                     if 0 <= self.right_shoulder <= 26:
                                                         self.all_methods.reset_after_40_sec()
-                                                        self.all_methods.play_after_40_sec(["move your hands little up and keep straight"], llist=llist)
+                                                        self.all_methods.play_after_40_sec(["move your hands little up forward and keep straight"], llist=llist)
                                                         return
                                                     elif 41 <= self.right_shoulder <= 180:
                                                         self.all_methods.reset_after_40_sec()
-                                                        self.all_methods.play_after_40_sec(["move your hands inwards slight"], llist=llist)
+                                                        self.all_methods.play_after_40_sec(["move your hands forward inwards slight"], llist=llist)
                                                         return
                                         
                                                     else:
@@ -417,6 +412,8 @@ class vajrasana:
 
     def left_reverse_to_strating_position(self,frames,llist):
 
+        count = 0
+
         if not self.right_knee1 and not self.left_knee:
             return 
 
@@ -429,34 +426,42 @@ class vajrasana:
                 self.right_knee1 and 160 <= self.right_knee1 <= 180)
         
         if check_last_before_position:
-            self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["good job you complete perfectly , get relax , keep your legs straight on which side your are in"],llist=llist)
-            # return False
+            if count == 0:
+                self.all_methods.reset_after_40_sec()
+                self.all_methods.play_after_40_sec(["good job you complete perfectly, wait for one more instruction"],llist=llist)
+                count += 1
+
+            elif count == 1:
+                self.all_methods.reset_after_40_sec()
+                self.all_methods.play_after_40_sec([" , get relax , keep your legs straight on which side your are in"],llist=llist)
+                count = 1
+
 
         elif ((31 <= self.right_knee1 <= 159) and (31<= self.left_knee <= 159)):
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["keep your legs straight"],llist=llist)
-            # return False
+            self.all_methods.play_after_40_sec(["keep your legs straight on left side"],llist=llist)
+            
 
         elif (31 <= self.right_knee1 <= 159):
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["keep your right leg straight"],llist=llist)
+            self.all_methods.play_after_40_sec(["keep your right leg straight on left side"],llist=llist)
 
         elif (31 <= self.left_knee <= 159):
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["keep your left leg straight"],llist=llist)
+            self.all_methods.play_after_40_sec(["keep your left leg straight on left side"],llist=llist)
 
         
         elif check_last_position:
             self.all_methods.reset_after_40_sec()
             self.all_methods.play_after_40_sec(["you are in final position and please be in standing position"],llist=llist)
             self.pose_completed = True
-            # return False
+            
 
             return True
         
     
     def right_reverse_to_strating_position(self,frames,llist):
+        count = 0
 
         if not self.right_knee and not self.left_knee1:
             return 
@@ -470,23 +475,29 @@ class vajrasana:
                 self.right_knee and 160 <= self.right_knee <= 180)
         
         if check_last_before_position:
-            self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["good job you complete perfectly , get relax , keep your legs straight on which side your are in"],llist=llist)
-            # return False
-            print("..........................................................")
+            if count == 0:
+                self.all_methods.reset_after_40_sec()
+                self.all_methods.play_after_40_sec(["good job you complete perfectly, wait for one more instruction"],llist=llist)
+                count += 1
+
+            elif count == 1:
+                self.all_methods.reset_after_40_sec()
+                self.all_methods.play_after_40_sec([" , get relax , keep your legs straight on which side your are in"],llist=llist)
+                count = 1
+                
 
         elif ((31 <= self.right_knee <= 159) and (31<= self.left_knee1 <= 159)):
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["keep your legs straight"],llist=llist)
+            self.all_methods.play_after_40_sec(["keep your legs straight on right side"],llist=llist)
             # return False
 
         elif (31 <= self.right_knee <= 159):
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["keep your right leg straight"],llist=llist)
+            self.all_methods.play_after_40_sec(["keep your right leg straight on right side"],llist=llist)
 
         elif (31 <= self.left_knee1 <= 159):
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["keep your left leg straight"],llist=llist)
+            self.all_methods.play_after_40_sec(["keep your left leg straight on right side"],llist=llist)
 
  
         elif check_last_position:
