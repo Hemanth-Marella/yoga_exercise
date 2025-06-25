@@ -116,24 +116,16 @@ class gomukhasana:
         self.right_shoulder,right_points_cor7 = self.all_methods.calculate_angle(frames=frames,points=right_shoulder, lmList=llist)
 
         if draw:
-            # if right_elbow_coords:
-            #     cv.putText(frames, str(int(self.right_elbow)), (right_elbow_coords[2]+10, right_elbow_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 2)
-            if right_hip_coords:
-                cv.putText(frames, str(int(self.right_hip)), (right_hip_coords[2]-20, right_hip_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 2)
-            if right_knee_coords:
-                cv.putText(frames, str(int(self.right_knee)), (right_knee_coords[2]-20, right_knee_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 2)
-            if right_points_cor7:
-                cv.putText(frames, str(int(self.right_shoulder)), (right_points_cor7[2]+10, right_points_cor7[3]+10), cv.FONT_HERSHEY_PLAIN, 1, (0, 0, 0), 2)
 
-            # if left_elbow_coords:
-            #     cv.putText(frames, str(int(self.left_elbow)), (left_elbow_coords[2]+10, left_elbow_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 2)
-            if left_hip_coords:
-                cv.putText(frames, str(int(self.left_hip)), (left_hip_coords[2]+10, left_hip_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 2)
-            if left_knee_coords:
-                cv.putText(frames, str(int(self.left_knee)), (left_knee_coords[2]+10, left_knee_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 2)
-            if left_points_cor8:
-                cv.putText(frames, str(int(self.left_shoulder)), (left_points_cor8[2]+10, left_points_cor8[3]+10), cv.FONT_HERSHEY_PLAIN, 1, (0, 0, 0), 2)
+            cv.putText(frames,f'l_elbow{str(self.left_elbow)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_hip{str(self.left_hip)}',(10,80),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_knee{str(self.left_knee)}',(10,120),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_shoulder{str(self.left_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
 
+            cv.putText(frames,f'r_elbow{str(self.right_elbow)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_hip{str(self.right_hip)}',(10,80),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_knee{str(self.right_knee)}',(10,120),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_shoulder{str(self.right_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
 
         return self.left_elbow,self.left_hip,self.left_knee,self.left_shoulder,self.right_elbow,self.right_hip,self.right_knee,self.right_shoulder,self.head_position
 
@@ -158,6 +150,8 @@ class gomukhasana:
         return self.left_shoulder_elbow_slope, self.right_shoulder_elbow_slope,self.left_knee_ankle_slope,self.right_knee_ankle_slope,self.left_shoulder_hip_slope,self.right_shoulder_hip_slope
     
     def wrong_gomukhasana(self,frames,llist,height,width): 
+
+        count = 0
 
         if not llist and len(llist):
             return None
@@ -221,19 +215,29 @@ class gomukhasana:
                     
                     if 160 <= self.left_knee <= 180 and 160 <= self.right_knee <= 180:
 
-                        self.all_methods.reset_voice()
-                        self.all_methods.play_voice(["you are in initial position","start gomukhasana"], llist=llist)
+                        if count == 0:
+
+                            self.all_methods.reset_voice()
+                            self.all_methods.play_voice(["you are in initial position","start gomukhasana"], llist=llist)
+                            count += 1
+
+                        elif count == 1:
+                            self.all_methods.reset_voice()
+                            self.all_methods.play_voice(["keep your left leg under right thigh and fold left leg"], llist=llist)
+                            count = 1
 
                     else:
-
+                        
                         # LEFT KNEE
-                        if self.left_knee and 0 <= self.left_knee <= 49:
+                        if (self.left_knee and (self.left_knee and 0 <= self.left_knee <= 49)):
                             self.all_methods.reset_voice()
                             self.all_methods.play_voice(["Gently move your left leg outward."], llist=llist)
+                            first_pose = True
 
-                        elif self.left_knee and 101 <= self.left_knee <= 180:
+                        elif (self.left_knee and (self.left_knee and 101 <= self.left_knee <= 180)):
                             self.all_methods.reset_voice()
                             self.all_methods.play_voice(["Bend your left knee and place your left foot under your right thigh"], llist=llist)
+                            first_pose = True
                                 
                         else:
 
@@ -245,7 +249,7 @@ class gomukhasana:
                             elif self.right_knee and 151 <= self.right_knee <= 180:
                                 self.all_methods.reset_voice()
                                 self.all_methods.play_voice(["Bend your right knee and place on top of your left knee"], llist=llist)
-                                
+                            
                             else:
 
                                 # LEFT SHOULDER

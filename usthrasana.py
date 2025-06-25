@@ -93,26 +93,17 @@ class usthrasana:
         self.right_knee1, right_knee1_coords = self.all_methods.calculate_angle(frames=frames,points= right_knee1,lmList=llist)
         self.right_elbow1, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=right_elbow,lmList=llist)
 
-        cv.putText(frames,f'l_elbow{str(self.left_elbow)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-        cv.putText(frames,f'l_hip{str(self.left_hip)}',(10,80),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-        cv.putText(frames,f'l_knee{str(self.left_knee)}',(10,120),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-        cv.putText(frames,f'l_shoulder{str(self.left_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-        cv.putText(frames,f'r_knee1{str(self.right_knee1)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-        cv.putText(frames,f'r_elbow{str(self.right_elbow1)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+        if draw:
 
-        # if draw:
-        #     if elbow_coords:
-        #         cv.putText(frames, str(int(self.left_elbow)), (elbow_coords[2]+10, elbow_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-        #     if hip_coords:
-        #         cv.putText(frames, str(int(self.left_hip)), (hip_coords[2]+10, hip_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-        #     if knee_coords:
-        #         cv.putText(frames, str(int(self.left_knee)), (knee_coords[2]+10, knee_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-        #     if points_cor8:
-        #         cv.putText(frames, str(int(self.left_shoulder)), (points_cor8[2]+10, points_cor8[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-        #     if right_knee1_coords:
-        #         cv.putText(frames, str(int(self.right_knee1)), (right_knee1_coords[2]-20, right_knee1_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+            cv.putText(frames,f'l_elbow{str(self.left_elbow)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_hip{str(self.left_hip)}',(10,80),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_knee{str(self.left_knee)}',(10,120),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_shoulder{str(self.left_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_knee1{str(self.right_knee1)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_elbow{str(self.right_elbow1)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
 
-        return self.left_elbow,self.left_hip,self.left_knee,self.left_shoulder,self.right_knee1,self.head_position #self.left_knee_y,self.left_wrist_y,self.ground_left,self.ground_left_min
+       
+        return self.left_elbow,self.left_hip,self.left_knee,self.left_shoulder,self.right_knee1,self.right_elbow1,self.head_position #self.left_knee_y,self.left_wrist_y,self.ground_left,self.ground_left_min
 
     def right_usthrasana(self,frames,llist,elbow, hip, knee, shoulder,left_knee1,left_elbow,draw=True):
 
@@ -131,20 +122,16 @@ class usthrasana:
         self.left_knee1, left_knee1_coords = self.all_methods.calculate_angle(frames=frames,points= left_knee1,lmList=llist)
         self.left_elbow1, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=left_elbow,lmList=llist)
 
-        # if draw:
-            # if elbow_coords:
-            #     cv.putText(frames, str(int(self.right_elbow)), (elbow_coords[2]+10, elbow_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            # if hip_coords:
-            #     cv.putText(frames, str(int(self.right_hip)), (hip_coords[2]-20, hip_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            # if knee_coords:
-            #     cv.putText(frames, str(int(self.right_knee)), (knee_coords[2]-20, knee_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            # if points_cor7:
-            #     cv.putText(frames, str(int(self.right_shoulder)), (points_cor7[2]+10, points_cor7[3]+10), cv.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
-            # if left_knee1_coords:
-            #     cv.putText(frames, str(int(self.left_knee1)), (left_knee1_coords[2]-20, left_knee1_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+        if draw:
 
+            cv.putText(frames,f'r_elbow{str(self.right_elbow)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_hip{str(self.right_hip)}',(10,80),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_knee{str(self.right_knee)}',(10,120),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_shoulder{str(self.right_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_knee1{str(self.left_knee1)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_elbow{str(self.left_elbow1)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
 
-        return self.right_elbow,self.right_hip,self.right_knee,self.right_shoulder,left_knee1,self.head_position#self.right_knee_y,self.right_wrist_y,self.ground_right,self.ground_right_min
+        return self.right_elbow,self.right_hip,self.right_knee,self.right_shoulder,left_knee1,self.head_position,self.left_elbow1#self.right_knee_y,self.right_wrist_y,self.ground_right,self.ground_right_min
     
 
     # def slope(self,frames,llist,height,width):
@@ -158,6 +145,8 @@ class usthrasana:
     
 
     def wrong_left(self,frames,llist):
+
+        count = 0
 
         stand_on_knee = (self.left_knee and 80 <= self.left_knee <= 100 and
                          self.right_knee1 and 80 <= self.right_knee1 <=100 and
@@ -175,6 +164,16 @@ class usthrasana:
         self.r_hand_y = llist[16][2]
         self.l_shoulder_value_x = llist[11][1]
 
+        #check legs is in forward side
+        check_left_ankle = (self.all_methods.l_hip_x > self.all_methods.l_ankle_x)
+        check_right_ankle = (self.all_methods.l_hip_x > self.all_methods.r_ankle_x)
+
+        #check hands is in forward side
+        check_left_hand = (self.all_methods.l_hip_x > self.all_methods.l_elbow_x and 
+                      self.all_methods.l_hip_x > self.all_methods.l_wrist_x)
+        check_right_hand = (self.all_methods.l_hip_x > self.all_methods.r_elbow_x and 
+                      self.all_methods.l_hip_x > self.all_methods.r_wrist_x)
+
         # foot_y = max(toe_value_y,r_toe_y)
 
         if not llist:
@@ -186,108 +185,132 @@ class usthrasana:
 
         elif not stand_on_knee:
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["you are not in initial position please stand on your knees"])
+            self.all_methods.play_after_40_sec(["you are not in initial position please stand on your knees"],llist=llist)
 
         if self.check_initial_position:
 
             if stand_on_knee:
 
-                self.all_methods.reset_after_40_sec()
-                self.all_methods.play_after_40_sec(["you are in initial position and start ushtrasana"])
+                if count == 0:
+
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["you are in initial position and start ushtrasana"],llist=llist)
+                    count += 1
+
+                elif count == 1:
+
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["bend your hip back"],llist=llist)
+                    count += 1
 
             else:
 
-                if self.left_hip:
-                    #CHECK HIP IS IN STRAIGHT 
-                    if self.left_hip and 0 <= self.left_hip <= 129:
+                #CHECK KNEE 
+
+                if (self.left_knee and 0 <= self.left_knee <= 79 and check_left_ankle):
+
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["please keep your left leg in 90 degrees"],llist=llist)
+
+                elif not check_left_ankle:
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["stand on left knee and keep your foot back side"],llist=llist) 
+
+                elif (self.left_knee and 101 <= self.left_knee <= 180 and check_left_ankle):
+
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["keep your left leg in 90 degrees"],llist=llist)
+
+                else:
+                    #CHECK RIGHT KNEE
+
+                    if (self.right_knee1 and 0 <= self.right_knee1 <= 79 and check_right_ankle):
 
                         self.all_methods.reset_after_40_sec()
-                        self.all_methods.play_after_40_sec(["you are bending hip too much please raise up slight"])
+                        self.all_methods.play_after_40_sec(["please keep your right leg 90 degress"],llist=llist)
 
-                    elif self.left_hip and 161 <= self.left_hip <= 180:
+                    elif not check_right_ankle:
+                        self.all_methods.reset_after_40_sec()
+                        self.all_methods.play_after_40_sec(["stand on right knee and keep your foot back side"],llist=llist)
+
+                    elif self.right_knee1 and 101 <= self.right_knee1 <= 180:
 
                         self.all_methods.reset_after_40_sec()
-                        self.all_methods.play_after_40_sec(["your hip is in straight position please bend back and touch your palms to foot"])
+                        self.all_methods.play_after_40_sec(["keep your right leg 90 degrees"],llist=llist)
 
                     else:
-                        #CHECK LEFT ELBOW
-                        if self.left_elbow and 0 <=self.left_elbow <= 159:
-                            self.all_methods.reset_after_40_sec()  
-                            self.all_methods.play_after_40_sec(["please keep your left hand straight and touch your foot"])
 
-                        else:
-                            #CHECK RIGHT ELBOW
-                            if self.right_elbow1 and 0 <= self.right_elbow1 <= 159 :
+                        if self.left_hip:
+                            #CHECK HIP IS IN STRAIGHT 
+                            if self.left_hip and 0 <= self.left_hip <= 129:
+
                                 self.all_methods.reset_after_40_sec()
-                                self.all_methods.play_after_40_sec(["keep your right hand straight and touch your foot"])
+                                self.all_methods.play_after_40_sec(["you are bending hip too much please raise up slight"],llist=llist)
+
+                            elif self.left_hip and 161 <= self.left_hip <= 180:
+
+                                self.all_methods.reset_after_40_sec()
+                                self.all_methods.play_after_40_sec(["your hip is in straight position please bend back and touch your palms to foot"],llist=llist)
 
                             else:
-                                #shoulder CHECK
-                                if self.left_shoulder:
-                                    if self.left_shoulder and 0 <= self.left_shoulder <= 89 :
-                                        self.all_methods.reset_after_40_sec()
-                                        self.all_methods.play_after_40_sec(["please open your chest and gently move your hands outwards"])
+                                #CHECK LEFT ELBOW
+                                if (self.left_elbow and 0 <=self.left_elbow <= 159 and check_left_hand):
+                                    self.all_methods.reset_after_40_sec()  
+                                    self.all_methods.play_after_40_sec(["please keep your left hand straight and touch your foot"],llist=llist)
 
-                                    elif self.left_shoulder and 100 <= self.left_shoulder <= 180 :
+                                elif not check_left_hand:
+
+                                    self.all_methods.reset_after_40_sec()
+                                    self.all_methods.play_after_40_sec(["your left hand in forward side please keep your left hand back"],llist=llist)
+
+                                else:
+                                    #CHECK RIGHT ELBOW
+                                    if (self.right_elbow1 and 0 <= self.right_elbow1 <= 159 and check_right_hand):
                                         self.all_methods.reset_after_40_sec()
-                                        self.all_methods.play_after_40_sec(["please open your chest and gently move your hands inwards"])
+                                        self.all_methods.play_after_40_sec(["keep your right hand straight and touch your foot"],llist=llist)
+
+                                    elif not check_right_hand:
+                                        self.all_methods.reset_after_40_sec()
+                                        self.all_methods.play_after_40_sec(["your left hand in forward side please keep your left hand back"],llist=llist)
 
                                     else:
-
-                                        #check head cross the head or not
-
-                                        if self.head_value_x > self.l_shoulder_value_x:
-
-                                            self.all_methods.reset_after_40_sec()
-                                            self.all_methods.play_after_40_sec(["keep your head back"])
-
-                                        else:
-
-                                            #CHECK KNEE 
-
-                                            if self.left_knee and 0 <= self.left_knee <= 79:
-
+                                        #shoulder CHECK
+                                        if self.left_shoulder:
+                                            if self.left_shoulder and 0 <= self.left_shoulder <= 89 :
                                                 self.all_methods.reset_after_40_sec()
-                                                self.all_methods.play_after_40_sec(["please keep your legs in 90 degrees"])
+                                                self.all_methods.play_after_40_sec(["please open your chest and gently move your hands outwards"],llist=llist)
 
-                                            elif self.left_knee and 100 <= self.left_knee <= 180:
-
+                                            elif self.left_shoulder and 100 <= self.left_shoulder <= 180 :
                                                 self.all_methods.reset_after_40_sec()
-                                                self.all_methods.play_after_40_sec(["keep your legs in 90 degrees"])
-                                                
-
+                                                self.all_methods.play_after_40_sec(["please open your chest and gently move your hands inwards"],llist=llist)
 
                                             else:
-                                                #CHECK RIGHT KNEE
 
-                                                if self.right_knee1 and 0 <= self.right_knee1 <= 79:
+                                                #check head cross the head or not
 
-                                                    self.all_methods.reset_after_40_sec()
-                                                    self.all_methods.play_after_40_sec(["please keep your legs 90 degress"])
-
-                                                elif self.right_knee1 and 100 <= self.right_knee1 <= 180:
+                                                if self.head_value_x > self.l_shoulder_value_x:
 
                                                     self.all_methods.reset_after_40_sec()
-                                                    self.all_methods.play_after_40_sec(["keep your legs 90 degrees"])
+                                                    self.all_methods.play_after_40_sec(["keep your head back"],llist=llist)
 
                                                 else:
 
                                                     #left palms touch to hand or not
                                                     if self.toe_value_y and self.l_hand_y and 0 <= self.l_hand_y <= self.toe_value_y - 51:
                                                         self.all_methods.reset_after_40_sec()
-                                                        self.all_methods.play_after_40_sec(["your left palm must touch the foot"])
+                                                        self.all_methods.play_after_40_sec(["your left palm must touch the foot"],llist=llist)
 
                                                     else:
                                                         #left palms touch to hand or not
                                                         if self.r_toe_y and self.r_hand_y and 0 <= self.r_hand_y <= self.r_toe_y - 51:
                                                             self.all_methods.reset_after_40_sec()
-                                                            self.all_methods.play_after_40_sec(["your right palm must touch the foot"])
+                                                            self.all_methods.play_after_40_sec(["your right palm must touch the foot"],llist=llist)
 
                                                         else:
 
                                                             if self.head_position != "Up":
                                                                 self.all_methods.reset_after_40_sec()
-                                                                self.all_methods.play_after_40_sec(["please face your head up"])
+                                                                self.all_methods.play_after_40_sec(["please face your head up"],llist=llist)
 
                                                             else:
 
@@ -311,6 +334,16 @@ class usthrasana:
         self.r_hand_y = llist[16][2]
         self.r_shoulder_value_x = llist[12][1]
 
+        #check legs is in forward side
+        check_left_ankle = (self.all_methods.l_hip_x < self.all_methods.l_ankle_x)
+        check_right_ankle = (self.all_methods.l_hip_x < self.all_methods.r_ankle_x)
+
+        #check hands is in forward side
+        check_left_hand = (self.all_methods.l_hip_x < self.all_methods.l_elbow_x and 
+                      self.all_methods.l_hip_x < self.all_methods.l_wrist_x)
+        check_right_hand = (self.all_methods.l_hip_x < self.all_methods.r_elbow_x and 
+                      self.all_methods.l_hip_x < self.all_methods.r_wrist_x)
+
         foot_y = max(self.toe_value_y,self.r_toe_y)
 
         if not llist:
@@ -322,107 +355,121 @@ class usthrasana:
 
         elif not stand_on_knee:
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["you are not in initial position please stand on your knees"])
+            self.all_methods.play_after_40_sec(["you are not in initial position please stand on your knees"],llist=llist)
 
         if self.check_initial_position:
 
             if stand_on_knee:
 
                 self.all_methods.reset_after_40_sec()
-                self.all_methods.play_after_40_sec(["you are in initial position and start ushtrasana"])
+                self.all_methods.play_after_40_sec(["you are in initial position and start ushtrasana"],llist=llist)
 
             else:
+                
+                #CHECK KNEE 
 
-                if self.right_hip:
-                    #CHECK HIP IS IN STRAIGHT 
-                    if self.right_hip and 0 <= self.right_hip <= 129:
+                if (self.left_knee1 and 0 <= self.left_knee1 <= 79 and check_left_ankle):
+
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["please keep your left leg in 90 degrees"],llist=llist)
+
+                elif not check_left_ankle:
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["stand on left knee and keep your foot back"],llist=llist)
+
+                elif (self.left_knee1 and 101 <= self.left_knee1 <= 180 and check_left_ankle):
+
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["keep your left leg in 90 degrees"],llist=llist)
+
+                else:
+                    #CHECK RIGHT KNEE
+
+                    if (self.right_knee and 0 <= self.right_knee <= 79 and check_right_ankle):
 
                         self.all_methods.reset_after_40_sec()
-                        self.all_methods.play_after_40_sec(["you are bending hip too much please raise up slight"])
+                        self.all_methods.play_after_40_sec(["please keep your right leg 90 degress"],llist=llist)
 
-                    elif self.right_hip and 161 <= self.right_hip <= 180:
+                    elif not check_right_ankle:
+                        self.all_methods.reset_after_40_sec()
+                        self.all_methods.play_after_40_sec(["stand on right knee and keep your foot back side"])
+
+                    elif (self.right_knee and 101 <= self.right_knee <= 180 and check_right_ankle):
 
                         self.all_methods.reset_after_40_sec()
-                        self.all_methods.play_after_40_sec(["your hip is in straight position please bend back and touch your palms to foot"])
+                        self.all_methods.play_after_40_sec(["keep your right leg 90 degrees"],llist=llist)
 
                     else:
-                        #CHECK right ELBOW
-                        if self.right_elbow and 0 <=self.right_elbow <= 159:
-                            self.all_methods.reset_after_40_sec()  
-                            self.all_methods.play_after_40_sec(["please keep your left hand straight and touch your foot"])
 
-                        else:
-                            #CHECK  left ELBOW
-                            if self.left_elbow1 and 0 <= self.left_elbow1 <= 159 :
+                        if self.right_hip:
+                            #CHECK HIP IS IN STRAIGHT 
+                            if self.right_hip and 0 <= self.right_hip <= 129:
+
                                 self.all_methods.reset_after_40_sec()
-                                self.all_methods.play_after_40_sec(["keep your right hand straight and touch your foot"])
+                                self.all_methods.play_after_40_sec(["you are bending hip too much please raise up slight"],llist=llist)
+
+                            elif self.right_hip and 161 <= self.right_hip <= 180:
+
+                                self.all_methods.reset_after_40_sec()
+                                self.all_methods.play_after_40_sec(["your hip is in straight position please bend back and touch your palms to foot"],llist=llist)
 
                             else:
-                                #shoulder CHECK
-                                if self.right_shoulder:
-                                    if self.right_shoulder and 0 <= self.right_shoulder <= 89 :
-                                        self.all_methods.reset_after_40_sec()
-                                        self.all_methods.play_after_40_sec(["please open your chest and gently move your hands outwards"])
+                                #CHECK right ELBOW
+                                if (self.right_elbow and 0 <=self.right_elbow <= 159 and check_right_hand):
+                                    self.all_methods.reset_after_40_sec()  
+                                    self.all_methods.play_after_40_sec(["please keep your left hand straight and touch your foot"],llist=llist)
 
-                                    elif self.right_shoulder and 100 <= self.right_shoulder <= 180 :
+                                elif not check_right_hand:
+                                    self.all_methods.reset_after_40_sec()
+                                    self.all_methods.play_after_40_sec(["your right hand in forward side please keep your right hand back"],llist=llist)
+
+                                else:
+                                    #CHECK  left ELBOW
+                                    if (self.left_elbow1 and 0 <= self.left_elbow1 <= 159  and check_left_hand):
                                         self.all_methods.reset_after_40_sec()
-                                        self.all_methods.play_after_40_sec(["please open your chest and gently move your hands inwards"])
+                                        self.all_methods.play_after_40_sec(["keep your right hand straight and touch your foot"],llist=llist)
+                                    
+                                    elif not check_left_hand:
+                                        self.all_methods.reset_after_40_sec()
+                                        self.all_methods.play_after_40_sec(["your left hand in forward side please keep your left hand back"],llist=llist)
 
                                     else:
-
-                                        #check head cross the head or not
-
-                                        if self.head_value_x < self.r_shoulder_value_x:
-
-                                            self.all_methods.reset_after_40_sec()
-                                            self.all_methods.play_after_40_sec(["keep your head back"])
-
-                                        else:
-
-                                            #CHECK KNEE 
-
-                                            if self.left_knee1 and 0 <= self.left_knee1 <= 79:
-
+                                        #shoulder CHECK
+                                        if self.right_shoulder:
+                                            if self.right_shoulder and 0 <= self.right_shoulder <= 89 :
                                                 self.all_methods.reset_after_40_sec()
-                                                self.all_methods.play_after_40_sec(["please keep your legs in 90 degrees"])
+                                                self.all_methods.play_after_40_sec(["please open your chest and gently move your hands outwards"],llist=llist)
 
-                                            elif self.left_knee1 and 100 <= self.left_knee1 <= 180:
-
+                                            elif self.right_shoulder and 100 <= self.right_shoulder <= 180 :
                                                 self.all_methods.reset_after_40_sec()
-                                                self.all_methods.play_after_40_sec(["keep your legs in 90 degrees"])
-                                                
-
+                                                self.all_methods.play_after_40_sec(["please open your chest and gently move your hands inwards"],llist=llist)
 
                                             else:
-                                                #CHECK RIGHT KNEE
 
-                                                if self.right_knee and 0 <= self.right_knee <= 79:
+                                                #check head cross the head or not
 
-                                                    self.all_methods.reset_after_40_sec()
-                                                    self.all_methods.play_after_40_sec(["please keep your legs 90 degress"])
-
-                                                elif self.right_knee and 100 <= self.right_knee <= 180:
+                                                if self.head_value_x < self.r_shoulder_value_x:
 
                                                     self.all_methods.reset_after_40_sec()
-                                                    self.all_methods.play_after_40_sec(["keep your legs 90 degrees"])
+                                                    self.all_methods.play_after_40_sec(["keep your head back"],llist=llist)
 
                                                 else:
 
                                                     #left palms touch to hand or not
                                                     if self.toe_value_y and self.l_hand_y and 0 <= self.l_hand_y <= self.toe_value_y - 51:
                                                         self.all_methods.reset_after_40_sec()
-                                                        self.all_methods.play_after_40_sec(["your left palm must touch the foot"])
+                                                        self.all_methods.play_after_40_sec(["your left palm must touch the foot"],llist=llist)
 
                                                     else:
-                                                        #left palms touch to hand or not
+                                                        #right palms touch to hand or not
                                                         if self.r_toe_y and self.r_hand_y and 0 <= self.r_hand_y <= self.r_toe_y - 51:
                                                             self.all_methods.reset_after_40_sec()
-                                                            self.all_methods.play_after_40_sec(["your right palm must touch the foot"])
+                                                            self.all_methods.play_after_40_sec(["your right palm must touch the foot"],llist=llist)
 
                                                         else:
                                                             if self.head_position != "Up":
                                                                 self.all_methods.reset_after_40_sec()
-                                                                self.all_methods.play_after_40_sec(["please face your head up"])
+                                                                self.all_methods.play_after_40_sec(["please face your head up"],llist=llist)
 
                                                             else:
 
