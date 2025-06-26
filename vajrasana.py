@@ -154,8 +154,9 @@ class vajrasana:
     
     def wrong_vajrasana_left(self,frames,llist,height,width): 
 
-        count = 0
+        self.all_methods.all_x_values(frames=frames,llist=llist)
 
+        count = 0
 
         if not self.left_hip and not self.left_elbow and not self.left_knee and not self.left_shoulder and not self.right_knee1 and not self.left_shoulder and not self.under_leg_slope:
             return
@@ -319,6 +320,10 @@ class vajrasana:
 
     def wront_right_vajrasana(self,frames,llist,height,width):
 
+        count = 0
+
+        self.all_methods.all_x_values(frames=frames,llist=llist)
+
         
         if not self.right_hip and not self.right_elbow and not self.right_knee and not self.right_shoulder and not self.left_knee1 and not self.right_shoulder and not self.under_leg_slope:
             return None
@@ -357,7 +362,6 @@ class vajrasana:
             return
 
         if self.right_count:
-            count = 0
 
             if (self.left_knee1 and 160 <= self.left_knee1 <= 180 and
                     self.right_knee and 160 <= self.right_knee <= 180):

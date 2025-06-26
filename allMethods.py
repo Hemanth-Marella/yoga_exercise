@@ -518,19 +518,23 @@ class allmethods:
         if len(llist) == 0:
             return None
         
-        self.head_x = llist[0][1]
+        self.nose_x = llist[0][1]
         self.l_hip_x = llist[23][1]
         self.r_hip_x = llist[24][1]
         self.l_knee_x = llist[25][1]
         self.r_knee_x = llist[26][1]
         self.l_ankle_x = llist[27][1]
-        self.r_ankle_x = llist[27][1]
+        self.r_ankle_x = llist[28][1]
         self.l_elbow_x = llist[13][1]
         self.r_elbow_x = llist[14][1]
         self.l_wrist_x = llist[15][1]
         self.r_wrist_x = llist[16][1]
         self.l_shoulder_x = llist[11][1]
         self.r_shoulder_x = llist[12][1]
+
+        print(self.nose_x)
+
+        return self.nose_x,self.l_hip_x,self.r_hip_x,self.l_knee_x,self.r_knee_x,self.l_ankle_x,self.r_ankle_x,self.l_elbow_x,self.r_elbow_x,self.l_wrist_x,self.r_wrist_x,self.l_shoulder_x,self.r_shoulder_x
 
 
 def main():
@@ -553,7 +557,8 @@ def main():
         # detect.slope(frames=frames,lmlist=llist,point1=11,point2=23,height=detect.h,width=detect.w)
         # detect.is_person_standing_sitting(frames=frames,llist=llist,.hip_points=(11,23,25),leg_points=(23,25,27),elbow_points=(11,13,15),height=height,width=width)
         # detect.sleep_position_detect(frames=frames,llist=llist)
-        detect.camera_distance(frames=frames,llist=llist)
+        # detect.camera_distance(frames=frames,llist=llist)
+        detect.all_x_values(frames=frames,llist=llist)
         # detect.standing_side_view_detect(frames=frames,llist=llist,height=height,width=width)
         # detect.ground_distance_left(frames)
         # detect.ground_distance_right(frames)

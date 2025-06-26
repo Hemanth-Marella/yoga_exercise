@@ -148,6 +148,8 @@ class usthrasana:
 
         count = 0
 
+        self.all_methods.all_x_values(frames=frames,llist=llist)
+
         stand_on_knee = (self.left_knee and 80 <= self.left_knee <= 100 and
                          self.right_knee1 and 80 <= self.right_knee1 <=100 and
                 self.left_hip and 160 <= self.left_hip <= 180)
@@ -318,6 +320,9 @@ class usthrasana:
 
 
     def wrong_right(self,frames,llist):
+        count = 0
+
+        self.all_methods.all_x_values(frames=frames,llist=llist)
 
         stand_on_knee = (self.left_knee1 and 80 <= self.left_knee1 <= 100 and
                          self.right_knee and 80 <= self.right_knee <=100 and
@@ -361,11 +366,17 @@ class usthrasana:
 
             if stand_on_knee:
 
-                self.all_methods.reset_after_40_sec()
-                self.all_methods.play_after_40_sec(["you are in initial position and start ushtrasana"],llist=llist)
+                if count == 0:
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["you are in initial position and start ushtrasana"],llist=llist)
+                    count += 1
+
+                elif count == 0:
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["bend your hip back"],llist=llist)
+                    count = 1
 
             else:
-                
                 #CHECK KNEE 
 
                 if (self.left_knee1 and 0 <= self.left_knee1 <= 79 and check_left_ankle):

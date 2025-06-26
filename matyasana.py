@@ -30,6 +30,8 @@ class usthrasana:
 
         self.check_initial_position = False
         self.start_exercise = False
+        self.l_detect_45 = False
+        self.r_detect_45 = False
 
         self.angle =0
         self.all_methods = allmethods()
@@ -94,25 +96,15 @@ class usthrasana:
         self.right_knee1, right_knee1_coords = self.all_methods.calculate_angle(frames=frames,points= right_knee1,lmList=llist)
         self.right_elbow1, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=right_elbow,lmList=llist)
 
-        cv.putText(frames,f'l_elbow{str(self.left_elbow)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-        cv.putText(frames,f'l_hip{str(self.left_hip)}',(10,80),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-        cv.putText(frames,f'l_knee{str(self.left_knee)}',(10,120),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-        cv.putText(frames,f'l_shoulder{str(self.left_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-        cv.putText(frames,f'r_knee1{str(self.right_knee1)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-        cv.putText(frames,f'r_elbow{str(self.right_elbow1)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+        if draw:
 
-        # if draw:
-        #     if elbow_coords:
-        #         cv.putText(frames, str(int(self.left_elbow)), (elbow_coords[2]+10, elbow_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-        #     if hip_coords:
-        #         cv.putText(frames, str(int(self.left_hip)), (hip_coords[2]+10, hip_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-        #     if knee_coords:
-        #         cv.putText(frames, str(int(self.left_knee)), (knee_coords[2]+10, knee_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-        #     if points_cor8:
-        #         cv.putText(frames, str(int(self.left_shoulder)), (points_cor8[2]+10, points_cor8[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-        #     if right_knee1_coords:
-        #         cv.putText(frames, str(int(self.right_knee1)), (right_knee1_coords[2]-20, right_knee1_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-
+            cv.putText(frames,f'l_elbow{str(self.left_elbow)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_hip{str(self.left_hip)}',(10,80),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_knee{str(self.left_knee)}',(10,120),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_shoulder{str(self.left_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_knee1{str(self.right_knee1)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_elbow{str(self.right_elbow1)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+        
         return self.left_elbow,self.left_hip,self.left_knee,self.left_shoulder,self.right_knee1,self.head_position #self.left_knee_y,self.left_wrist_y,self.ground_left,self.ground_left_min
 
     def right_usthrasana(self,frames,llist,elbow, hip, knee, shoulder,left_knee1,left_elbow,draw=True):
@@ -137,6 +129,9 @@ class usthrasana:
         return self.right_elbow,self.right_hip,self.right_knee,self.right_shoulder,left_knee1,self.head_position#self.right_knee_y,self.right_wrist_y,self.ground_right,self.ground_right_min
     
     def wrong_left(self,frames,llist,height,width):
+        count = 0
+
+        self.all_methods.all_x_values(frames=frames,llist=llist)
 
         left_shoulder_x,left_shoulder_y,left_shoulder_z = llist[11][1:]
         right_shoulder_x,right_shoulder_y,right_shoulder_z = llist[12][1:]
@@ -147,8 +142,11 @@ class usthrasana:
         self.left_hip_knee = self.all_methods.slope(frames=frames,lmlist=llist,point1=23,point2=25,height=height,width=width,draw=False)
         self.left_hip_ankle = self.all_methods.slope(frames=frames,lmlist=llist,point1=25,point2=27,height=height,width=width,draw=False)
 
-        flat_position = (self.left_hip_knee and 0 <= self.left_hip_knee <= 15 and 
-                         self.left_hip_ankle and 0 <= self.left_hip_ankle <= 15)
+        # flat_position = (self.left_hip_knee and 0 <= self.left_hip_knee <= 15 and 
+        #                  self.left_hip_ankle and 0 <= self.left_hip_ankle <= 15)
+
+        r_45 = ( 30 <= self.right_knee1 <= 50)
+        l_45 = (30 <= self.left_knee <= 50)
 
         if not self.left_hip and not self.left_elbow and not self.left_knee and not self.left_shoulder and not self.right_knee1 and not left_shoulder_z and not right_shoulder_z:
             return None
@@ -176,19 +174,19 @@ class usthrasana:
                 self.all_methods.reset_after_40_sec()
                 self.all_methods.play_after_40_sec(["you are in side sleep position","please sleep in flat position"],llist=llist)
 
-            elif not self.start_exercise and left_shoulder_z < right_shoulder_z and tolerance > 40 and flat_position:
+            elif not self.start_exercise and left_shoulder_z < right_shoulder_z and tolerance > 40:
 
                 self.all_methods.reset_after_40_sec()
                 self.all_methods.play_after_40_sec(["Lie on your back with legs extended"],llist=llist)
 
 
-            elif not self.start_exercise and left_shoulder_z > right_shoulder_z and tolerance > 40 and flat_position:
+            elif not self.start_exercise and left_shoulder_z > right_shoulder_z and tolerance > 40:
                 self.start_exercise = True
 
         
         elif self.start_exercise:
 
-            if left_shoulder_z > right_shoulder_z and tolerance > 40 and flat_position:
+            if left_shoulder_z > right_shoulder_z and tolerance > 40:
 
                 if count == 0:
                     self.all_methods.reset_after_40_sec()
@@ -197,22 +195,39 @@ class usthrasana:
                 
                 elif count == 1:
                     self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["please start yoga and fold your legs around 45 degress"],llist=llist)
+                    self.all_methods.play_after_40_sec(["please start yoga and fold your right leg around 45 degress"],llist=llist)
+                    count = 1
 
             else:
-
                 #check legs in 45 degress or not
 
-                if self.left_knee and 0 <= self.left_knee <= 29:
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["keep your left leg around 45 degress outwards"],llist=llist)
+                if not self.r_detect_45:
 
-                elif self.left_knee and 51 <= self.left_knee <= 180:
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["please fold your legs inwards 45 degress"],llist=llist)
-
-                else:
                     if self.right_knee1:
                         if self.right_knee1 and 0 <= self.right_knee1 <= 29:
+                            self.all_methods.reset_after_40_sec()
+                            self.all_methods.play_after_40_sec(["keep your right leg around 45 degress outwards"],llist=llist)
 
-            
+                        elif self.right_knee1 and 51 <= self.right_knee1 <= 180:
+                            self.all_methods.reset_after_40_sec()
+                            self.all_methods.play_after_40_sec(["please fold your legs inwards 45 degress"],llist=llist)
+
+                        elif r_45:
+                            self.r_detect_45 = True
+
+                elif self.r_detect_45 and not self.l_detect_45:
+
+                    if self.left_knee and 0 <= self.left_knee <= 29:
+                        self.all_methods.reset_after_40_sec()
+                        self.all_methods.play_after_40_sec(["keep your left leg around 45 degress outwards"],llist=llist)
+
+                    elif self.left_knee and 51 <= self.left_knee <= 180:
+                        self.all_methods.reset_after_40_sec()
+                        self.all_methods.play_after_40_sec(["please fold your legs inwards 45 degress"],llist=llist)
+
+                    elif l_45:
+                        self.l_detect_45 = True
+
+                elif self.l_detect_45:
+
+           

@@ -153,6 +153,8 @@ class gomukhasana:
 
         count = 0
 
+        self.all_methods.all_x_values(frames=frames,llist=llist)
+
         if not llist and len(llist):
             return None
 
