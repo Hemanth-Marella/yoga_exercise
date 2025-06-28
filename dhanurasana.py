@@ -39,6 +39,10 @@ class dhanurasana:
         self.start_exercise = False
         self.reverse_sleep = False
         self.pose_completed = False
+        self.r_count = 0
+        self.l_count = 0
+        self.l_r_count = 0
+        self.r_r_count = 0
 
         self.HEAD_POSITION = "head"
         self.TAIL_POSITION = "tail"
@@ -218,16 +222,18 @@ class dhanurasana:
 
                     if ((0 <= self.right_shoulder_hip <= 15) and (0 <= self.right_hip_knee <= 15)):
 
-                        if count == 0 :
+                        if self.l_count == 0 :
                             self.all_methods.reset_after_40_sec()
                             self.all_methods.play_after_40_sec(["you are in initial position, start dhanurasana, "],llist=llist)
-                            count += 1
+                            if not self.voice.isVoicePlaying:
+                                self.l_count += 1
+
                         
-                        elif count == 1:
+                        elif self.l_count == 1:
 
                             self.all_methods.reset_after_40_sec()
                             self.all_methods.play_after_40_sec(["bend your hip back"],llist=llist)
-                            count = 1
+                            # self.l_count = 1
                     
                     else:
 
@@ -404,16 +410,17 @@ class dhanurasana:
                 if self.right_shoulder_hip and self.right_hip:
 
                     if ((0 <= self.right_shoulder_hip <= 15) and (0 <= self.right_hip_knee <= 15)):
-                        if count == 0 :
+                        if self.r_count == 0 :
                             self.all_methods.reset_after_40_sec()
                             self.all_methods.play_after_40_sec(["you are in initial position, start dhanurasana, "],llist=llist)
-                            count += 1
+                            if not self.voice.isVoicePlaying:
+                                self.r_count += 1
                         
-                        elif count == 1:
+                        elif self.r_count == 1:
 
                             self.all_methods.reset_after_40_sec()
                             self.all_methods.play_after_40_sec(["bend your hip back"],llist=llist)
-                            count = 1
+                            # self.r_count = 1
                     
                     else:
 
@@ -558,17 +565,18 @@ class dhanurasana:
         
         if correct:
 
-            if count == 0:
+            if self.r_r_count == 0:
 
                 self.all_methods.reset_voice()
                 self.all_methods.play_voice(["you done yoga pose perfect","stay in same position","wait for other instruction"],llist=llist)
-                count += 1
+                if not self.voice.isVoicePlaying:
+                    self.r_r_count += 1
 
-            elif count == 1:
+            elif self.r_r_count == 1:
 
                 self.all_methods.reset_voice()
                 self.all_methods.play_voice(["back to sleep position"],llist=llist)
-                count = 1
+                # self.r_r_count = 1
 
         elif  ((0 <= self.right_shoulder_hip <= 15) and (0 <= self.right_hip_knee <= 15)):
 
@@ -597,17 +605,18 @@ class dhanurasana:
         
         if correct:
 
-            if count == 0:
+            if self.l_r_count == 0:
 
                 self.all_methods.reset_voice()
                 self.all_methods.play_voice(["you done yoga pose perfect","stay in same position","wait for other instruction"],llist=llist)
-                count += 1
+                if not self.voice.isVoicePlaying:
+                    self.l_r_count += 1
 
-            elif count == 1:
+            elif self.l_r_count == 1:
 
                 self.all_methods.reset_voice()
                 self.all_methods.play_voice(["back to sleep position"],llist=llist)
-                count = 1
+                # self.l_r_count = 1
 
         elif  ((0 <= self.right_shoulder_hip <= 15) and (0 <= self.right_hip_knee <= 15)):
 
@@ -644,8 +653,8 @@ class dhanurasana:
             self.right_knee and 70 <= self.right_knee <= 100 and
             self.left_knee1 and 80 <= self.left_knee <= 140 and
             self.right_shoulder and 45 <= self.right_shoulder <= 70 and
-            check_left_knee and check_right_knee and
-            check_right_hand and check_left_hand and 
+            # check_left_knee and check_right_knee and
+            # check_right_hand and check_left_hand and 
             self.head_position and self.head_position == "Right" ):
             
                 # self.all_methods.play_voice("Forward Bend, is a yoga pose that involves folding forward from a hasta uttanasana position, with legs straight and hands on the ground or")
@@ -684,8 +693,8 @@ class dhanurasana:
             self.left_knee and 70 <= self.left_knee <= 100 and 
             self.right_knee1 and 80 <= self.right_knee1 <= 140 and
             self.left_shoulder and 45 <= self.left_shoulder <= 70 and
-            check_left_knee and check_right_knee and
-            check_right_hand and check_left_hand and 
+            # check_left_knee and check_right_knee and
+            # check_right_hand and check_left_hand and 
             self.head_position and self.head_position == "Left"
             ):
 

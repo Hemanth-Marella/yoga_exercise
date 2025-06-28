@@ -342,8 +342,8 @@ class allmethods:
             else:
                 position = "sitting"
 
-            cv.putText(frames, f"Position: {position}", (10, 100),
-                            cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+            # cv.putText(frames, f"Position: {position}", (10, 100),
+            #                 cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
         
             return position
         return False
@@ -505,7 +505,7 @@ class allmethods:
             
         if not self.voice.isVoicePlaying:
             self.counter += 1
-            print(self.counter)
+            # print(self.counter)
            
         if self.counter > 30:
             self.voice.playAudio([message],play=True)
@@ -531,7 +531,7 @@ class allmethods:
             
         if not self.voice.isVoicePlaying:
             self.after_40 += 1
-            print(self.after_40)
+            # print(self.after_40)
            
         if self.after_40 > 35:
             self.voice.playAudio([message],play=True)

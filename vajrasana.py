@@ -32,6 +32,10 @@ class vajrasana:
         self.left_count = False
         self.pose_completed  = False
         self.initial_position = False
+        self.r_r_count = 0
+        self.l_r_count = 0
+        self.r_count = 0
+        self.l_count = 0
 
         self.angle =0
         self.all_methods = allmethods()
@@ -157,14 +161,14 @@ class vajrasana:
             self.right_knee1 and 160 <= self.right_knee1 <= 180)
         
         #check legs is in forward side
-        check_left_knee = (self.all_methods.l_hip_x < self.all_methods.l_knee_x)
-        check_right_knee = (self.all_methods.l_hip_x < self.all_methods.r_knee_x)
+        check_left_knee = (self.all_methods.l_hip_x > self.all_methods.l_knee_x)
+        check_right_knee = (self.all_methods.l_hip_x > self.all_methods.r_knee_x)
 
         #check hands is in forward side
-        check_left_hand = (self.all_methods.l_hip_x < self.all_methods.l_elbow_x and 
-                      self.all_methods.l_hip_x < self.all_methods.l_wrist_x)
-        check_right_hand = (self.all_methods.l_hip_x < self.all_methods.r_elbow_x and 
-                      self.all_methods.l_hip_x < self.all_methods.r_wrist_x)
+        check_left_hand = (self.all_methods.l_hip_x > self.all_methods.l_elbow_x and 
+                      self.all_methods.l_hip_x > self.all_methods.l_wrist_x)
+        check_right_hand = (self.all_methods.l_hip_x > self.all_methods.r_elbow_x and 
+                      self.all_methods.l_hip_x > self.all_methods.r_wrist_x)
                       
         
         if not self.left_count and check_initial_position and check_left_knee and check_right_knee:
@@ -195,17 +199,18 @@ class vajrasana:
                 if (self.left_knee and 160 <= self.left_knee <= 180 and
                         self.right_knee1 and 160 <= self.right_knee1 <= 180):
                 
-                    if count == 0 :
+                    if self.l_count == 0 :
                     
                         self.all_methods.reset_after_40_sec()
                         self.all_methods.play_after_40_sec(["you are in initial position and start vajrasana ,"],llist=llist)
-                        count += 1
+                        if not self.voice.isVoicePlaying:
+                            self.l_count += 1
 
-                    elif count == 1:
+                    elif self.l_count == 1:
 
                         self.all_methods.reset_after_40_sec()
                         self.all_methods.play_after_40_sec(["fold your left leg back and sit on that leg"])
-                        count = 1
+                        # self.l_count = 1
 
                 else:
                         # STEP 2: Check left knee position
@@ -312,11 +317,8 @@ class vajrasana:
 
     def wront_right_vajrasana(self,frames,llist,height,width):
 
-        count = 0
-
         self.all_methods.all_x_values(frames=frames,llist=llist)
 
-        
         if not self.right_hip and not self.right_elbow and not self.right_knee and not self.right_shoulder and not self.left_knee1 and not self.right_shoulder and not self.under_leg_slope:
             return None
 
@@ -324,14 +326,14 @@ class vajrasana:
             self.right_knee and 160 <= self.right_knee <= 180)
         
         #check legs is in forward side
-        check_left_knee = (self.all_methods.l_hip_x > self.all_methods.l_knee_x)
-        check_right_knee = (self.all_methods.l_hip_x > self.all_methods.r_knee_x)
+        check_left_knee = (self.all_methods.l_hip_x < self.all_methods.l_knee_x)
+        check_right_knee = (self.all_methods.l_hip_x < self.all_methods.r_knee_x)
 
         #check hands is in forward side
-        check_left_hand = (self.all_methods.l_hip_x > self.all_methods.l_elbow_x and 
-                      self.all_methods.l_hip_x > self.all_methods.l_wrist_x)
-        check_right_hand = (self.all_methods.l_hip_x > self.all_methods.r_elbow_x and 
-                      self.all_methods.l_hip_x > self.all_methods.r_wrist_x)
+        check_left_hand = (self.all_methods.l_hip_x < self.all_methods.l_elbow_x and 
+                      self.all_methods.l_hip_x < self.all_methods.l_wrist_x)
+        check_right_hand = (self.all_methods.l_hip_x < self.all_methods.r_elbow_x and 
+                      self.all_methods.l_hip_x < self.all_methods.r_wrist_x)
         
         if not self.right_count and check_initial_position:
 
@@ -358,17 +360,18 @@ class vajrasana:
             if (self.left_knee1 and 160 <= self.left_knee1 <= 180 and
                     self.right_knee and 160 <= self.right_knee <= 180):
 
-                if count == 0:
+                if self.r_count == 0:
 
                     self.all_methods.reset_after_40_sec()
                     self.all_methods.play_after_40_sec(["you are in initial position and start vajrasana ,and keep your right leg back"], llist=llist)
-                    count += 1
+                    if not self.voice.isVoicePlaying:
+                        self.r_count += 1
 
-                elif count == 1:
+                elif self.r_count == 1:
 
                     self.all_methods.reset_after_40_sec()
                     self.all_methods.play_after_40_sec(["fold your right leg back and sit on that"], llist=llist)
-                    count = 1
+                    # self.r_count = 1
                     
                 else:
                         # STEP 2: Check left knee position
@@ -482,9 +485,7 @@ class vajrasana:
         sitting_position = self.all_methods.is_person_standing_sitting(frames=frames,llist=llist,leg_points=(23,25,27),hip_points=(11,23,25),elbow_points=(11,13,15),height=height,width=width)
 
         if sitting_position == "sitting":
-            
-            return True 
-        
+            return True
 
         elif sitting_position != "sitting":
             self.all_methods.reset_after_40_sec()
@@ -503,11 +504,11 @@ class vajrasana:
             
             return "right"
 
-        if side_view == "left":
+        elif side_view == "left":
            
             return "left"
         
-        if side_view == "forward":
+        elif side_view == "forward":
             self.all_methods.reset_after_40_sec() 
             self.all_methods.play_after_40_sec(["please turn total your body left, or , right, and stretch your legs straight"],llist=llist)
             return False  
@@ -515,7 +516,7 @@ class vajrasana:
 
     def left_reverse_to_strating_position(self,frames,llist):
 
-        count = 0
+        # count = 0
 
         if not self.right_knee1 and not self.left_knee:
             return 
@@ -529,15 +530,16 @@ class vajrasana:
                 self.right_knee1 and 160 <= self.right_knee1 <= 180)
         
         if check_last_before_position:
-            if count == 0:
+            if self.l_r_count == 0:
                 self.all_methods.reset_after_40_sec()
                 self.all_methods.play_after_40_sec(["good job you complete perfectly, wait for one more instruction"],llist=llist)
-                count += 1
+                if not self.voice.isVoicePlaying:
+                    self.l_r_count += 1
 
-            elif count == 1:
+            elif self.l_r_count == 1:
                 self.all_methods.reset_after_40_sec()
-                self.all_methods.play_after_40_sec([" , get relax , keep your legs straight on which side your are in"],llist=llist)
-                count = 1
+                self.all_methods.play_after_40_sec([" get relax , keep your legs straight on which side your are in"],llist=llist)
+                # self.l_r_count = 1
 
 
         elif ((31 <= self.right_knee1 <= 159) and (31<= self.left_knee <= 159)):
@@ -564,7 +566,6 @@ class vajrasana:
         
     
     def right_reverse_to_strating_position(self,frames,llist):
-        count = 0
 
         if not self.right_knee and not self.left_knee1:
             return 
@@ -578,15 +579,16 @@ class vajrasana:
                 self.right_knee and 160 <= self.right_knee <= 180)
         
         if check_last_before_position:
-            if count == 0:
+            if self.r_r_count == 0:
                 self.all_methods.reset_after_40_sec()
                 self.all_methods.play_after_40_sec(["good job you complete perfectly, wait for one more instruction"],llist=llist)
-                count += 1
+                if not self.voice.isVoicePlaying:
+                    self.r_r_count += 1
 
-            elif count == 1:
+            elif self.r_r_count == 1:
                 self.all_methods.reset_after_40_sec()
                 self.all_methods.play_after_40_sec([" , get relax , keep your legs straight on which side your are in"],llist=llist)
-                count = 1
+                # self.r_r_count = 1
                 
 
         elif ((31 <= self.right_knee <= 159) and (31<= self.left_knee1 <= 159)):
@@ -615,14 +617,14 @@ class vajrasana:
     def left_vajrasana_name(self,frames): 
 
          #check legs is in forward side
-        check_left_knee = (self.all_methods.l_hip_x < self.all_methods.l_knee_x)
-        check_right_knee = (self.all_methods.l_hip_x < self.all_methods.r_knee_x)
+        check_left_knee = (self.all_methods.l_hip_x > self.all_methods.l_knee_x)
+        check_right_knee = (self.all_methods.l_hip_x > self.all_methods.r_knee_x)
 
         #check hands is in forward side
-        check_left_hand = (self.all_methods.l_hip_x < self.all_methods.l_elbow_x and 
-                      self.all_methods.l_hip_x < self.all_methods.l_wrist_x)
-        check_right_hand = (self.all_methods.l_hip_x < self.all_methods.r_elbow_x and 
-                      self.all_methods.l_hip_x < self.all_methods.r_wrist_x)
+        check_left_hand = (self.all_methods.l_hip_x > self.all_methods.l_elbow_x and 
+                      self.all_methods.l_hip_x > self.all_methods.l_wrist_x)
+        check_right_hand = (self.all_methods.l_hip_x > self.all_methods.r_elbow_x and 
+                      self.all_methods.l_hip_x > self.all_methods.r_wrist_x)
                 
 
         correct =(
@@ -649,14 +651,14 @@ class vajrasana:
     def right_vajrasana_name(self,frames):
 
          #check legs is in forward side
-        check_left_knee = (self.all_methods.l_hip_x > self.all_methods.l_knee_x)
-        check_right_knee = (self.all_methods.l_hip_x > self.all_methods.r_knee_x)
+        check_left_knee = (self.all_methods.l_hip_x < self.all_methods.l_knee_x)
+        check_right_knee = (self.all_methods.l_hip_x < self.all_methods.r_knee_x)
 
         #check hands is in forward side
-        check_left_hand = (self.all_methods.l_hip_x > self.all_methods.l_elbow_x and 
-                      self.all_methods.l_hip_x > self.all_methods.l_wrist_x)
-        check_right_hand = (self.all_methods.l_hip_x > self.all_methods.r_elbow_x and 
-                      self.all_methods.l_hip_x > self.all_methods.r_wrist_x)
+        check_left_hand = (self.all_methods.l_hip_x < self.all_methods.l_elbow_x and 
+                      self.all_methods.l_hip_x < self.all_methods.l_wrist_x)
+        check_right_hand = (self.all_methods.l_hip_x < self.all_methods.r_elbow_x and 
+                      self.all_methods.l_hip_x < self.all_methods.r_wrist_x)
                 
 
         correct = (self.right_elbow and 140 <= self.right_elbow <= 180 and   
@@ -749,9 +751,10 @@ def main():
             llist = detect.pose_landmarks(frames,False)
             vajrasana_slope = detect.slope(frames=frames,llist=llist,height=height,width=width)
             sitting_detect = detect.check_sitting(frames=frames,llist=llist,height=height,width=width)
-            side_view = detect.check_side_view(frames=frames,llist=llist,height=height,width=width,left_knee_angle=(23,25,27),right_knee_angle=(24,26,28))
-
+            
             if sitting_detect:
+
+                side_view = detect.check_side_view(frames=frames,llist=llist,height=height,width=width,left_knee_angle=(23,25,27),right_knee_angle=(24,26,28))
 
                 if side_view == "left":
                     detect.left_vajrasana(frames=frames,llist=llist,elbow=(11,13,15), hip=(11,23,25), knee=(23,25,27), shoulder=(13,11,23),right_knee1=(24,26,28),right_elbow=(12,14,16),draw=False)

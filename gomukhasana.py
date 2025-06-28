@@ -29,6 +29,7 @@ class gomukhasana:
         self.initial_position = False
         self.check_body_turn = False
         self.pose_completed = False
+        self.count = 0
 
         self.mpPose = mp.solutions.pose
         self.pose= self.mpPose.Pose(
@@ -151,8 +152,6 @@ class gomukhasana:
     
     def wrong_gomukhasana(self,frames,llist,height,width): 
 
-        count = 0
-
         self.all_methods.all_x_values(frames=frames,llist=llist)
 
         if not llist and len(llist):
@@ -217,16 +216,18 @@ class gomukhasana:
                     
                     if 160 <= self.left_knee <= 180 and 160 <= self.right_knee <= 180:
 
-                        if count == 0:
+                        if self.count == 0:
 
                             self.all_methods.reset_voice()
                             self.all_methods.play_voice(["you are in initial position","start gomukhasana"], llist=llist)
-                            count += 1
+                            if not self.voice.isVoicePlaying:
+                                self.count += 1
 
-                        elif count == 1:
+                        elif self.count == 1:
                             self.all_methods.reset_voice()
                             self.all_methods.play_voice(["keep your left leg under right thigh and fold left leg"], llist=llist)
-                            count = 1
+
+                            self.count = 1
 
                     else:
                         
