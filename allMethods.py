@@ -426,31 +426,58 @@ class allmethods:
             elif self.check_stand == "sleeping":
 
                 nose_x = llist[0][0]  
+                left_hip_z,right_hip_z = llist[23][3] , llist[24][3]
+                left_knee_z,right_knee_z = llist[25][3],llist[26][3]
+                left_ankle_z,right_ankle_z = llist[27][3],llist[28][3]
 
-                self.find_view = self.findSideView(frame=frames,FLAG_HEAD_OR_TAIL_POSITION=self.HEAD_POSITION,head=nose_x)
+                #SHOULDER TOLERANCE
+                tolerance_shoulders = abs(int(left_shoulder_z - right_shoulder_z))   
+                # HIP TOLERANCE
+                tolerance_hips = abs(int(left_hip_z - right_hip_z))
+                # KNEE TOLERANCE
+                tolerance_knees = abs(int(left_knee_z - right_knee_z))
+                # ANKLE TOLERANCE
+                tolerance_ankles = abs(int(left_ankle_z - right_ankle_z))
 
-                if self.find_view == "left":
+                if tolerance_ankles <= 30 and tolerance_hips <= 30 and tolerance_knees <= 30 and tolerance_shoulders <= 30:
+                    position = "side position"
+
+                elif (
+                    left_hip_z < right_hip_z and
+                    left_shoulder_z < right_shoulder_z and
+                    left_knee_z < right_knee_z and
+                    left_ankle_z < right_ankle_z and
+                    tolerance_hips > 30 and tolerance_shoulders > 30 and tolerance_knees > 30 and tolerance_ankles > 30
+                ):
                     position = "left"
-                else:
+
+                # RIGHT SIDE (body turned showing right side closer to camera)
+                elif (
+                    right_hip_z < left_hip_z and
+                    right_shoulder_z < left_shoulder_z and
+                    right_knee_z < left_knee_z and
+                    right_ankle_z < left_ankle_z and
+                    tolerance_hips > 30 and tolerance_shoulders > 30 and tolerance_knees > 30 and tolerance_ankles > 30
+                ):
                     position = "right"
 
-                # cv.putText(frames, f"left_shoulder_hip: {position}", (10, 100),
-                #             cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
-                
-                # cv.putText(frames, f"left_hip_knee: {self.left_hip_knee}", (10, 50),
-                #             cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
-                
-            elif self.check_stand == "reverse":
+                elif(
+                    left_hip_z > right_hip_z and
+                    left_shoulder_z > right_shoulder_z and
+                    left_knee_z > right_knee_z and
+                    left_ankle_z > right_ankle_z and
+                    tolerance_hips > 30 and tolerance_shoulders > 30 and tolerance_knees > 30 and tolerance_ankles > 30
+                ):
+                    position = "left_reverse"
 
-                nose_x = llist[0][0]  
-
-                self.find_view = self.findSideView(frame=frames,FLAG_HEAD_OR_TAIL_POSITION=self.HEAD_POSITION,head=nose_x)
-
-                if self.find_view == "left":
-                    position = "left"
-                else:
-                    position = "right"
-
+                elif(
+                    right_hip_z < left_hip_z and
+                    right_shoulder_z < left_shoulder_z and
+                    right_knee_z < left_knee_z and
+                    right_ankle_z < left_ankle_z and
+                    tolerance_hips > 30 and tolerance_shoulders > 30 and tolerance_knees > 30 and tolerance_ankles > 30
+                ):
+                    position = "right_reverse"
                 # cv.putText(frames, f"left_shoulder_hip: {position}", (10, 100),
                 #             cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
                 
@@ -531,10 +558,59 @@ class allmethods:
         self.r_wrist_x = llist[16][1]
         self.l_shoulder_x = llist[11][1]
         self.r_shoulder_x = llist[12][1]
+        self.r_toe_x = llist[32][1]
+        self.l_toe_x = llist[31][1]
 
-        print(self.nose_x)
+        # print(self.nose_x)
 
         return self.nose_x,self.l_hip_x,self.r_hip_x,self.l_knee_x,self.r_knee_x,self.l_ankle_x,self.r_ankle_x,self.l_elbow_x,self.r_elbow_x,self.l_wrist_x,self.r_wrist_x,self.l_shoulder_x,self.r_shoulder_x
+
+
+    def all_y_values(self,frames,llist):
+
+        if len(llist) == 0:
+            return None
+        
+        self.nose_y = llist[0][2]
+        self.l_hip_y = llist[23][2]
+        self.r_hip_y = llist[24][2]
+        self.l_knee_y = llist[25][2]
+        self.r_knee_y = llist[26][2]
+        self.l_ankle_y = llist[27][2]
+        self.r_ankle_y = llist[28][2]
+        self.l_elbow_y = llist[13][2]
+        self.r_elbow_y = llist[14][2]
+        self.l_wrist_y = llist[15][2]
+        self.r_wrist_y = llist[16][2]
+        self.l_shoulder_y = llist[11][2]
+        self.r_shoulder_y = llist[12][2]
+        self.r_toe_y = llist[32][2]
+        self.l_toe_x = llist[31][2]
+
+        return self.nose_y,self.l_hip_y,self.r_hip_y,self.l_knee_y,self.r_knee_y,self.l_ankle_y,self.r_ankle_y,self.l_elbow_y,self.r_elbow_y,self.l_wrist_y,self.r_wrist_y,self.l_shoulder_y,self.r_shoulder_y
+
+    def all_z_values(self,frames,llist):
+
+        if len(llist) == 0:
+            return None
+        
+        self.nose_z = llist[0][3]
+        self.l_hip_z = llist[23][3]
+        self.r_hip_z = llist[24][3]
+        self.l_knee_z = llist[25][3]
+        self.r_knee_z = llist[26][3]
+        self.l_ankle_z = llist[27][3]
+        self.r_ankle_z = llist[28][3]
+        self.l_elbow_z = llist[13][3]
+        self.r_elbow_z = llist[14][3]
+        self.l_wrist_z = llist[15][3]
+        self.r_wrist_z = llist[16][3]
+        self.l_shoulder_z = llist[11][3]
+        self.r_shoulder_z = llist[12][3]
+        self.r_toe_z = llist[32][3]
+        self.l_toe_x = llist[31][3]
+
+        return self.nose_z,self.l_hip_z,self.r_hip_z,self.l_knee_z,self.r_knee_z,self.l_ankle_z,self.r_ankle_z,self.l_elbow_z,self.r_elbow_z,self.l_wrist_z,self.r_wrist_z,self.l_shoulder_z,self.r_shoulder_z
 
 
 def main():

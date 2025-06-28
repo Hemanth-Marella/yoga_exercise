@@ -102,24 +102,18 @@ class dhanurasana:
         self.left_elbow1,left_elbow1_coords = self.all_methods.calculate_angle(frames=frames,lmList=llist,points=left_elbow1)
 
         if draw:
-            if elbow_coords:
-                cv.putText(frames, str(int(self.right_elbow)), (elbow_coords[2]+10, elbow_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            if hip_coords:
-                cv.putText(frames, str(int(self.right_hip)), (hip_coords[2]-20, hip_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            if knee_coords:
-                cv.putText(frames, str(int(self.right_knee)), (knee_coords[2]-20, knee_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            if points_cor7:
-                cv.putText(frames, str(int(self.right_shoulder)), (points_cor7[2]+10, points_cor7[3]+10), cv.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
-            if left_knee1_coords:
-                cv.putText(frames,str(int(self.left_knee1)),(left_knee1_coords[2]+10 , left_knee1_coords[3]+10),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            if left_elbow1_coords:
-                cv.putText(frames,str(int(self.left_elbow1)),(left_elbow1_coords[2]+10 , left_elbow1_coords[3]+10),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
 
+            cv.putText(frames,f'r_elbow{str(self.right_elbow)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_hip{str(self.right_hip)}',(10,80),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_knee{str(self.right_knee)}',(10,120),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_shoulder{str(self.right_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_knee1{str(self.left_knee1)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_elbow{str(self.left_elbow1)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,str(self.head_position),(10,280),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
 
         return self.right_elbow,self.right_hip,self.right_knee,self.right_shoulder,self.head_position,self.left_elbow1,self.left_knee1
        
     def left_dhanurasana(self,frames,llist,elbow, hip, knee,shoulder,right_knee,right_elbow1,draw = True):
-
 
         self.head = self.head_pose.head_detect(frames=frames,llist=llist,points=(0,2,5))
         self.left_ear = self.head_pose.left_ear_detect(frames=frames,llist=llist,left_point=7)
@@ -140,19 +134,14 @@ class dhanurasana:
 
 
         if draw:
-            if elbow_coords:
-                cv.putText(frames, str(int(self.left_elbow)), (elbow_coords[2]+10, elbow_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            if hip_coords:
-                cv.putText(frames, str(int(self.left_hip)), (hip_coords[2]+10, hip_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            if knee_coords:
-                cv.putText(frames, str(int(self.left_knee)), (knee_coords[2]+10, knee_coords[3]+10), cv.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            if points_cor8:
-                cv.putText(frames, str(int(self.left_shoulder)), (points_cor8[2]+10, points_cor8[3]+10), cv.FONT_HERSHEY_PLAIN, 1, (0, 255, 0), 2)
-            if right_knee1_coords:
-                cv.putText(frames,str(int(self.right_knee1)),(right_knee1_coords[2]+10 , right_knee1_coords[3]+10),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            if right_elbow1_coords:
-                cv.putText(frames,str(int(self.right_elbow1)),(right_elbow1_coords[2]+10 , right_elbow1_coords[3]+10),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
 
+            cv.putText(frames,f'l_elbow{str(self.left_elbow)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_hip{str(self.left_hip)}',(10,80),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_knee{str(self.left_knee)}',(10,120),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_shoulder{str(self.left_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_knee1{str(self.right_knee1)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_elbow{str(self.right_elbow1)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,str(self.head_position),(10,280),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
 
         return self.left_elbow,self.left_hip,self.left_knee,self.left_shoulder,self.head_position,self.right_elbow1,self.right_knee1
 
@@ -754,11 +743,10 @@ def main():
                 h, w, _ = ref_frame.shape
                 frames[0:h, 0:w] = ref_frame  # Overlay in corner
 
+            nose = llist[0][1]
             detect.pose_positions(frames,draw = False)
             llist = detect.pose_landmarks(frames,draw=False)
-            # nose = detect.head_value(llist=llist,frames=frames)
-            # sleeping_position =detect.check_sleeping(frames=frames,llist=llist,height=height,width=width)
-            side_view = detect.check_side_view(frames=frames,llist=llist,height=height,width=width)
+            side_view = allmethods.findSideView(frame=frames,FLAG_HEAD_OR_TAIL_POSITION='head',head=nose)
 
             if len(llist) is None:
                 return None
