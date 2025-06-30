@@ -160,6 +160,8 @@ class vajrasana:
         check_initial_position = (self.left_knee and 160 <= self.left_knee <= 180 and
             self.right_knee1 and 160 <= self.right_knee1 <= 180)
         
+        middle_of_hip_shoulder = abs(int((self.all_methods.l_shoulder_y + self.all_methods.l_hip_y) // 2))
+        
         #check legs is in forward side
         check_left_knee = (self.all_methods.l_hip_x > self.all_methods.l_knee_x)
         check_right_knee = (self.all_methods.l_hip_x > self.all_methods.r_knee_x)
@@ -251,7 +253,7 @@ class vajrasana:
                                     else:
 
                                         # STEP 4: Elbow check
-                                        if (self.left_elbow and 0 <= self.left_elbow <= 149 and check_left_hand):
+                                        if (self.left_elbow and 0 <= self.left_elbow <= 149 and check_left_hand and self.all_methods.l_wrist_y > middle_of_hip_shoulder):
                                             
                                             self.all_methods.reset_after_40_sec()
                                             self.all_methods.play_after_40_sec(["please keep your elbows straight, touch your hands to knees"], llist=llist)
@@ -264,7 +266,7 @@ class vajrasana:
                                         
                                         else:
                                             #STEP 4.1:RIGHT ELBOW CHECK
-                                            if (self.right_elbow1 and 0 <= self.right_elbow1 <= 149 and check_right_hand):
+                                            if (self.right_elbow1 and 0 <= self.right_elbow1 <= 149 and check_right_hand and self.all_methods.r_wrist_y > middle_of_hip_shoulder):
                                             
                                                 self.all_methods.reset_after_40_sec()
                                                 self.all_methods.play_after_40_sec(["please keep your elbows straight, touch your hands to knees"], llist=llist)
@@ -324,6 +326,8 @@ class vajrasana:
 
         check_initial_position = (self.left_knee1 and 160 <= self.left_knee1 <= 180 and
             self.right_knee and 160 <= self.right_knee <= 180)
+        
+        middle_of_hip_shoulder = abs(int((self.all_methods.r_shoulder_y + self.all_methods.r_hip_y) // 2))
         
         #check legs is in forward side
         check_left_knee = (self.all_methods.l_hip_x < self.all_methods.l_knee_x)
@@ -412,7 +416,7 @@ class vajrasana:
                                     else:
 
                                         # STEP 4: Elbow check
-                                        if (self.right_elbow and 0 <= self.right_elbow <= 149 and check_right_hand):
+                                        if (self.right_elbow and 0 <= self.right_elbow <= 149 and check_right_hand and self.all_methods.r_wrist_y > middle_of_hip_shoulder):
                                             
                                             self.all_methods.reset_after_40_sec()
                                             self.all_methods.play_after_40_sec(["please keep your elbows straight, touch your hands to knees"], llist=llist)
@@ -427,7 +431,7 @@ class vajrasana:
 
                                             #STEP 4.1:LEFT ELBOW CHECK
 
-                                            if (self.left_elbow1 and 0 <= self.left_elbow1 <= 149 and check_left_hand):
+                                            if (self.left_elbow1 and 0 <= self.left_elbow1 <= 149 and check_left_hand and self.all_methods.l_wrist_y > middle_of_hip_shoulder):
                                             
                                                 self.all_methods.reset_after_40_sec()
                                                 self.all_methods.play_after_40_sec(["please keep your elbows straight, touch your hands to knees"], llist=llist)
