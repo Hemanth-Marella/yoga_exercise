@@ -26,6 +26,8 @@ class allmethods:
 
         self.counter = 0
         self.after_40 = 0
+        self.first_count = 0
+        self.voice_delay_ready = True
 
         self.mpPose = mp.solutions.pose
         self.pose= self.mpPose.Pose(
@@ -43,6 +45,7 @@ class allmethods:
         self.lock = threading.Lock()
         self.voice = VoicePlay()
         self.voice_play_counter = 0
+        self.trigger = None
 
 
         self.HEAD_POSITION = "head"
@@ -518,27 +521,44 @@ class allmethods:
     #this reset after every 40 sec
     def reset_after_40_sec(self):
 
+        self.first_play = False
+
+        # self.first_play = True
         if self.voice.isVoicePlaying:
-            if self.after_40 >= 36:
+            if self.after_40 >= 35:
                 self.after_40 = 0
+                
+
 
     #this voice play after 40 sec
     def play_after_40_sec(self,message,llist):
-        
+
         if len(llist) == 0 and not llist :
             self.after_40 = 0
             # return 
             
         if not self.voice.isVoicePlaying:
+            
             self.after_40 += 1
-            # print(self.after_40)
            
         if self.after_40 > 35:
-            self.voice.playAudio([message],play=True)
+            self.trigger = self.voice.playAudio([message],play=True)
             self.after_40 = 0
             return True
             
-        return self.after_40 
+        return False
+
+    
+    def stop_sometime(self):
+
+        if not self.voice.isVoicePlaying:
+            self.first_count += 1
+            print(self.first_count)
+
+        if self.voice.isVoicePlaying:
+            self.first_count = 0
+
+        return self.first_count
     
     def all_x_values(self,frames,llist):
 
