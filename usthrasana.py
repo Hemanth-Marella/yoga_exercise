@@ -10,8 +10,9 @@ from allMethods import allmethods
 from face_detect import HeadPoseEstimator
 from voiceModule import VoicePlay
 from body_position import bodyPosition
+from abstract_class import yoga_exercise
 
-class usthrasana:
+class usthrasana(yoga_exercise):
      
     def __init__(self,mode = False,mindetectconf=0.5,mintrcackconf=0.5):
         self.mode = mode
@@ -194,23 +195,20 @@ class usthrasana:
             self.all_methods.play_after_40_sec(["you are not in initial position please stand on your knees"],llist=llist)
 
         if self.check_initial_position:
+            self.l_count = 0
+
+            voice_list = ["you are in initial position start ushtrasana","bend your hip back and take hands support"]
 
             if stand_on_knee:
 
-                if self.l_count == 0:
+                if self.l_count < len(voice_list):
 
                     self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["start ushtrasana"],llist=llist)
-                    if not self.voice.isVoicePlaying: 
+                    trigger = self.all_methods.play_after_40_sec([voice_list[self.l_count]],llist=llist)
+                    if trigger: 
                         self.l_count += 1
-                    # print(self.l_count)
-
-                elif self.l_count == 1:
-
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["you are in initial position and bend your hip back"],llist=llist)
-                    
-                    # self.l_count = 1
+                else:
+                    self.l_count = 1
 
             else:
 
@@ -371,18 +369,18 @@ class usthrasana:
             self.all_methods.play_after_40_sec(["you are not in initial position please stand on your knees"],llist=llist)
 
         if self.check_initial_position:
+            self.r_count = 0
+            voice_list = ["you are in initial positionstart ushtrasana"," please bend back your hip and take hands support"]
 
             if stand_on_knee:
 
-                if self.r_count == 0:
+                if self.r_count < len(voice_list):
                     self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["please start ushtrasana"],llist=llist)
-                    if not self.voice.isVoicePlaying:
+                    trigger = self.all_methods.play_after_40_sec([voice_list[self.r_count]],llist=llist)
+                    if trigger:
                         self.r_count += 1
-
-                elif self.r_count == 1:
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["you are in initial position please bend back your hip"],llist=llist)
+                else:
+                    self.r_count = 1
 
             else:
                 #CHECK KNEE 
@@ -536,10 +534,6 @@ class usthrasana:
 
         if not self.right_knee1 and not self.left_knee:
             return 
-        
-        # count = 0
-
-
         check_last_before_position = (self.left_knee and 70 <= self.left_knee <= 100 and
                          self.right_knee1 and 70 <= self.right_knee1 <=100 and
                          self.left_elbow and 160 <= self.left_elbow <= 180 )
@@ -549,31 +543,28 @@ class usthrasana:
                          self.left_hip and 160 <= self.left_hip <= 180)
 
         if check_last_before_position:
+            self.l_r_count = 0
 
-            if self.l_r_count == 0:
+            voice_list = ["good,stay in same position , and wait for other instruction"," very good , back to stand on knee position"]
+
+            if self.l_r_count < len(voice_list):
 
                 self.all_methods.reset_after_40_sec()
-                self.all_methods.play_after_40_sec(["good job you complete perfectly","stay in same and wait for instruction"],llist=llist)
-                if not self.voice.isVoicePlaying :
+                trigger = self.all_methods.play_after_40_sec([voice_list[self.l_r_count]],llist=llist)
+                if trigger:
                     self.l_r_count += 1
 
-            elif self.l_r_count >= 1:
-
-                self.all_methods.reset_after_40_sec()
-                self.all_methods.play_after_40_sec(["get relax and back to stand on knee position"],llist=llist)
+            else:
+                self.l_r_count = 1
 
         elif check_last_position:
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["you are in final position and please be in standing position"],llist=llist)
-            self.pose_completed = True
-            # return False
-
-            return True
+            final = self.all_methods.play_after_40_sec(["good job you complete yoga and back to relax"],llist=llist)
+            if final:
+                self.pose_completed = True
+                return True
         
-    
     def right_reverse_to_strating_position(self,frames,llist):
-
-        # count = 0
 
         if not self.right_knee and not self.left_knee1:
             return 
@@ -585,26 +576,24 @@ class usthrasana:
                 self.right_knee and 160 <= self.right_knee <= 180)
         
         if check_last_before_position:
+            self.r_r_count = 0
 
-            if self.r_r_count == 0:
+            voice_list = ["good","stay in same and wait for instruction"," very good , back to stand on knee position"]
+
+            if self.r_r_count < len(voice_list):
                 self.all_methods.reset_after_40_sec()
-                self.all_methods.play_after_40_sec(["good job you complete perfectly","stay in same and wait for instruction"],llist=llist)
+                self.all_methods.play_after_40_sec([voice_list[self.r_r_count]],llist=llist)
+                self.r_r_count += 1
 
-                self.r_r_count = +1
-
-            elif self.r_r_count >= 40:
-
-                self.all_methods.reset_after_40_sec()
-                self.all_methods.play_after_40_sec(["get relax and back to stand on knee position"],llist=llist)
-                # self.r_r_count = 1
+            else:
+                self.r_r_count = 1
  
         elif check_last_position:
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["you are in final position and please be in standing position"],llist=llist)
-            self.pose_completed = True
-            # return False
-
-            return True
+            final = self.all_methods.play_after_40_sec(["good job you complete yoga and back to relax"],llist=llist)
+            if final:
+                self.pose_completed = True
+                return True
 
         
     def left_usthrasana_name(self,frames): 

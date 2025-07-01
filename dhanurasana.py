@@ -9,8 +9,9 @@ from threading import Thread
 from allMethods import allmethods
 from voiceModule import VoicePlay
 from face_detect import HeadPoseEstimator
+from abstract_class import yoga_exercise
 
-class dhanurasana:
+class dhanurasana(yoga_exercise):
      
     def __init__(self,mode = False,mindetectconf=0.5,mintrcackconf=0.5):
         self.mode = mode
@@ -218,23 +219,21 @@ class dhanurasana:
 
             if self.start_exercise:
                 # check sleep position
-                if self.right_shoulder_hip and self.right_hip:
+                if self.right_shoulder_hip and self.right_hip_knee:
+
+                    voice_list = ["you are in initial position, start dhanurasana","bend back your hip and hold your legs"]
 
                     if ((0 <= self.right_shoulder_hip <= 15) and (0 <= self.right_hip_knee <= 15)):
+                        self.l_count = 0
 
-                        if self.l_count == 0 :
+                        if self.l_count < len(voice_list):
                             self.all_methods.reset_after_40_sec()
-                            self.all_methods.play_after_40_sec(["you are in initial position, start dhanurasana, "],llist=llist)
-                            if not self.voice.isVoicePlaying:
-                                self.l_count += 1
+                            trigger = self.all_methods.play_after_40_sec([voice_list[self.l_count]],llist=llist)
+                            self.l_count += 1
 
-                        
-                        elif self.l_count == 1:
-
-                            self.all_methods.reset_after_40_sec()
-                            self.all_methods.play_after_40_sec(["bend your hip back"],llist=llist)
-                            # self.l_count = 1
-                    
+                        else:
+                            self.l_count = 1
+                            
                     else:
 
                         # ========== LEFT HIP ==========
@@ -410,17 +409,18 @@ class dhanurasana:
                 if self.right_shoulder_hip and self.right_hip:
 
                     if ((0 <= self.right_shoulder_hip <= 15) and (0 <= self.right_hip_knee <= 15)):
-                        if self.r_count == 0 :
-                            self.all_methods.reset_after_40_sec()
-                            self.all_methods.play_after_40_sec(["you are in initial position, start dhanurasana, "],llist=llist)
-                            if not self.voice.isVoicePlaying:
-                                self.r_count += 1
-                        
-                        elif self.r_count == 1:
+                        voice_list = ["you are in initial position, start dhanurasana","please bend back your hip"]
+                        self.r_count = 0
 
+                        if self.r_count < len(voice_list) :
                             self.all_methods.reset_after_40_sec()
-                            self.all_methods.play_after_40_sec(["bend your hip back"],llist=llist)
-                            # self.r_count = 1
+                            trigger = self.all_methods.play_after_40_sec([voice_list[self.r_count]],llist=llist)
+                            if trigger:
+                                self.r_count += 1
+
+                        else:
+                            self.r_count = 1
+                            
                     
                     else:
 
@@ -548,12 +548,9 @@ class dhanurasana:
         
     def right_side_reverse_to_sleep(self,frames,llist,height,width):
 
-        count = 0
-
         #right slope condition
         self.right_shoulder_hip = self.all_methods.slope(frames=frames,lmlist=llist,point1=12,point2=24,height=height,width=width,draw=False)
         self.right_hip_knee = self.all_methods.slope(frames=frames,lmlist=llist,point1=24,point2=26,height=height,width=width,draw=False)
-
 
         correct = (self.left_elbow1 and 160 <= self.left_elbow1 <= 180 and
             self.right_elbow  and 160 <= self.right_elbow <= 180 and 
@@ -564,26 +561,25 @@ class dhanurasana:
             self.head_position and self.head_position == "Right")
         
         if correct:
+            self.r_r_count = 0
+            voice_list = ["good ,stay in same position ,wait for other instruction","very good , back to sleep position"]
 
-            if self.r_r_count == 0:
+            if self.r_r_count  < len(voice_list):
 
                 self.all_methods.reset_voice()
-                self.all_methods.play_voice(["you done yoga pose perfect","stay in same position","wait for other instruction"],llist=llist)
-                if not self.voice.isVoicePlaying:
+                trigger = self.all_methods.play_voice([voice_list[self.r_r_count]],llist=llist)
+                if trigger:
                     self.r_r_count += 1
-
-            elif self.r_r_count == 1:
-
-                self.all_methods.reset_voice()
-                self.all_methods.play_voice(["back to sleep position"],llist=llist)
-                # self.r_r_count = 1
+            else:
+                self.r_r_count = 1
 
         elif  ((0 <= self.right_shoulder_hip <= 15) and (0 <= self.right_hip_knee <= 15)):
 
             self.all_methods.reset_voice()
-            self.all_methods.play_voice(["you are in final position"],llist=llist)
-            self.pose_completed = True
-            return True
+            final = self.all_methods.play_voice(["you completed your yoga back to relax"],llist=llist)
+            if final:
+                self.pose_completed = True
+                return True
         
 
     def left_side_reverse_to_sleep(self,frames,llist,height,width):
@@ -604,26 +600,25 @@ class dhanurasana:
             self.head_position and self.head_position == "Left")
         
         if correct:
-
-            if self.l_r_count == 0:
+            voice_list = ["good , stay in same position,wait for other instruction"," very good , back to sleep position"]
+            self.l_r_count = 0
+            if self.l_r_count  < len(voice_list):
 
                 self.all_methods.reset_voice()
-                self.all_methods.play_voice(["you done yoga pose perfect","stay in same position","wait for other instruction"],llist=llist)
-                if not self.voice.isVoicePlaying:
+                trigger = self.all_methods.play_voice([voice_list[self.l_r_count]],llist=llist)
+                if trigger:
                     self.l_r_count += 1
 
-            elif self.l_r_count == 1:
-
-                self.all_methods.reset_voice()
-                self.all_methods.play_voice(["back to sleep position"],llist=llist)
-                # self.l_r_count = 1
+            else:
+                self.l_r_count = 1
 
         elif  ((0 <= self.right_shoulder_hip <= 15) and (0 <= self.right_hip_knee <= 15)):
 
             self.all_methods.reset_voice()
-            self.all_methods.play_voice(["you are in final position"],llist=llist)
-            self.pose_completed = True
-            return True
+            final = self.all_methods.play_voice(["you completed your yoga get relax"],llist=llist)
+            if final:
+                self.pose_completed = True
+                return True
         
 
     def right_dhanurasana_name(self,frames):  

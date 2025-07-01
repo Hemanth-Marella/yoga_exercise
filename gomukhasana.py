@@ -11,9 +11,10 @@ from voiceModule import VoicePlay
 from allMethods import allmethods
 from face_detect import HeadPoseEstimator
 # from body_position import bodyPosition
+from abstract_class import yoga_exercise
 
 
-class gomukhasana:
+class gomukhasana(yoga_exercise):
     
     def __init__(self,mode = False,mindetectconf=0.5,mintrcackconf=0.5):
         # c += 1
@@ -141,13 +142,6 @@ class gomukhasana:
         self.left_shoulder_hip_slope = self.all_methods.slope(frames=frames,lmlist=lmlist,point1=11,point2=23,height=height,width=width,draw=True)
         self.right_shoulder_hip_slope = self.all_methods.slope(frames=frames,lmlist=lmlist,point1=12,point2=24,height=height,width=width,draw=True)
 
-        # cv.putText(frames,f'left_shoulder_elbow=>{str(self.left_shoulder_elbow_slope)}',(40,50),cv.FONT_HERSHEY_PLAIN,2,(0,0,255),2)
-        # cv.putText(frames,f'right_shoulder_elbow=>{str(self.right_shoulder_elbow_slope)}',(40,90),cv.FONT_HERSHEY_PLAIN,2,(0,0,255),2)
-        # cv.putText(frames,f'left_knee_ankle=>{str(self.left_knee_ankle_slope)}',(40,130),cv.FONT_HERSHEY_PLAIN,2,(0,0,255),2)
-        # cv.putText(frames,f'right_knee_ankle=>{str(self.right_knee_ankle_slope)}',(40,170),cv.FONT_HERSHEY_PLAIN,2,(0,0,255),2)
-        # cv.putText(frames,f'left_shoulder_hip=>{str(self.left_shoulder_hip_slope)}',(40,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,255),2)
-        # cv.putText(frames,f'right_shoulder_hip=>{str(self.right_shoulder_hip_slope)}',(40,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,255),2)
-        
         return self.left_shoulder_elbow_slope, self.right_shoulder_elbow_slope,self.left_knee_ankle_slope,self.right_knee_ankle_slope,self.left_shoulder_hip_slope,self.right_shoulder_hip_slope
     
     def wrong_gomukhasana(self,frames,llist,height,width): 
@@ -160,10 +154,6 @@ class gomukhasana:
         if not self.left_knee and not self.right_knee and not  self.left_shoulder and not self.right_shoulder and not self.left_shoulder_elbow_slope and not self.right_shoulder_elbow_slope and  not self.left_shoulder_hip_slope and not self.right_shoulder_hip_slope and not self.left_knee_ankle_slope and not self.right_knee_ankle_slope and not self.head_position :
             
             return None
-        
-        # sitting_position = self.all_methods.is_person_standing_sitting(frames=frames,llist=llist,leg_points=(23,25,27),hip_points=(11,23,25),elbow_points=(11,13,15),height=height,width=width)
-
-        #check person is sitting or not
 
         sitting_position = self.all_methods.is_person_standing_sitting(frames=frames,llist=llist,leg_points=(23,25,27),hip_points=(11,23,25),elbow_points=(11,13,15),height=height,width=width)
 
@@ -204,8 +194,6 @@ class gomukhasana:
             
                 if not self.initial_position and 160 <= self.left_knee <= 180 and 160 <= self.right_knee <= 180:
 
-                    self.all_methods.reset_voice()
-                    self.all_methods.play_voice(["you are in initial position","start gomukhasana"], llist=llist)
                     self.initial_position = True
 
                 elif not self.initial_position and 0 <= self.left_knee <= 159 and 0 <= self.right_knee <= 159:
@@ -216,17 +204,16 @@ class gomukhasana:
                     
                     if 160 <= self.left_knee <= 180 and 160 <= self.right_knee <= 180:
 
-                        if self.count == 0:
+                        voice_list = ["you are in initial position , start gomukhasana","keep your left foot under right thigh"]
+
+                        if self.count < len(voice_list):
 
                             self.all_methods.reset_voice()
-                            self.all_methods.play_voice(["you are in initial position","start gomukhasana"], llist=llist)
-                            if not self.voice.isVoicePlaying:
+                            trigger = self.all_methods.play_voice([voice_list[self.count]], llist=llist)
+                            if trigger:
                                 self.count += 1
 
-                        elif self.count == 1:
-                            self.all_methods.reset_voice()
-                            self.all_methods.play_voice(["keep your left leg under right thigh and fold left leg"], llist=llist)
-
+                        else:
                             self.count = 1
 
                     else:
@@ -401,8 +388,19 @@ class gomukhasana:
                    )
         
         if reverse_correct:
-            self.all_methods.reset_voice()
-            self.all_methods.play_voice(["you completed your yoga pose corrected","relax from position keep your legs straight"],llist=llist)
+
+            self.forward_count = 0
+
+            voice_list = ["good , stay in same position , wait for other instruction","very good keep your legs straight"]
+
+            if self.forward_count < len(voice_list):
+                self.all_methods.reset_voice()
+                trigger = self.all_methods.play_voice([],llist=llist)
+                if trigger:
+                    self.forward_count += 1
+
+            else:
+                self.forward_count = 1
 
         elif not self.pose_completed and 0 <= self.left_knee <= 159 and 0<= self.right_knee <= 159:
 
@@ -411,9 +409,10 @@ class gomukhasana:
 
         elif not self.pose_completed and 160 <= self.left_knee <= 180 and 160 <= self.right_knee <= 180:
             self.all_methods.reset_voice()
-            self.pose_completed = True
-            return True
-
+            final = self.all_methods.play_after_40_sec(["good job you completed your yoga and back to relax"],llist=llist)
+            if final:
+                self.pose_completed = True
+                return True
 
 def main():
     video_capture = cv.VideoCapture(0)

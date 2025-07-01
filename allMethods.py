@@ -301,11 +301,6 @@ class allmethods:
         hip_points,points_hip = self.calculate_angle(frames=frames,lmList=llist,points=hip_points)
         leg_points,points_leg = self.calculate_angle(frames=frames,lmList=llist,points=leg_points)
         elbow_points,point_elbow = self.calculate_angle(frames=frames,lmList=llist,points=elbow_points)
-
-        # cv.putText(frames, f"hip: {hip_points}", (10, 50),cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
-        # cv.putText(frames, f"leg: {leg_points}", (10, 100),cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
-        # cv.putText(frames, f"elbow: {elbow_points}", (10, 150),cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
-
         
         if hip_points is None and leg_points is None and elbow_points is None:
             return None
@@ -344,9 +339,6 @@ class allmethods:
 
             else:
                 position = "sitting"
-
-            # cv.putText(frames, f"Position: {position}", (10, 100),
-            #                 cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
         
             return position
         return False
@@ -419,12 +411,6 @@ class allmethods:
 
                 elif 0 < z_diff < 0.1:
                     position = "forward"
-
-                # cv.putText(frames, f"Position: {position}", (10, 100),
-                            # cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
-                
-                # cv.putText(frames, f"diff: {z_diff}", (10, 50),
-                            # cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
                 
             elif self.check_stand == "sleeping":
 
@@ -510,12 +496,12 @@ class allmethods:
             self.counter += 1
             # print(self.counter)
            
-        if self.counter > 30:
+        if self.counter > 31:
             self.voice.playAudio([message],play=True)
             self.counter = 0
             return True
             
-        return self.counter
+        return False
     
 
     #this reset after every 40 sec

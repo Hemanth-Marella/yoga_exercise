@@ -10,8 +10,9 @@ from allMethods import allmethods
 from face_detect import HeadPoseEstimator
 from voiceModule import VoicePlay
 from body_position import bodyPosition
+from abstract_class import yoga_exercise
 
-class vajrasana:
+class vajrasana(yoga_exercise):
      
     def __init__(self,mode = False,mindetectconf=0.5,mintrcackconf=0.5):
         self.mode = mode
@@ -158,8 +159,6 @@ class vajrasana:
         self.all_methods.all_x_values(frames=frames,llist=llist)
         self.all_methods.all_y_values(frames=frames,llist=llist)
 
-        count = 0
-
         if not self.left_hip and not self.left_elbow and not self.left_knee and not self.left_shoulder and not self.right_knee1 and not self.left_shoulder and not self.under_leg_slope:
             return
             
@@ -178,7 +177,6 @@ class vajrasana:
         check_right_hand = (self.all_methods.l_hip_x > self.all_methods.r_elbow_x and 
                       self.all_methods.l_hip_x > self.all_methods.r_wrist_x)
                       
-        
         if not self.left_count and check_initial_position and check_left_knee and check_right_knee:
 
             self.left_count = True
@@ -196,9 +194,6 @@ class vajrasana:
         
         elif not self.initial_position and not check_initial_position:
 
-            self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["you are not in initial position , keep straight your legs which side you are in"],llist=llist)
-            # self.initial_position 
             return
         
 
@@ -206,26 +201,26 @@ class vajrasana:
                     
                 if (self.left_knee and 160 <= self.left_knee <= 180 and
                         self.right_knee1 and 160 <= self.right_knee1 <= 180):
+                    self.l_count = 0
+                    
+                    voice_list = ["you are in initial position and start vajrasana ,","fold your left leg back and sit on that leg"]
                 
-                    if self.l_count == 0 :
+                    if self.l_count < len(voice_list) :
                     
                         self.all_methods.reset_after_40_sec()
-                        self.all_methods.play_after_40_sec(["you are in initial position and start vajrasana ,"],llist=llist)
-                        if not self.voice.isVoicePlaying:
+                        trigger = self.all_methods.play_after_40_sec([voice_list[self.l_count]],llist=llist)
+                        if trigger:
                             self.l_count += 1
 
-                    elif self.l_count == 1:
-
-                        self.all_methods.reset_after_40_sec()
-                        self.all_methods.play_after_40_sec(["fold your left leg back and sit on that leg"])
-                        # self.l_count = 1
+                    else:
+                        self.l_count = 1
 
                 else:
                         # STEP 2: Check left knee position
                         if self.left_knee:
                             if  (80 <= self.left_knee <= 159 and check_left_knee):
                                 self.all_methods.reset_after_40_sec()
-                                self.all_methods.play_after_40_sec(["please fold your left leg back and sit on that leg,, like in reference video"], llist=llist)
+                                self.all_methods.play_after_40_sec(["please fold your left leg back and sit on that leg"], llist=llist)
                                 return
                             
                             elif not check_left_knee:
@@ -370,21 +365,20 @@ class vajrasana:
 
             if (self.left_knee1 and 160 <= self.left_knee1 <= 180 and
                     self.right_knee and 160 <= self.right_knee <= 180):
-
-                if self.r_count == 0:
+                self.r_count = 0
+                
+                voice_list = ["you are in initial position and start vajrasana" ,"fold your right leg back and sit on that",]
+                if self.r_count < len(voice_list):
 
                     self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["you are in initial position and start vajrasana ,and keep your right leg back"], llist=llist)
-                    if not self.voice.isVoicePlaying:
+                    trigger = self.all_methods.play_after_40_sec([voice_list[self.r_count]], llist=llist)
+                    if trigger:
                         self.r_count += 1
 
-                elif self.r_count == 1:
-
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["fold your right leg back and sit on that"], llist=llist)
-                    # self.r_count = 1
-                    
                 else:
+                    self.r_count = 1
+                    
+            else:
                         # STEP 2: Check left knee position
                         if self.right_knee:
                             if  (80 <= self.right_knee <= 159 and check_right_knee):
@@ -449,7 +443,6 @@ class vajrasana:
                                                 self.all_methods.reset_after_40_sec()
                                                 self.all_methods.play_after_40_sec(["your left hand is in back side , please keep your left hand forward"],llist=llist)
                                         
-                                        
                                             else:
 
                                                 # STEP 5: Shoulder position
@@ -489,27 +482,18 @@ class vajrasana:
                                                                 else:
                                                                     return True
 
-
-
     def check_sitting(self,frames,llist,height,width):
 
         sitting_position = self.all_methods.is_person_standing_sitting(frames=frames,llist=llist,leg_points=(23,25,27),hip_points=(11,23,25),elbow_points=(11,13,15),height=height,width=width)
 
         if sitting_position == "sitting":
-            self.ind = 0
             return True
 
         elif sitting_position != "sitting":
-            # voice_list = ["please be in sitting position this yoga may started in sitting position","please be happy"]
-            # print(len(vclsoice_list))
-            
-            # for i in range(len(voice_list)):
-            # if self.ind < len(voice_list):
 
-                self.all_methods.reset_after_40_sec()
-                self.all_methods.play_after_40_sec(["please be in sitting position this yoga may started in sitting position"],llist=llist)
-                
-
+            self.all_methods.reset_after_40_sec()
+            self.all_methods.play_after_40_sec(["please be in sitting position this yoga may started in sitting position"],llist=llist)
+            return False
        
     def check_side_view(self,frames,llist,height,width,left_knee_angle,right_knee_angle):
 
@@ -534,12 +518,8 @@ class vajrasana:
 
     def left_reverse_to_strating_position(self,frames,llist):
 
-        # count = 0
-
         if not self.right_knee1 and not self.left_knee:
             return 
-
-        # if self.check_sitting == "sitting":
 
         check_last_before_position = (self.right_knee1 and 0 <= self.right_knee1 <= 30 and  
             self.left_knee and 0 <= self.left_knee <= 30 )
@@ -550,7 +530,7 @@ class vajrasana:
         if check_last_before_position:
             self.ind = 0
 
-            voice_list = ["good job you complete perfectly, wait for one more instruction"," get relax , keep your left leg straight on which side your are in"]
+            voice_list = ["good , stay in same position ,wait for one more instruction","very good keep your left leg straight which side you are in"]
 
             if self.ind < len(voice_list):
                 self.all_methods.reset_after_40_sec()
@@ -576,18 +556,16 @@ class vajrasana:
         
         elif check_last_position:
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["you are in final position and please be in standing position"],llist=llist)
-            self.pose_completed = True
-            
-            return True
+            final = self.all_methods.play_after_40_sec(["good job , your yoga is completed back to relax position"],llist=llist)
+            if final:
+                self.pose_completed = True
+                
+                return True
         
-    
     def right_reverse_to_strating_position(self,frames,llist):
 
         if not self.right_knee and not self.left_knee1:
             return 
-
-        # if self.check_sitting == "sitting":
 
         check_last_before_position = (self.right_knee and 0 <= self.right_knee <= 30 and  
             self.left_knee1 and 0 <= self.left_knee1 <= 30 )
@@ -597,7 +575,7 @@ class vajrasana:
         
         if check_last_before_position:
             self.ind = 0
-            voice_list = ["good job you complete perfectly, wait for one more instruction"," get relax , keep your legs straight on which side your are in"]
+            voice_list = ["good, stay in same position , wait for one more instruction","very good keep your legs straight on which side your are in"]
             if self.ind < len(voice_list):
                 self.all_methods.reset_after_40_sec()
                 trigger = self.all_methods.play_after_40_sec([voice_list[self.ind]],llist=llist)
@@ -606,11 +584,10 @@ class vajrasana:
 
             else:
                 self.ind = 1
-                
 
         elif ((31 <= self.right_knee <= 159) and (31<= self.left_knee1 <= 159)):
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["keep your legs straight on right side"],llist=llist)
+            self.all_methods.play_after_40_sec(["keep your right legs straight on right side"],llist=llist)
             # return False
 
         elif (31 <= self.right_knee <= 159):
@@ -620,16 +597,13 @@ class vajrasana:
         elif (31 <= self.left_knee1 <= 159):
             self.all_methods.reset_after_40_sec()
             self.all_methods.play_after_40_sec(["keep your left leg straight on right side"],llist=llist)
-
  
         elif check_last_position:
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["you are in final position and please be in standing position"],llist=llist)
-            self.pose_completed = True
-            # return False
-
-            return True
-
+            final = self.all_methods.play_after_40_sec(["good job , your yoga is completed and get relax"],llist=llist)
+            if final:    
+                self.pose_completed = True
+                return True
         
     def left_vajrasana_name(self,frames): 
 
@@ -642,7 +616,6 @@ class vajrasana:
                       self.all_methods.l_hip_x > self.all_methods.l_wrist_x)
         check_right_hand = (self.all_methods.l_hip_x > self.all_methods.r_elbow_x and 
                       self.all_methods.l_hip_x > self.all_methods.r_wrist_x)
-                
 
         correct =(
             self.left_shoulder and 27 <= self.left_shoulder <= 40 and
@@ -759,8 +732,6 @@ def main():
             ref_frame = cv.resize(ref_frame, (400, 300))
             h, w, _ = ref_frame.shape
             frames[0:h, 0:w] = ref_frame  # Overlay in corner
-        # img = cv.imread("images/image1.webp")
-        # resized_img = cv.resize(img, None, fx=3.0, fy=3.0, interpolation=cv.INTER_LINEAR)
         
         if not flag:
 
@@ -770,19 +741,15 @@ def main():
             sitting_detect = detect.check_sitting(frames=frames,llist=llist,height=height,width=width)
             
             if sitting_detect:
-
                 side_view = detect.check_side_view(frames=frames,llist=llist,height=height,width=width,left_knee_angle=(23,25,27),right_knee_angle=(24,26,28))
-
                 if side_view == "left":
                     detect.left_vajrasana(frames=frames,llist=llist,elbow=(11,13,15), hip=(11,23,25), knee=(23,25,27), shoulder=(13,11,23),right_knee1=(24,26,28),right_elbow=(12,14,16),draw=False)
-                    # wrong_left = detect.wrong_vajrasana_left(frames=frames,llist=llist,height=height,width=width)
                     if not checking_wrong:
                         wrong_left = detect.wrong_vajrasana_left(frames=frames,llist=llist,height=height,width=width)
                         if wrong_left:
                             checking_wrong = True
                     
                     if checking_wrong:
-                        # correct = detect.left_vajrasana_name(frames=frames)
                         if not ready_for_exercise and not flag:
                             correct = detect.left_vajrasana_name(frames=frames)
                             if correct:
@@ -791,7 +758,6 @@ def main():
 
                     if reverse_yoga  and not flag:
                         left_reverse = detect.left_reverse_to_strating_position(frames=frames,llist=llist)
-                        # ready_for_exercise = False
                         if left_reverse:
                             flag = True
             
@@ -799,8 +765,7 @@ def main():
                 #Right Side
                 elif side_view == "right":
                     detect.right_vajrasana(frames=frames,llist=llist,elbow=(12,14,16), hip=(12,24,26),knee= (24,26,28), shoulder=(14,12,24),left_knee1=(23,25,27),left_elbow=(11,13,15),draw=False)                        
-                    
-                    # correct = detect.right_vajrasana_name(frames=frames)
+
                     if not checking_wrong:
                         wrong_right = detect.wront_right_vajrasana(frames=frames,llist=llist,height=height,width=width)
                         if wrong_right:
@@ -817,11 +782,7 @@ def main():
                             right_reverse = detect.right_reverse_to_strating_position(frames=frames,llist=llist)
                             if right_reverse:
                                 flag = True
-                    
-        # elif flag:
-        #     cv.putText(frames, "Exercise Completed", (50, 100), cv.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3)
-            
-                        
+
         cv.imshow("video",frames)
 
         if cv.waitKey(10) & 0xFF == ord('d'):
