@@ -166,10 +166,6 @@ class dhanurasana(yoga_exercise):
         check_left_knee = (self.all_methods.l_hip_x > self.all_methods.l_knee_x)
         check_right_knee = (self.all_methods.l_hip_x > self.all_methods.r_knee_x)
 
-        #check hands is in forward side
-
-        # hip = max(self.all_methods.l_hip_x,self.all_methods.r_hip_x)
-        # shoulder = max(self.all_methods.l_shoulder_x,self.all_methods.l_shoulder_x)
         hip = (self.all_methods.l_hip_x)
         shoulder = (self.all_methods.l_shoulder_x)
         middle_hip_shoulder = (hip + shoulder) // 2
@@ -224,7 +220,7 @@ class dhanurasana(yoga_exercise):
                     voice_list = ["you are in initial position, start dhanurasana","bend back your hip and hold your legs"]
 
                     if ((0 <= self.right_shoulder_hip <= 15) and (0 <= self.right_hip_knee <= 15)):
-                        self.l_count = 0
+                        # self.l_count = 0
 
                         if self.l_count < len(voice_list):
                             self.all_methods.reset_after_40_sec()
@@ -410,7 +406,7 @@ class dhanurasana(yoga_exercise):
 
                     if ((0 <= self.right_shoulder_hip <= 15) and (0 <= self.right_hip_knee <= 15)):
                         voice_list = ["you are in initial position, start dhanurasana","please bend back your hip"]
-                        self.r_count = 0
+                        # self.r_count = 0
 
                         if self.r_count < len(voice_list) :
                             self.all_methods.reset_after_40_sec()
@@ -561,7 +557,7 @@ class dhanurasana(yoga_exercise):
             self.head_position and self.head_position == "Right")
         
         if correct:
-            self.r_r_count = 0
+            # self.r_r_count = 0
             voice_list = ["good ,stay in same position ,wait for other instruction","very good , back to sleep position"]
 
             if self.r_r_count  < len(voice_list):
@@ -601,7 +597,7 @@ class dhanurasana(yoga_exercise):
         
         if correct:
             voice_list = ["good , stay in same position,wait for other instruction"," very good , back to sleep position"]
-            self.l_r_count = 0
+            # self.l_r_count = 0
             if self.l_r_count  < len(voice_list):
 
                 self.all_methods.reset_voice()

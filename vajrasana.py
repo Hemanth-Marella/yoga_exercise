@@ -92,12 +92,7 @@ class vajrasana(yoga_exercise):
         self.head_position = self.head_pose_estimator.head_position_detect(frames=frames,llist=llist)
         if self.head_position is None or self.left_ear is None or self.right_ear is None or self.head is None:
             return 
-        
-        # self.left_wrist_y = llist[15][2]
-        # self.left_knee_y = llist[25][2]
-        # self.left_knee_min_y = self.left_knee_y - 80
-        # self.ground_left = self.all_methods.ground_distance_left(frames=frames,lmlist=llist)
-        # self.ground_left_min = self.ground_left - 50
+
         
         self.left_elbow, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=elbow,lmList=llist)
         self.left_hip, hip_coords = self.all_methods.calculate_angle(frames=frames,points= hip,lmList=llist)
@@ -201,9 +196,9 @@ class vajrasana(yoga_exercise):
                     
                 if (self.left_knee and 160 <= self.left_knee <= 180 and
                         self.right_knee1 and 160 <= self.right_knee1 <= 180):
-                    self.l_count = 0
+                    # self.l_count = 0
                     
-                    voice_list = ["you are in initial position and start vajrasana ,","fold your left leg back and sit on that leg"]
+                    voice_list = ["you are in initial position and start vajrasana ","fold your left leg back and sit on that leg"]
                 
                     if self.l_count < len(voice_list) :
                     
@@ -365,7 +360,7 @@ class vajrasana(yoga_exercise):
 
             if (self.left_knee1 and 160 <= self.left_knee1 <= 180 and
                     self.right_knee and 160 <= self.right_knee <= 180):
-                self.r_count = 0
+                # self.r_count = 0
                 
                 voice_list = ["you are in initial position and start vajrasana" ,"fold your right leg back and sit on that",]
                 if self.r_count < len(voice_list):
@@ -528,7 +523,7 @@ class vajrasana(yoga_exercise):
                 self.right_knee1 and 160 <= self.right_knee1 <= 180)
         
         if check_last_before_position:
-            self.ind = 0
+            # self.ind = 0
 
             voice_list = ["good , stay in same position ,wait for one more instruction","very good keep your left leg straight which side you are in"]
 
@@ -574,7 +569,7 @@ class vajrasana(yoga_exercise):
                 self.right_knee and 160 <= self.right_knee <= 180)
         
         if check_last_before_position:
-            self.ind = 0
+            # self.ind = 0
             voice_list = ["good, stay in same position , wait for one more instruction","very good keep your legs straight on which side your are in"]
             if self.ind < len(voice_list):
                 self.all_methods.reset_after_40_sec()

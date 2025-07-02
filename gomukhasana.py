@@ -163,8 +163,8 @@ class gomukhasana(yoga_exercise):
             # return True
 
         elif not self.check_sitting and sitting_position != "sitting":
-            self.all_methods.reset_voice()
-            self.all_methods.play_voice(["please be in sitting position","   ","this yoga may started in sitting position"],llist=llist)
+            self.all_methods.reset_after_40_sec()
+            self.all_methods.play_after_40_sec(["please be in sitting position","   ","this yoga may started in sitting position"],llist=llist)
             return False
 
 
@@ -174,17 +174,16 @@ class gomukhasana(yoga_exercise):
             if not self.check_body_turn:
 
                 side_view = self.all_methods.standing_side_view_detect(frames=frames,llist=llist,height=height,width=width)
-
+                voice_list = ["you are in left side please turn forward","keep your legs straight"]
                 if side_view == "right":
-                    self.all_methods.reset_voice()
-                    self.all_methods.play_voice(["you are in right side please turn forward","keep your legs straight"],llist=llist)
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["you are in right side please turn forward","keep your legs straight"],llist=llist)
                     return False
 
                 elif side_view == "left":
-                    self.all_methods.reset_voice()
-                    self.all_methods.play_voice(["you are in left side please turn forward","keep your legs straight"],llist=llist)
-                    return False
-                
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["you are in left side please turn forward","keep your legs straight"],llist=llist)
+
                 elif side_view == "forward":
                     self.check_body_turn = True
 
@@ -197,19 +196,19 @@ class gomukhasana(yoga_exercise):
                     self.initial_position = True
 
                 elif not self.initial_position and 0 <= self.left_knee <= 159 and 0 <= self.right_knee <= 159:
-                    self.all_methods.reset_voice()
-                    self.all_methods.play_voice(["you are not in initial position","keep your legs straight"], llist=llist)
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["you are not in initial position","keep your legs straight"], llist=llist)
 
                 if self.initial_position:
                     
                     if 160 <= self.left_knee <= 180 and 160 <= self.right_knee <= 180:
 
-                        voice_list = ["you are in initial position , start gomukhasana","keep your left foot under right thigh"]
+                        voice_list = ["you are in initial position , start gomukhasana","please keep your left foot under right thigh"]
 
                         if self.count < len(voice_list):
 
-                            self.all_methods.reset_voice()
-                            trigger = self.all_methods.play_voice([voice_list[self.count]], llist=llist)
+                            self.all_methods.reset_after_40_sec()
+                            trigger = self.all_methods.play_after_40_sec([voice_list[self.count]], llist=llist)
                             if trigger:
                                 self.count += 1
 
@@ -220,135 +219,93 @@ class gomukhasana(yoga_exercise):
                         
                         # LEFT KNEE
                         if (self.left_knee and (self.left_knee and 0 <= self.left_knee <= 49)):
-                            self.all_methods.reset_voice()
-                            self.all_methods.play_voice(["Gently move your left leg outward."], llist=llist)
+                            self.all_methods.reset_after_40_sec()
+                            self.all_methods.play_after_40_sec(["Gently move your left leg outward."], llist=llist)
                             first_pose = True
 
                         elif (self.left_knee and (self.left_knee and 101 <= self.left_knee <= 180)):
-                            self.all_methods.reset_voice()
-                            self.all_methods.play_voice(["Bend your left knee and place your left foot under your right thigh"], llist=llist)
+                            self.all_methods.reset_after_40_sec()
+                            self.all_methods.play_after_40_sec(["Bend your left knee and place your left foot under your right thigh"], llist=llist)
                             first_pose = True
                                 
                         else:
 
                             # RIGHT KNEE
                             if self.right_knee and 0 <= self.right_knee <= 80:
-                                self.all_methods.reset_voice()
-                                self.all_methods.play_voice(["gently move your right leg outward slight"], llist=llist)
+                                self.all_methods.reset_after_40_sec()
+                                self.all_methods.play_after_40_sec(["gently move your right leg outward slight"], llist=llist)
 
                             elif self.right_knee and 151 <= self.right_knee <= 180:
-                                self.all_methods.reset_voice()
-                                self.all_methods.play_voice(["Bend your right knee and place on top of your left knee"], llist=llist)
+                                self.all_methods.reset_after_40_sec()
+                                self.all_methods.play_after_40_sec(["Bend your right knee and place on top of your left knee"], llist=llist)
                             
                             else:
 
                                 # LEFT SHOULDER
                                 if self.left_shoulder and 0 <= self.left_shoulder <= 9:
-                                    self.all_methods.reset_voice()
-                                    self.all_methods.play_voice(["please move your left side chest part and shoulder and hold your right hand"], llist=llist)
+                                    self.all_methods.reset_after_40_sec()
+                                    self.all_methods.play_after_40_sec(["please move your left side chest part and shoulder and hold your right hand"], llist=llist)
 
 
                                 elif self.left_shoulder and 31 <= self.left_shoulder <= 180:
-                                    self.all_methods.reset_voice()
-                                    self.all_methods.play_voice(["gently move your left side chest inward and hold your right hand"],llist=llist)
+                                    self.all_methods.reset_after_40_sec()
+                                    self.all_methods.play_after_40_sec(["gently move your left side chest inward and hold your right hand"],llist=llist)
 
                                 else:
 
                                     # RIGHT SHOULDER
                                     if self.right_shoulder and 0 <= self.right_shoulder <= 149:
-                                        self.all_methods.reset_voice()
-                                        self.all_methods.play_voice(["please raise your right hand and hold your left hand"], llist=llist)
+                                        self.all_methods.reset_after_40_sec()
+                                        self.all_methods.play_after_40_sec(["please raise your right hand and hold your left hand"], llist=llist)
                                             
                                     else:
                             
                                         # RIGHT SHOULDER-ELBOW SLOPE
                                         if self.right_shoulder_elbow_slope and 0 <= self.right_shoulder_elbow_slope <= 69:
-                                            self.all_methods.reset_voice()
-                                            self.all_methods.play_voice(["please keep your right hand in back side hold your left hand with right hand"], llist=llist)
+                                            self.all_methods.reset_after_40_sec()
+                                            self.all_methods.play_after_40_sec(["please keep your right hand in back side hold your left hand with right hand"], llist=llist)
                                                 
                                         else:
 
                                             # LEFT SHOULDER-ELBOW SLOPE
                                             if self.left_shoulder_elbow_slope and 0 <= self.left_shoulder_elbow_slope <= 69:
-                                                self.all_methods.reset_voice()
-                                                self.all_methods.play_voice(["please keep your left hand in back side and hold your right hand"], llist=llist)
+                                                self.all_methods.reset_after_40_sec()
+                                                self.all_methods.play_after_40_sec(["please keep your left hand in back side and hold your right hand"], llist=llist)
                                                 
                                             else:
 
                                                 # LEFT SHOULDER-HIP SLOPE
                                                 if self.left_shoulder_hip_slope and 0 <= self.left_shoulder_hip_slope <= 74:
-                                                    self.all_methods.reset_voice()
-                                                    self.all_methods.play_voice(["maintain upper body straight"], llist=llist)     
+                                                    self.all_methods.reset_after_40_sec()
+                                                    self.all_methods.play_after_40_sec(["maintain upper body straight"], llist=llist)     
                                                         
                                                 else:
                                                     # RIGHT SHOULDER-HIP SLOPE
                                                     if self.right_shoulder_hip_slope and 0 <= self.right_shoulder_hip_slope <= 74:
-                                                        self.all_methods.reset_voice()
-                                                        self.all_methods.play_voice(["keep your upper body straight"], llist=llist)
+                                                        self.all_methods.reset_after_40_sec()
+                                                        self.all_methods.play_after_40_sec(["keep your upper body straight"], llist=llist)
                                                             
                                                     else:
                                                         # RIGHT KNEE-ANKLE SLOPE
                                                         if self.right_knee_ankle_slope and 61 <= self.right_knee_ankle_slope <= 90:
-                                                            self.all_methods.reset_voice()
-                                                            self.all_methods.play_voice(["please gently move your right leg inwards"], llist=llist)
+                                                            self.all_methods.reset_after_40_sec()
+                                                            self.all_methods.play_after_40_sec(["please gently move your right leg inwards"], llist=llist)
                                                                 
                                                         else:
                                                             # LEFT KNEE-ANKLE SLOPE
                                                             if self.left_knee_ankle_slope and 61 <= self.left_knee_ankle_slope <= 90:
-                                                                self.all_methods.reset_voice()
-                                                                self.all_methods.play_voice(["please gently move your left leg inwards"], llist=llist)   
+                                                                self.all_methods.reset_after_40_sec()
+                                                                self.all_methods.play_after_40_sec(["please gently move your left leg inwards"], llist=llist)   
 
                                                             else:
                                                                 # HEAD POSITION
                                                                 if self.head_position and self.head_position != "Forward":
-                                                                    self.all_methods.reset_voice()
-                                                                    self.all_methods.play_voice(["you should face your head to camera side"], llist=llist)
+                                                                    self.all_methods.reset_after_40_sec()
+                                                                    self.all_methods.play_after_40_sec(["you should face your head to camera side"], llist=llist)
 
                                                                 else:
                                                                     return True
 
-    # def check_sitting(self,frames,llist,height,width):
-
-    #     sitting_position = self.all_methods.is_person_standing_sitting(frames=frames,llist=llist,leg_points=(23,25,27),hip_points=(11,23,25),elbow_points=(11,13,15),height=height,width=width)
-
-    #     if sitting_position == "sitting":
-    #         return True
-
-    #     elif sitting_position != "sitting":
-    #         self.all_methods.reset_voice()
-    #         self.all_methods.play_voice(["please be in sitting position","   ","this yoga may started in sitting position"],llist=llist)
-    #         return False
-
-    # def check_side_view(self,frames,llist,height,width):
-
-    #     side_view = self.all_methods.standing_side_view_detect(frames=frames,llist=llist,height=height,width=width)
-
-    #     if side_view == "right":
-    #         self.all_methods.reset_voice()
-    #         self.all_methods.play_voice(["you are in right side please turn forward"],llist=llist)
-    #         return False
-
-    #     if side_view == "left":
-    #         self.all_methods.reset_voice()
-    #         self.all_methods.play_voice(["you are in left side please turn forward"],llist=llist)
-    #         return False
-        
-    #     if side_view == "forward":
-
-    #         if self.forward_count == 0:
-    #             self.all_methods.reset_voice()
-    #             self.all_methods.play_voice(["start gomukhasana"],llist=llist)
-    #             self.forward_count += 1
-    #             return False
-            
-    #         elif self.forward_count == 2:
-    #             self.all_methods.reset_voice()
-    #             self.all_methods.play_voice(["start yoga"],llist=llist)
-                
-    #             return False
-
-    #         return "forward"
-    #     return False
 
     def gomukhasana_name(self,frames):
 
@@ -367,8 +324,8 @@ class gomukhasana(yoga_exercise):
                    )
             
             if correct:
-                self.all_methods.reset_voice()
-                self.all_methods.play_voice(["you completed your yoga pose corrected"],llist=llist)
+                self.all_methods.reset_after_40_sec()
+                self.all_methods.play_after_40_sec(["you completed your yoga pose corrected"],llist=llist)
                 return True
 
     def reverse_gomukhasana(self,frames,llist):
@@ -389,13 +346,13 @@ class gomukhasana(yoga_exercise):
         
         if reverse_correct:
 
-            self.forward_count = 0
+            # self.forward_count = 0
 
             voice_list = ["good , stay in same position , wait for other instruction","very good keep your legs straight"]
 
             if self.forward_count < len(voice_list):
-                self.all_methods.reset_voice()
-                trigger = self.all_methods.play_voice([],llist=llist)
+                self.all_methods.reset_after_40_sec()
+                trigger = self.all_methods.play_after_40_sec([],llist=llist)
                 if trigger:
                     self.forward_count += 1
 
@@ -404,11 +361,11 @@ class gomukhasana(yoga_exercise):
 
         elif not self.pose_completed and 0 <= self.left_knee <= 159 and 0<= self.right_knee <= 159:
 
-            self.all_methods.reset_voice()
-            self.all_methods.play_voice(["please keep your legs straight"],llist=llist)
+            self.all_methods.reset_after_40_sec()
+            self.all_methods.play_after_40_sec(["please keep your legs straight"],llist=llist)
 
         elif not self.pose_completed and 160 <= self.left_knee <= 180 and 160 <= self.right_knee <= 180:
-            self.all_methods.reset_voice()
+            self.all_methods.reset_after_40_sec()
             final = self.all_methods.play_after_40_sec(["good job you completed your yoga and back to relax"],llist=llist)
             if final:
                 self.pose_completed = True

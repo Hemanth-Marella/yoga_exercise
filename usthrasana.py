@@ -195,7 +195,7 @@ class usthrasana(yoga_exercise):
             self.all_methods.play_after_40_sec(["you are not in initial position please stand on your knees"],llist=llist)
 
         if self.check_initial_position:
-            self.l_count = 0
+            # self.l_count = 0
 
             voice_list = ["you are in initial position start ushtrasana","bend your hip back and take hands support"]
 
@@ -369,7 +369,7 @@ class usthrasana(yoga_exercise):
             self.all_methods.play_after_40_sec(["you are not in initial position please stand on your knees"],llist=llist)
 
         if self.check_initial_position:
-            self.r_count = 0
+            # self.r_count = 0
             voice_list = ["you are in initial positionstart ushtrasana"," please bend back your hip and take hands support"]
 
             if stand_on_knee:
@@ -543,7 +543,7 @@ class usthrasana(yoga_exercise):
                          self.left_hip and 160 <= self.left_hip <= 180)
 
         if check_last_before_position:
-            self.l_r_count = 0
+            # self.l_r_count = 0
 
             voice_list = ["good,stay in same position , and wait for other instruction"," very good , back to stand on knee position"]
 
@@ -576,7 +576,7 @@ class usthrasana(yoga_exercise):
                 self.right_knee and 160 <= self.right_knee <= 180)
         
         if check_last_before_position:
-            self.r_r_count = 0
+            # self.r_r_count = 0
 
             voice_list = ["good","stay in same and wait for instruction"," very good , back to stand on knee position"]
 
