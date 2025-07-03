@@ -712,6 +712,7 @@ def main():
     while True:
 
         isTrue,frames = video_capture.read()
+        print(frames)
         height, width, _ =  frames.shape
         if not isTrue:
             print("Error: Couldn't read the frame")
