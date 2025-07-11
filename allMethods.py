@@ -591,7 +591,7 @@ class allmethods:
         self.l_shoulder_y = llist[11][2]
         self.r_shoulder_y = llist[12][2]
         self.r_toe_y = llist[32][2]
-        self.l_toe_x = llist[31][2]
+        self.l_toe_y = llist[31][2]
 
         return self.nose_y,self.l_hip_y,self.r_hip_y,self.l_knee_y,self.r_knee_y,self.l_ankle_y,self.r_ankle_y,self.l_elbow_y,self.r_elbow_y,self.l_wrist_y,self.r_wrist_y,self.l_shoulder_y,self.r_shoulder_y
 
@@ -614,7 +614,7 @@ class allmethods:
         self.l_shoulder_z = llist[11][3]
         self.r_shoulder_z = llist[12][3]
         self.r_toe_z = llist[32][3]
-        self.l_toe_x = llist[31][3]
+        self.l_toe_z = llist[31][3]
 
         return self.nose_z,self.l_hip_z,self.r_hip_z,self.l_knee_z,self.r_knee_z,self.l_ankle_z,self.r_ankle_z,self.l_elbow_z,self.r_elbow_z,self.l_wrist_z,self.r_wrist_z,self.l_shoulder_z,self.r_shoulder_z
 

@@ -346,8 +346,6 @@ class gomukhasana(yoga_exercise):
         
         if reverse_correct:
 
-            # self.forward_count = 0
-
             voice_list = ["good , stay in same position , wait for other instruction","very good keep your legs straight"]
 
             if self.forward_count < len(voice_list):

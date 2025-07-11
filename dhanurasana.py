@@ -342,7 +342,8 @@ class dhanurasana(yoga_exercise):
         left_shoulder_x,left_shoulder_y,left_shoulder_z = llist[11][1:]
         right_shoulder_x,right_shoulder_y,right_shoulder_z = llist[12][1:]
 
-        tolerance = abs(left_shoulder_z - right_shoulder_z)
+        tolerance = abs(int(left_shoulder_z - right_shoulder_z))
+        cv.putText(frames,f"tolerance{tolerance},",(10,80),cv.FONT_HERSHEY_PLAIN,2,(255,0,255))
 
         # #check legs is in forward side
         check_left_knee = (self.all_methods.r_hip_x < self.all_methods.l_knee_x)
@@ -416,10 +417,8 @@ class dhanurasana(yoga_exercise):
 
                         else:
                             self.r_count = 1
-                            
-                    
-                    else:
 
+                    else:
                         # ===== Right Hip =====
                         if self.right_hip is not None:
                             if 151 <= self.right_hip <= 180:
@@ -732,25 +731,28 @@ def main():
 
         if not flag:
 
-            ret_ref, ref_frame = ref_video.read()
-            if not ret_ref:
-                ref_video.set(cv.CAP_PROP_POS_FRAMES, 0)  # loop video
-                ret_ref, ref_frame = ref_video.read()
+            # ret_ref, ref_frame = ref_video.read()
+            # if not ret_ref:
+            #     ref_video.set(cv.CAP_PROP_POS_FRAMES, 0)  # loop video
+            #     ret_ref, ref_frame = ref_video.read()
 
-            # Resize reference video frame and place it at top-left
-            if ret_ref:
-                ref_frame = cv.resize(ref_frame, (400, 300))
-                h, w, _ = ref_frame.shape
-                frames[0:h, 0:w] = ref_frame  # Overlay in corner
-
-            nose = llist[0][1]
+            # # Resize reference video frame and place it at top-left
+            # if ret_ref:
+            #     ref_frame = cv.resize(ref_frame, (400, 300))
+            #     h, w, _ = ref_frame.shape
+            #     frames[0:h, 0:w] = ref_frame  # Overlay in corner3
+                
             detect.pose_positions(frames,draw = False)
             llist = detect.pose_landmarks(frames,draw=False)
-            side_view = allmethods.findSideView(frame=frames,FLAG_HEAD_OR_TAIL_POSITION='head',head=nose)
-
+                
             if len(llist) is None:
                 return None
-            
+
+            # nose = llist[0][1]
+            all_methods.all_x_values(frames=frames,llist=llist)
+            # print(nose)
+            side_view = all_methods.findSideView(frame=frames,FLAG_HEAD_OR_TAIL_POSITION='head',head=all_methods.nose_x)
+
             if side_view ==  "right":
 
                 detect.right_dhanurasana(frames=frames,llist=llist,elbow=(12,14,16), hip=(12,24,26),knee= (24,26,28), shoulder=(14,12,24),left_knee=(23,25,27),left_elbow1=(11,13,15),draw=False)

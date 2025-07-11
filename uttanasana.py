@@ -485,48 +485,48 @@ class uttanasana:
             return False
         return False
     
-    def standing_side_view_detect(self,frames,llist,draw = True):
+    # def standing_side_view_detect(self,frames,llist,draw = True):
 
-        if len(llist) != 0:
+    #     if len(llist) != 0:
 
-            self.check_stand = self.body_position.is_person_standing_sitting(frames=frames,llist=llist,hip_points=(11,23,25),leg_points=(23,25,27),elbow_points=(11,13,15),height=self.h,width=self.w)
+    #         self.check_stand = self.body_position.is_person_standing_sitting(frames=frames,llist=llist,hip_points=(11,23,25),leg_points=(23,25,27),elbow_points=(11,13,15),height=self.h,width=self.w)
 
-            if self.check_stand != 'sleeping':
+    #         if self.check_stand != 'sleeping':
 
-                left_shoulder_x,left_shoulder_y,left_shoulder_z = llist[11][1:]
-                right_shoulder_x,right_shoulder_y,right_shoulder_z = llist[12][1:]
-                left_ear = llist[7][1:]
-                right_ear = llist[8][1:] 
+    #             left_shoulder_x,left_shoulder_y,left_shoulder_z = llist[11][1:]
+    #             right_shoulder_x,right_shoulder_y,right_shoulder_z = llist[12][1:]
+    #             left_ear = llist[7][1:]
+    #             right_ear = llist[8][1:] 
 
-                # Basic side detection using shoulder z-values or visibility
-                z_diff = abs(left_shoulder_z - right_shoulder_z)
+    #             # Basic side detection using shoulder z-values or visibility
+    #             z_diff = abs(left_shoulder_z - right_shoulder_z)
 
-                if z_diff > 0.1 and z_diff < 0.31:
-                    if left_shoulder_z > right_shoulder_z:
-                        position = "right cross position"
-                    else:
-                        position = "left side cross position"
+    #             if z_diff > 0.1 and z_diff < 0.31:
+    #                 if left_shoulder_z > right_shoulder_z:
+    #                     position = "right cross position"
+    #                 else:
+    #                     position = "left side cross position"
 
-                elif z_diff > 0.31:
-                    if left_shoulder_z > right_shoulder_z:
-                        position = "right"
-                    else:
-                        position = "left"
+    #             elif z_diff > 0.31:
+    #                 if left_shoulder_z > right_shoulder_z:
+    #                     position = "right"
+    #                 else:
+    #                     position = "left"
 
-                else:
-                    position = "forward"
+    #             else:
+    #                 position = "forward"
 
-                cv.putText(frames, f"Position: {position}", (10, 100),
-                            cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+    #             cv.putText(frames, f"Position: {position}", (10, 100),
+    #                         cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
                 
-                cv.putText(frames, f"diff: {z_diff}", (10, 50),
-                            cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
+    #             cv.putText(frames, f"diff: {z_diff}", (10, 50),
+    #                         cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
                 
-            elif self.check_stand == 'sleeping':
-                self.voice.playAudio(["you must be in standing or sitting position suitable for exercise"],play=True)
+    #         elif self.check_stand == 'sleeping':
+    #             self.voice.playAudio(["you must be in standing or sitting position suitable for exercise"],play=True)
 
-            return position
-        return False
+    #         return position
+    #     return False
 
     
 def main():
