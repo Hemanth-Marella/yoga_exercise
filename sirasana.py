@@ -34,11 +34,11 @@ class sirasasana(yoga_exercise):
 
         self.angle =0
         self.all_methods = allmethods()
-        self.stop = self.all_methods.stop_sometime()
+        # self.stop = self.all_methods.stop_sometime()
         self.voice = VoicePlay()
         self.body_position = bodyPosition()
         self.head_pose_estimator = HeadPoseEstimator()
-        self.round = True
+        # self.x_values = self.all_methods.all_x_values()
 
         self.HEAD_POSITION = "head"
         self.TAIL_POSITION = "tail"
@@ -135,6 +135,8 @@ class sirasasana(yoga_exercise):
         
         shoulder_diff_z = abs(int(self.all_methods.l_shoulder_z - self.all_methods.r_shoulder_z))
         hip_diff_z = abs(int(self.all_methods.l_hip_z - self.all_methods.r_hip_z))
+
+        cv.putText(frames,f"{str(shoulder_diff_z)}" , (10,80),cv.FONT_HERSHEY_DUPLEX,2,(255,0,255),2)
         
         if shoulder_diff_z > 2 and hip_diff_z > 2:
             
@@ -146,7 +148,10 @@ class sirasasana(yoga_exercise):
                 if self.all_methods.r_hip_z < self.all_methods.l_hip_z:
                     return "right"
         else:
+            self.all_methods.reset_after_40_sec()
+            self.all_methods.play_after_40_sec(["please be in sitting position and turn any side you want"],llist=llist)
             return "forward" 
+
         
     
     def wrong_sirasasana_left(self,frames,llist,height,width): 
@@ -521,61 +526,44 @@ def main():
 
         isTrue,frames = video_capture.read()
         # print(frames)
-        # height, width, _ =  frames.shape
+        height, width, _ =  frames.shape
         if not isTrue:
             print("Error: Couldn't read the frame")
             break
         
-        img = cv.imread("sirasana_images/7th_sirasasana.jpg")
-        resized_img = cv.resize(img, (640, 480))
-        height,width,_ = resized_img.shape
-        if resized_img is not None:
-            height, width, _ = resized_img.shape
-            # print(f"Image dimensions: {width}x{height}")
-        else:
-            print("Image not found. Check the file path.")
-
-
-        # ret_ref, ref_frame = ref_video.read()
-        # if not ret_ref:
-        #     ref_video.set(cv.CAP_PROP_POS_FRAMES, 0)  # loop video
-        #     ret_ref, ref_frame = ref_video.read()
-
-        # # Resize reference video frame and place it at top-right
-        # if ret_ref:
-        #     ref_frame = cv.resize(ref_frame, (400, 300))
-        #     h, w, _ = ref_frame.shape
-        #     frames[0:h, 0:w] = ref_frame  # Overlay in corner
         
         if not flag:
 
-            detect.pose_positions(resized_img,draw=False)
-            llist = detect.pose_landmarks(resized_img,False)
-            
-            side_view = detect.side_view_detect(frames=resized_img,llist=llist)
-            if side_view == "left":
-                detect.left_sirasasana(frames=resized_img,llist=llist,elbow=(11,13,15), hip=(11,23,25), knee=(23,25,27), shoulder=(13,11,23),right_knee1=(24,26,28),right_elbow=(12,14,16),draw=True)
-            if not checking_wrong:
-                wrong_left = detect.wrong_sirasasana_left(frames=img,llist=llist,height=height,width=width)
-                if wrong_left:
-                    checking_wrong = True
-            
-            if checking_wrong:
-                if not ready_for_exercise and not flag:
-                    correct = detect.left_sirasasana_name(frames=frames)
-                    if correct:
-                        ready_for_exercise = True
-                        reverse_yoga = True
+            detect.pose_positions(frames,draw=False)
+            llist = detect.pose_landmarks(frames,False)
 
-            if reverse_yoga  and not flag:
-                left_reverse = detect.left_reverse(frames=frames,llist=llist)
-                if left_reverse:
-                    flag = True
+            if len(llist) is None:
+                return
+            
+            side_view = detect.side_view_detect(frames=frames,llist=llist)
+            if side_view == "left":
+                detect.left_sirasasana(frames=frames,llist=llist,elbow=(11,13,15), hip=(11,23,25), knee=(23,25,27), shoulder=(13,11,23),right_knee1=(24,26,28),right_elbow=(12,14,16),draw=True)
+                if not checking_wrong:
+                    wrong_left = detect.wrong_sirasasana_left(frames=frames,llist=llist,height=height,width=width)
+                    if wrong_left:
+                        checking_wrong = True
+                
+                if checking_wrong:
+                    if not ready_for_exercise and not flag:
+                        correct = detect.left_sirasasana_name(frames=frames)
+                        if correct:
+                            ready_for_exercise = True
+                            reverse_yoga = True
+
+                if reverse_yoga  and not flag:
+                    left_reverse = detect.left_reverse(frames=frames,llist=llist)
+                    if left_reverse:
+                        flag = True
     
 
             #Right Side
             elif side_view == "right":
-                detect.right_sirasasana(frames=resized_img,llist=llist,elbow=(12,14,16), hip=(12,24,26),knee= (24,26,28), shoulder=(14,12,24),left_knee1=(23,25,27),left_elbow=(11,13,15),draw=True)                        
+                detect.right_sirasasana(frames=frames,llist=llist,elbow=(12,14,16), hip=(12,24,26),knee= (24,26,28), shoulder=(14,12,24),left_knee1=(23,25,27),left_elbow=(11,13,15),draw=True)                        
 
                 if not checking_wrong:
                     wrong_right = detect.wront_right_sirasasana(frames=frames,llist=llist,height=height,width=width)
@@ -594,7 +582,7 @@ def main():
                         if right_reverse:
                             flag = True
 
-        cv.imshow("video",resized_img)
+        cv.imshow("video",frames)
 
         if cv.waitKey(10) & 0xFF == ord('d'):
             break

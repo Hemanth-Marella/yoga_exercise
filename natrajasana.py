@@ -93,14 +93,6 @@ class natrajasana(yoga_exercise):
         return self.lmlist
     
     def left_natrajasana(self, frames,llist, elbow, hip, knee,shoulder,right_knee1,right_elbow,draw =True):
-
-        self.head = self.head_pose_estimator.head_detect(frames=frames,llist=llist,points=(0,2,5))
-        self.left_ear = self.head_pose_estimator.left_ear_detect(frames=frames,llist=llist,left_point=7)
-        self.right_ear = self.head_pose_estimator.right_ear_detect(frames=frames,llist=llist,right_point=8)
-        self.head_position = self.head_pose_estimator.head_position_detect(frames=frames,llist=llist)
-        if self.head_position is None or self.left_ear is None or self.right_ear is None or self.head is None:
-            return 
-
         
         self.left_elbow, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=elbow,lmList=llist)
         self.left_hip, hip_coords = self.all_methods.calculate_angle(frames=frames,points= hip,lmList=llist)
@@ -117,17 +109,10 @@ class natrajasana(yoga_exercise):
             cv.putText(frames,f'l_shoulder{str(self.left_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
             cv.putText(frames,f'r_knee1{str(self.right_knee1)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
             cv.putText(frames,f'r_elbow{str(self.right_elbow1)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-        return self.left_elbow,self.left_hip,self.left_knee,self.left_shoulder,self.right_knee1,self.right_elbow1,self.head_position #self.left_knee_y,self.left_wrist_y,self.ground_left,self.ground_left_min
+        return self.left_elbow,self.left_hip,self.left_knee,self.left_shoulder,self.right_knee1,self.right_elbow1#self.left_knee_y,self.left_wrist_y,self.ground_left,self.ground_left_min
 
     def right_natrajasana(self,frames,llist,elbow, hip, knee, shoulder,left_knee1,left_elbow,draw=True):
 
-        self.head = self.head_pose_estimator.head_detect(frames=frames,llist=llist,points=(0,2,5))
-        self.left_ear = self.head_pose_estimator.left_ear_detect(frames=frames,llist=llist,left_point=7)
-        self.right_ear = self.head_pose_estimator.right_ear_detect(frames=frames,llist=llist,right_point=8)
-        self.head_position = self.head_pose_estimator.head_position_detect(frames=frames,llist=llist)
-        if self.head_position is None or self.left_ear is None or self.right_ear is None or self.head is None:
-            return 
-        
         self.right_elbow, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=elbow,lmList=llist)
         self.right_hip, hip_coords = self.all_methods.calculate_angle(frames=frames, points=hip,lmList=llist)
         self.right_knee, knee_coords = self.all_methods.calculate_angle(frames=frames,points= knee,lmList=llist)
@@ -144,14 +129,14 @@ class natrajasana(yoga_exercise):
             cv.putText(frames,f'l_knee1{str(self.left_knee1)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
             cv.putText(frames,f'l_elbow{str(self.left_elbow1)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
 
-        return self.right_elbow,self.right_hip,self.right_knee,self.right_shoulder,left_knee1,self.left_elbow1,self.head_position#self.right_knee_y,self.right_wrist_y,self.ground_right,self.ground_right_min
+        return self.right_elbow,self.right_hip,self.right_knee,self.right_shoulder,left_knee1,self.left_elbow1#self.right_knee_y,self.right_wrist_y,self.ground_right,self.ground_right_min
     
     def wrong_left(self,frames,llist,height,width):
         
         if not llist:
             return 
         
-        left_knee_hip = self.all_methods.slope(frames=frames,lmlist=llist,point1=23,point2=25,height=height,width=width)
+        left_knee_hip = self.all_methods.slope(frames=frames,lmlist=llist,point1=23,point2=25,height=height,width=width,draw=True)
         
         initial_pos = (self.left_hip and 160 <= self.left_hip <= 180 and
                         self.left_knee and 160 <= self.left_knee <= 180 and
@@ -282,7 +267,7 @@ class natrajasana(yoga_exercise):
         if not llist:
             return 
         
-        right_knee_hip = self.all_methods.slope(frames=frames,lmlist=llist,point1=23,point2=25,height=height,width=width)
+        right_knee_hip = self.all_methods.slope(frames=frames,lmlist=llist,point1=23,point2=25,height=height,width=width,draw=True)
         
         initial_pos = (self.right_hip and 160 <= self.right_hip <= 180 and
                         self.right_knee and 160 <= self.right_knee <= 180 and
@@ -410,16 +395,19 @@ class natrajasana(yoga_exercise):
                                                 
     def check_standing(self,frames,llist,height,width):
 
-        standing_position = self.all_methods.is_person_standing_standing(frames=frames,llist=llist,leg_points=(23,25,27),hip_points=(11,23,25),elbow_points=(11,13,15),height=height,width=width)
+        if len(llist) is None:
+            return 
+
+        standing_position = self.all_methods.is_person_standing_sitting(frames=frames,llist=llist,leg_points=(23,25,27),hip_points=(11,23,25),elbow_points=(11,13,15),height=height,width=width)
 
         if standing_position == "standing":
-            
+            print("hello")
             return True 
-        
 
         elif standing_position != "standing":
-            # self.all_methods.reset_after_40_sec()
-            # self.all_methods.play_after_40_sec(["please be in standing position","   ","this yoga may started in standing position"],llist=llist)
+            print("hell")
+            self.all_methods.reset_after_40_sec()
+            self.all_methods.play_after_40_sec(["please be in standing position","   ","this yoga may started in standing position"],llist=llist)
             return False
                                                 
     def left_reverse(self,frames):
@@ -524,63 +512,66 @@ def main():
 
         isTrue,frames = video_capture.read()
         height, width, _ =  frames.shape
-        if not isTrue:
-            print("Error: Couldn't read the frame")
-            break
-        img1 = cv.imread("images/image3.webp")
-        img = cv.resize(img1, None, fx=2.0, fy=2.0, interpolation=cv.INTER_LINEAR)
-        detect.pose_positions(frames,draw = False)
-        llist = detect.pose_landmarks(frames,draw=False)
-        stand = detect.check_standing(frames=frames,llist=llist,height=height,width=width)
-        
-        if len(llist) == 0:
-            return
+        # if not isTrue:
+        #     print("Error: Couldn't read the frame")
+        #     break
+        # img1 = cv.imread("images/image3.webp")
+        # img = cv.resize(img1, None, fx=2.0, fy=2.0, interpolation=cv.INTER_LINEAR)
 
-        if len(llist) != 0:
+                    
+        if not flag:
             
-            if not flag:
+            detect.pose_positions(frames,draw = False)
+            llist = detect.pose_landmarks(frames,draw=False)
+            stand = detect.check_standing(frames=frames,llist=llist,height=height,width=width)
             
-                if not check_stand:
-                    if stand:
-                        check_stand = True
-                        
-                if check_stand:
-                    side_view = all_methods.standing_side_view_detect(frames,llist=llist,height=height,width=width)
-                    if side_view == "right":
-                        
-                        detect.right_natrajasana(frames,llist,elbow=(12,14,16), hip=(12,24,26), knee=(24,26,28), shoulder=(14,12,24),left_knee1=(23,25,27),left_elbow=(11,13,15),draw=False)
-                        if not checking_wrong:
-                            wrong_right = detect.wrong_right(frames=frames)
-                            if wrong_right:
-                                checking_wrong = True
-                        
-                        elif checking_wrong and not reverse_yoga:
-                            correct = detect.right_natrajasana_name(frames=frames)
-                            if correct:
-                                reverse_yoga = True
-                            
-                        elif reverse_yoga:
-                                reverse = detect.right_reverse(frames=frames)
-                                if reverse:
-                                    flag = True
+            if len(llist) == 0 or len(llist) is None:
+                return
 
-                    elif side_view =="left":
-                        
-                        detect.left_natrajasana(frames,llist,elbow=(11,13,15),hip= (11,23,25),knee= (23,25,27), shoulder=(13,11,23),right_knee1=(24,26,28),right_elbow=(12,14,16),draw=False)
-                        if not checking_wrong:
-                            wrong_right = detect.wrong_right(frames=frames)
-                            if wrong_right:
-                                checking_wrong = True
-                        
-                        elif checking_wrong and not reverse_yoga:
-                            correct = detect.right_natrajasana_name(frames=frames)
-                            if correct:
-                                reverse_yoga = True
+            if len(llist) != 0:
+                    # print("...............................................................")
+                    if not check_stand:
+                        if stand:
+                            print("..........................")
+                            check_stand = True
                             
-                        elif reverse_yoga:
-                                reverse = detect.right_reverse(frames=frames)
-                                if reverse:
-                                    flag = True
+                    elif check_stand:
+                        side_view = all_methods.standing_side_view_detect(frames,llist=llist,height=height,width=width)
+                        if side_view == "right":
+                            
+                            detect.right_natrajasana(frames,llist,elbow=(12,14,16), hip=(12,24,26), knee=(24,26,28), shoulder=(14,12,24),left_knee1=(23,25,27),left_elbow=(11,13,15),draw=False)
+                            if not checking_wrong:
+                                wrong_right = detect.wrong_right(frames=frames,llist=llist,height=height,width=width)
+                                if wrong_right:
+                                    checking_wrong = True
+                            
+                            elif checking_wrong and not reverse_yoga:
+                                correct = detect.right_natrajasana_name(frames=frames)
+                                if correct:
+                                    reverse_yoga = True
+                                
+                            elif reverse_yoga:
+                                    reverse = detect.right_reverse(frames=frames)
+                                    if reverse:
+                                        flag = True
+
+                        elif side_view =="left":
+                            
+                            detect.left_natrajasana(frames,llist,elbow=(11,13,15),hip= (11,23,25),knee= (23,25,27), shoulder=(13,11,23),right_knee1=(24,26,28),right_elbow=(12,14,16),draw=False)
+                            if not checking_wrong:
+                                wrong_right = detect.wrong_right(frames=frames,llist=llist,height=height,width=width)
+                                if wrong_right:
+                                    checking_wrong = True
+                            
+                            elif checking_wrong and not reverse_yoga:
+                                correct = detect.right_natrajasana_name(frames=frames)
+                                if correct:
+                                    reverse_yoga = True
+                                
+                            elif reverse_yoga:
+                                    reverse = detect.right_reverse(frames=frames)
+                                    if reverse:
+                                        flag = True
 
         cv.imshow("video",frames)
         if cv.waitKey(10) & 0xFF == ord('d'):

@@ -749,8 +749,10 @@ def main():
             if all_methods.nose_x is None:
 
                 return None
+            
+            if all_methods.nose_x is not None:
 
-            side_view = all_methods.findSideView(frame=frames,FLAG_HEAD_OR_TAIL_POSITION='head',head=all_methods.nose_x)
+                side_view = all_methods.findSideView(frame=frames,FLAG_HEAD_OR_TAIL_POSITION='head',head=all_methods.nose_x)
 
             if side_view ==  "right":
 

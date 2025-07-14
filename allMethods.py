@@ -332,8 +332,8 @@ class allmethods:
 
             elif(
                 shoulder_y < hip_y < leg_y < foot_y and
-                45 <= min(self.left_shoulder_hip,self.right_shoulder_hip) <= 90 and
-                45 <= min(self.left_hip_knee,self.right_hip_knee) <= 90 and
+                55 <= min(self.left_shoulder_hip,self.right_shoulder_hip) <= 90 and
+                55 <= min(self.left_hip_knee,self.right_hip_knee) <= 90 and
                 hip_points and 160 <= hip_points <= 180 and
                 leg_points and 160 <= leg_points <= 180
                 ):
@@ -551,7 +551,7 @@ class allmethods:
     
     def all_x_values(self,frames,llist):
 
-        if len(llist) == 0:
+        if llist is None or len(llist) == 0 :
             return None
         
         self.nose_x = llist[0][1]
@@ -581,10 +581,14 @@ class allmethods:
 
     def all_y_values(self,frames,llist):
 
-        if len(llist) == 0:
+        if llist is None or len(llist) == 0 :
             return None
         
         self.nose_y = llist[0][2]
+
+        if not self.nose_y:
+            return None
+        
         self.l_hip_y = llist[23][2]
         self.r_hip_y = llist[24][2]
         self.l_knee_y = llist[25][2]
@@ -604,7 +608,7 @@ class allmethods:
 
     def all_z_values(self,frames,llist):
 
-        if len(llist) == 0:
+        if llist is None or len(llist) == 0:
             return None
         
         self.nose_z = llist[0][3]
