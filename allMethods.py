@@ -199,7 +199,10 @@ class allmethods:
     #side view based on frame
     def findSideView(self, frame, FLAG_HEAD_OR_TAIL_POSITION,head):
 
-        if FLAG_HEAD_OR_TAIL_POSITION == self.HEAD_POSITION:
+        if head is None:
+            return None
+
+        elif FLAG_HEAD_OR_TAIL_POSITION == self.HEAD_POSITION:
             self.RIGHT_SIDE_VIEW = "right"
             self.LEFT_SIDE_VIEW = "left"
         else:
@@ -552,6 +555,10 @@ class allmethods:
             return None
         
         self.nose_x = llist[0][1]
+
+        if not self.nose_x:
+            return None
+        
         self.l_hip_x = llist[23][1]
         self.r_hip_x = llist[24][1]
         self.l_knee_x = llist[25][1]

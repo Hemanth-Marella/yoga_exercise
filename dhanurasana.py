@@ -161,6 +161,9 @@ class dhanurasana(yoga_exercise):
         right_shoulder_x,right_shoulder_y,right_shoulder_z = llist[12][1:]
         tolerance = abs(left_shoulder_z - right_shoulder_z)
 
+        if not left_shoulder_x and not left_shoulder_y and not left_shoulder_z:
+            return
+
 
         #check legs is in forward side
         check_left_knee = (self.all_methods.l_hip_x > self.all_methods.l_knee_x)
@@ -341,6 +344,9 @@ class dhanurasana(yoga_exercise):
 
         left_shoulder_x,left_shoulder_y,left_shoulder_z = llist[11][1:]
         right_shoulder_x,right_shoulder_y,right_shoulder_z = llist[12][1:]
+
+        if not right_shoulder_x and not right_shoulder_y and not right_shoulder_z:
+            return
 
         tolerance = abs(int(left_shoulder_z - right_shoulder_z))
         cv.putText(frames,f"tolerance{tolerance},",(10,80),cv.FONT_HERSHEY_PLAIN,2,(255,0,255))
@@ -730,27 +736,20 @@ def main():
         # img1 = cv.resize(img, None, fx=4.0, fy=4.0, interpolation=cv.INTER_LINEAR)
 
         if not flag:
-
-            # ret_ref, ref_frame = ref_video.read()
-            # if not ret_ref:
-            #     ref_video.set(cv.CAP_PROP_POS_FRAMES, 0)  # loop video
-            #     ret_ref, ref_frame = ref_video.read()
-
-            # # Resize reference video frame and place it at top-left
-            # if ret_ref:
-            #     ref_frame = cv.resize(ref_frame, (400, 300))
-            #     h, w, _ = ref_frame.shape
-            #     frames[0:h, 0:w] = ref_frame  # Overlay in corner3
                 
             detect.pose_positions(frames,draw = False)
             llist = detect.pose_landmarks(frames,draw=False)
                 
-            if len(llist) is None:
-                return None
+            if not llist or len(llist) == 0:
+                return 
 
             # nose = llist[0][1]
             all_methods.all_x_values(frames=frames,llist=llist)
-            # print(nose)
+
+            if all_methods.nose_x is None:
+
+                return None
+
             side_view = all_methods.findSideView(frame=frames,FLAG_HEAD_OR_TAIL_POSITION='head',head=all_methods.nose_x)
 
             if side_view ==  "right":
