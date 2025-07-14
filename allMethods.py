@@ -400,19 +400,13 @@ class allmethods:
                 # Basic side detection using shoulder z-values or visibility
                 z_diff = abs(left_shoulder_z - right_shoulder_z)
 
-                if z_diff > 0.1 and z_diff < 0.31:
-                    if left_shoulder_z > right_shoulder_z:
-                        position = "right cross position"
-                    else:
-                        position = "left side cross position"
-
-                elif z_diff > 0.31:
+                if z_diff > 0.25:
                     if left_shoulder_z > right_shoulder_z:
                         position = "right"
                     else:
                         position = "left"
 
-                elif 0 < z_diff < 0.1:
+                elif 0 < z_diff < 0.25:
                     position = "forward"
                 
             elif self.check_stand == "sleeping":

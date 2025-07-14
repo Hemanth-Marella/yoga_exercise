@@ -401,14 +401,13 @@ class natrajasana(yoga_exercise):
         standing_position = self.all_methods.is_person_standing_sitting(frames=frames,llist=llist,leg_points=(23,25,27),hip_points=(11,23,25),elbow_points=(11,13,15),height=height,width=width)
 
         if standing_position == "standing":
-            print("hello")
+            # print("hello")
             return True 
 
         elif standing_position != "standing":
-            print("hell")
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["please be in standing position","   ","this yoga may started in standing position"],llist=llist)
-            return False
+            if self.all_methods.play_after_40_sec(["please be in standing position","   ","this yoga may started in standing position"],llist=llist):
+                return False
                                                 
     def left_reverse(self,frames):
         
@@ -512,66 +511,61 @@ def main():
 
         isTrue,frames = video_capture.read()
         height, width, _ =  frames.shape
-        # if not isTrue:
-        #     print("Error: Couldn't read the frame")
-        #     break
-        # img1 = cv.imread("images/image3.webp")
-        # img = cv.resize(img1, None, fx=2.0, fy=2.0, interpolation=cv.INTER_LINEAR)
 
-                    
         if not flag:
             
             detect.pose_positions(frames,draw = False)
             llist = detect.pose_landmarks(frames,draw=False)
             stand = detect.check_standing(frames=frames,llist=llist,height=height,width=width)
-            
-            if len(llist) == 0 or len(llist) is None:
-                return
 
-            if len(llist) != 0:
                     # print("...............................................................")
-                    if not check_stand:
-                        if stand:
-                            print("..........................")
-                            check_stand = True
-                            
-                    elif check_stand:
-                        side_view = all_methods.standing_side_view_detect(frames,llist=llist,height=height,width=width)
-                        if side_view == "right":
-                            
-                            detect.right_natrajasana(frames,llist,elbow=(12,14,16), hip=(12,24,26), knee=(24,26,28), shoulder=(14,12,24),left_knee1=(23,25,27),left_elbow=(11,13,15),draw=False)
-                            if not checking_wrong:
-                                wrong_right = detect.wrong_right(frames=frames,llist=llist,height=height,width=width)
-                                if wrong_right:
-                                    checking_wrong = True
-                            
-                            elif checking_wrong and not reverse_yoga:
-                                correct = detect.right_natrajasana_name(frames=frames)
-                                if correct:
-                                    reverse_yoga = True
-                                
-                            elif reverse_yoga:
-                                    reverse = detect.right_reverse(frames=frames)
-                                    if reverse:
-                                        flag = True
+            if not check_stand:
+                if stand:
+                    
+                    check_stand = True
+                    
+            elif check_stand:
+                side_view = all_methods.standing_side_view_detect(frames,llist=llist,height=height,width=width)
 
-                        elif side_view =="left":
-                            
-                            detect.left_natrajasana(frames,llist,elbow=(11,13,15),hip= (11,23,25),knee= (23,25,27), shoulder=(13,11,23),right_knee1=(24,26,28),right_elbow=(12,14,16),draw=False)
-                            if not checking_wrong:
-                                wrong_right = detect.wrong_right(frames=frames,llist=llist,height=height,width=width)
-                                if wrong_right:
-                                    checking_wrong = True
-                            
-                            elif checking_wrong and not reverse_yoga:
-                                correct = detect.right_natrajasana_name(frames=frames)
-                                if correct:
-                                    reverse_yoga = True
-                                
-                            elif reverse_yoga:
-                                    reverse = detect.right_reverse(frames=frames)
-                                    if reverse:
-                                        flag = True
+                if side_view == "forward":
+                    all_methods.reset_after_40_sec()
+                    all_methods.play_after_40_sec(["please turn total body ,  either left, or, right side"],llist=llist)
+
+                elif side_view == "right":
+                    
+                    detect.right_natrajasana(frames,llist,elbow=(12,14,16), hip=(12,24,26), knee=(24,26,28), shoulder=(14,12,24),left_knee1=(23,25,27),left_elbow=(11,13,15),draw=False)
+                    if not checking_wrong:
+                        wrong_right = detect.wrong_right(frames=frames,llist=llist,height=height,width=width)
+                        if wrong_right:
+                            checking_wrong = True
+                    
+                    if checking_wrong and not reverse_yoga:
+                        correct = detect.right_natrajasana_name(frames=frames)
+                        if correct:
+                            reverse_yoga = True
+                        
+                    if reverse_yoga:
+                            reverse = detect.right_reverse(frames=frames)
+                            if reverse:
+                                flag = True
+
+                elif side_view =="left":
+                    
+                    detect.left_natrajasana(frames,llist,elbow=(11,13,15),hip= (11,23,25),knee= (23,25,27), shoulder=(13,11,23),right_knee1=(24,26,28),right_elbow=(12,14,16),draw=False)
+                    if not checking_wrong:
+                        wrong_right = detect.wrong_left(frames=frames,llist=llist,height=height,width=width)
+                        if wrong_right:
+                            checking_wrong = True
+                    
+                    if checking_wrong and not reverse_yoga:
+                        correct = detect.right_natrajasana_name(frames=frames)
+                        if correct:
+                            reverse_yoga = True
+                        
+                    if reverse_yoga:
+                            reverse = detect.right_reverse(frames=frames)
+                            if reverse:
+                                flag = True
 
         cv.imshow("video",frames)
         if cv.waitKey(10) & 0xFF == ord('d'):

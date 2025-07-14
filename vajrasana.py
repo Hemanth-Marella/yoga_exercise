@@ -717,17 +717,6 @@ def main():
         if not isTrue:
             print("Error: Couldn't read the frame")
             break
-
-        # ret_ref, ref_frame = ref_video.read()
-        # if not ret_ref:
-        #     ref_video.set(cv.CAP_PROP_POS_FRAMES, 0)  # loop video
-        #     ret_ref, ref_frame = ref_video.read()
-
-        # # Resize reference video frame and place it at top-left
-        # if ret_ref:
-        #     ref_frame = cv.resize(ref_frame, (400, 300))
-        #     h, w, _ = ref_frame.shape
-        #     frames[0:h, 0:w] = ref_frame  # Overlay in corner
         
         if not flag:
 
