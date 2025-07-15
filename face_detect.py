@@ -3,7 +3,7 @@
 import cv2 as cv
 import mediapipe as mp
 import numpy as np
-import time
+
 from allMethods import allmethods
 
 class HeadPoseEstimator:

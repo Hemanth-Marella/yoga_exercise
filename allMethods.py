@@ -370,18 +370,18 @@ class allmethods:
 
             if self.check_stand == "sitting":
 
-                left_shoulder_x,left_shoulder_y,left_shoulder_z = llist[11][1:]
-                right_shoulder_x,right_shoulder_y,right_shoulder_z = llist[12][1:]
+                left_shoulder_x,left_shoulder_y,self.left_shoulder_z = llist[11][1:]
+                right_shoulder_x,right_shoulder_y,self.right_shoulder_z = llist[12][1:]
                 left_ear = llist[7][1:]
                 right_ear = llist[8][1:] 
 
                 # Basic side detection using shoulder z-values or visibility
-                z_diff = abs(left_shoulder_z - right_shoulder_z)
+                z_diff = abs(self.left_shoulder_z  - self.right_shoulder_z)
                     
                 if 0 <= z_diff <= 0.15:
                     position = "forward"
                 elif z_diff > 0.15:
-                    if left_shoulder_z > right_shoulder_z:
+                    if self.left_shoulder_z  > self.right_shoulder_z:
                         position = "right"
                     else:
                         position = "left"
@@ -392,16 +392,16 @@ class allmethods:
 
             elif self.check_stand == "standing":
 
-                left_shoulder_x,left_shoulder_y,left_shoulder_z = llist[11][1:]
-                right_shoulder_x,right_shoulder_y,right_shoulder_z = llist[12][1:]
+                left_shoulder_x,left_shoulder_y,self.left_shoulder_z  = llist[11][1:]
+                right_shoulder_x,right_shoulder_y,self.right_shoulder_z = llist[12][1:]
                 left_ear = llist[7][1:]
                 right_ear = llist[8][1:] 
 
                 # Basic side detection using shoulder z-values or visibility
-                z_diff = abs(left_shoulder_z - right_shoulder_z)
+                z_diff = abs(self.left_shoulder_z  - self.right_shoulder_z)
 
                 if z_diff > 0.25:
-                    if left_shoulder_z > right_shoulder_z:
+                    if self.left_shoulder_z  > self.right_shoulder_z:
                         position = "right"
                     else:
                         position = "left"
@@ -417,7 +417,7 @@ class allmethods:
                 left_ankle_z,right_ankle_z = llist[27][3],llist[28][3]
 
                 #SHOULDER TOLERANCE
-                tolerance_shoulders = abs(int(left_shoulder_z - right_shoulder_z))   
+                tolerance_shoulders = abs(int(self.left_shoulder_z  - self.right_shoulder_z))   
                 # HIP TOLERANCE
                 tolerance_hips = abs(int(left_hip_z - right_hip_z))
                 # KNEE TOLERANCE
@@ -430,7 +430,7 @@ class allmethods:
 
                 elif (
                     left_hip_z < right_hip_z and
-                    left_shoulder_z < right_shoulder_z and
+                    self.left_shoulder_z  < self.right_shoulder_z and
                     left_knee_z < right_knee_z and
                     left_ankle_z < right_ankle_z and
                     tolerance_hips > 30 and tolerance_shoulders > 30 and tolerance_knees > 30 and tolerance_ankles > 30
@@ -440,7 +440,7 @@ class allmethods:
                 # RIGHT SIDE (body turned showing right side closer to camera)
                 elif (
                     right_hip_z < left_hip_z and
-                    right_shoulder_z < left_shoulder_z and
+                    self.right_shoulder_z < self.left_shoulder_z  and
                     right_knee_z < left_knee_z and
                     right_ankle_z < left_ankle_z and
                     tolerance_hips > 30 and tolerance_shoulders > 30 and tolerance_knees > 30 and tolerance_ankles > 30
@@ -449,7 +449,7 @@ class allmethods:
 
                 elif(
                     left_hip_z > right_hip_z and
-                    left_shoulder_z > right_shoulder_z and
+                    self.left_shoulder_z  > self.right_shoulder_z and
                     left_knee_z > right_knee_z and
                     left_ankle_z > right_ankle_z and
                     tolerance_hips > 30 and tolerance_shoulders > 30 and tolerance_knees > 30 and tolerance_ankles > 30
@@ -458,7 +458,7 @@ class allmethods:
 
                 elif(
                     right_hip_z < left_hip_z and
-                    right_shoulder_z < left_shoulder_z and
+                    self.right_shoulder_z < self.left_shoulder_z  and
                     right_knee_z < left_knee_z and
                     right_ankle_z < left_ankle_z and
                     tolerance_hips > 30 and tolerance_shoulders > 30 and tolerance_knees > 30 and tolerance_ankles > 30
@@ -503,8 +503,6 @@ class allmethods:
 
     #this reset after every 40 sec
     def reset_after_40_sec(self):
-
-        self.first_play = False
 
         # self.first_play = True
         if self.voice.isVoicePlaying:
