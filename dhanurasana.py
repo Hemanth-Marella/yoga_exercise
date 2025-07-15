@@ -702,15 +702,29 @@ class dhanurasana(yoga_exercise):
         
         return False  
     
-    # def head_value(self,llist,frames):
+    def side_view_detect(self, frames, llist):
+        result = None
 
-    #     if len(llist) == 0:
-    #         return None
+        # Check if llist is valid and has enough data
+        if not llist or len(llist[0]) < 2:
+            # print("No human detected or invalid llist structure")
+            return None
 
-    #     self.nose_x = llist[0][1]
-    #     return self.nose_x
-    
-   
+        side_view = self.all_methods.findSideView(
+            frame=frames,
+            FLAG_HEAD_OR_TAIL_POSITION="head",
+            head=llist[0][1]
+        )
+
+        if side_view == "left":
+            result = "left"
+        elif side_view == "right":
+            result = "right"
+        else:
+            result = None
+
+        return result
+
 def main():
     global llist
     all_methods = allmethods()
@@ -739,20 +753,7 @@ def main():
                 
             detect.pose_positions(frames,draw = False)
             llist = detect.pose_landmarks(frames,draw=False)
-                
-            if not llist or len(llist) == 0:
-                return 
-
-            # nose = llist[0][1]
-            all_methods.all_x_values(frames=frames,llist=llist)
-
-            if all_methods.nose_x is None:
-
-                return None
-            
-            if all_methods.nose_x is not None:
-
-                side_view = all_methods.findSideView(frame=frames,FLAG_HEAD_OR_TAIL_POSITION='head',head=all_methods.nose_x)
+            side_view = detect.side_view_detect(frames=frames,llist=llist)
 
             if side_view ==  "right":
 
