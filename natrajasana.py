@@ -257,7 +257,6 @@ class natrajasana(yoga_exercise):
                             self.first_pose_detected = True
 
                     if self.first_pose_detected:
-                        # print("hell")
 
                         if self.left_hip and 0 <= self.left_hip <= 99:
                             self.all_methods.reset_after_40_sec()
@@ -504,6 +503,10 @@ class natrajasana(yoga_exercise):
             self.all_methods.reset_after_40_sec()
             self.all_methods.play_after_40_sec(["please be staright your left leg"],llist=llist)
          
+        if self.right_knee1 and 0 <= self.right_knee1 <= 159:
+            self.all_methods.reset_after_40_sec()
+            self.all_methods.play_after_40_sec(["please be staright your right leg"],llist=llist)
+        
         if self.all_methods.is_person_standing_sitting == "standing":    
             self.all_methods.reset_after_40_sec()
             voice = self.all_methods.play_after_40_sec(["good job your yoga is perfectly completed"],llist=llist)
@@ -529,6 +532,10 @@ class natrajasana(yoga_exercise):
             self.all_methods.reset_after_40_sec()
             self.all_methods.play_after_40_sec(["please be staright your right leg"],llist=llist)
         
+        elif self.left_knee1 and 0 <= self.left_knee1 <= 159:
+            self.all_methods.reset_after_40_sec()
+            self.all_methods.play_after_40_sec(["please be straight your right leg"],llist=llist)
+
         if self.all_methods.is_person_standing_sitting == "standing":    
             self.all_methods.reset_after_40_sec()
             voice = self.all_methods.play_after_40_sec(["good job your yoga is perfectly completed"],llist=llist)

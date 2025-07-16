@@ -42,6 +42,11 @@ class matyasana:
         self.ground_pose_detected = False
         self.check_sleep_position = False
 
+        self.l_r_count = 0
+        self.r_r_count = 0
+        self.l_count = 0
+        self.r_count = 0
+
         self.angle =0
         self.all_methods = allmethods()
         self.voice = VoicePlay()
@@ -216,8 +221,6 @@ class matyasana:
         #CHECK FLAT POSITION
         if self.check_sleep_position and not self.start_exercise:
 
-            count = 0
-
             if tolerance <= 0.15:
 
                 self.all_methods.reset_after_40_sec()
@@ -226,7 +229,7 @@ class matyasana:
             elif not self.start_exercise and left_shoulder_z < right_shoulder_z and tolerance > 0.15:
 
                 self.all_methods.reset_after_40_sec()
-                self.all_methods.play_after_40_sec(["Lie on your back with legs extended"],llist=llist)
+                self.all_methods.play_after_40_sec(["Lie on your back, with legs extended"],llist=llist)
 
 
             elif not self.start_exercise and left_shoulder_z > right_shoulder_z and tolerance > 0.15:
@@ -235,17 +238,18 @@ class matyasana:
         #CHECK INITIAL POSITION
         elif self.start_exercise:
 
-            if left_shoulder_z > right_shoulder_z and tolerance > 40:
+            if left_shoulder_z > right_shoulder_z and tolerance > 0.15:
 
-                if count == 0:
+                initial_voices = ["you are in initial position and start yoga mathyasana","please start yoga and fold your right leg around 45 degress"]
+
+                if self.l_count < len(initial_voices):
                     self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["you are in initial position and start yoga mathyasana"],llist=llist)
-                    count += 1
-                
-                elif count == 1:
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["please start yoga and fold your right leg around 45 degress"],llist=llist)
-                    count = 1
+                    voice = self.all_methods.play_after_40_sec([initial_voices[self.l_count]],llist=llist)
+                    if voice:
+                        self.l_count += 1
+
+                else:
+                    self.l_count = 1
 
             else:
                 #check legs in 45 degress or not
@@ -418,7 +422,6 @@ class matyasana:
 
         if len(llist) == 0:
             return
-        count = 0
 
         nose_y = llist[0][2]
         hip_y = max(llist[23][2],llist[24][2])
@@ -477,8 +480,6 @@ class matyasana:
         #CHECK FLAT POSITION
         if self.check_sleep_position:
 
-            count = 0
-
             if tolerance <= 0.15:
 
                 self.all_methods.reset_after_40_sec()
@@ -487,26 +488,25 @@ class matyasana:
             elif not self.start_exercise and left_shoulder_z < right_shoulder_z and tolerance > 0.15:
 
                 self.all_methods.reset_after_40_sec()
-                self.all_methods.play_after_40_sec(["Lie on your back with legs extended"],llist=llist)
+                self.all_methods.play_after_40_sec(["Lie on your back, with legs extended"],llist=llist)
 
-
-            elif not self.start_exercise and left_shoulder_z < right_shoulder_z and tolerance > 0.15:
+            elif not self.start_exercise and left_shoulder_z > right_shoulder_z and tolerance > 0.15:
                 self.start_exercise = True
 
         #CHECK INITIAL POSITION
         elif self.start_exercise:
 
-            if left_shoulder_z < right_shoulder_z and tolerance > 40:
+            if left_shoulder_z < right_shoulder_z and tolerance > 0.15:
 
-                if count == 0:
+                voices = ["you are in initial position and start yoga mathyasana","please start yoga and fold your right leg around 45 degress"]
+                if self.r_count < len(voices):
                     self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["you are in initial position and start yoga mathyasana"],llist=llist)
-                    count += 1
-                
-                elif count == 1:
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["please start yoga and fold your right leg around 45 degress"],llist=llist)
-                    count = 1
+                    voice = self.all_methods.play_after_40_sec([voices[self.r_count]],llist=llist)
+                    if voice:
+                        self.r_count += 1
+
+                else:
+                    self.r_count += 1
 
             else:
                 #check legs in 45 degress or not
