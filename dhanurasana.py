@@ -159,22 +159,23 @@ class dhanurasana(yoga_exercise):
 
         left_shoulder_x,left_shoulder_y,left_shoulder_z = llist[11][1:]
         right_shoulder_x,right_shoulder_y,right_shoulder_z = llist[12][1:]
-        tolerance = abs(left_shoulder_z - right_shoulder_z)
+        tolerance = abs((left_shoulder_z - right_shoulder_z))
+        # cv.putText(frames,f"tolerance-->{str(tolerance)}",(10,100),cv.FONT_HERSHEY_PLAIN,2,(255,0,255),2)
 
         if not left_shoulder_x and not left_shoulder_y and not left_shoulder_z:
             return
 
 
         #check legs is in forward side
-        check_left_knee = (self.all_methods.l_hip_x > self.all_methods.l_knee_x)
-        check_right_knee = (self.all_methods.l_hip_x > self.all_methods.r_knee_x)
+        check_left_knee = (self.all_methods.l_hip_x < self.all_methods.l_knee_x)
+        check_right_knee = (self.all_methods.l_hip_x < self.all_methods.r_knee_x)
 
         hip = (self.all_methods.l_hip_x)
         shoulder = (self.all_methods.l_shoulder_x)
         middle_hip_shoulder = (hip + shoulder) // 2
 
-        check_left_hand = (middle_hip_shoulder > self.all_methods.l_wrist_x)
-        check_right_hand = (middle_hip_shoulder > self.all_methods.r_wrist_x)
+        check_left_hand = (middle_hip_shoulder < self.all_methods.l_wrist_x)
+        check_right_hand = (middle_hip_shoulder < self.all_methods.r_wrist_x)
 
 
         #left slope condition
@@ -201,20 +202,20 @@ class dhanurasana(yoga_exercise):
         
         if self.check_sleep_position:
 
-            if tolerance <= 40:
+            if tolerance <= 0.15:
 
                 self.all_methods.reset_after_40_sec()
                 self.all_methods.play_after_40_sec(["you are in side sleep position","please sleep in flat position"],llist=llist)
 
 
-            elif not self.start_exercise and right_shoulder_z > left_shoulder_z and tolerance > 40:
+            elif not self.start_exercise and right_shoulder_z > left_shoulder_z and tolerance > 0.15:
                 
                 self.start_exercise = True
                 self.reverse_sleep = True
 
-            elif not self.reverse_sleep and left_shoulder_z > right_shoulder_z and tolerance > 40:
+            elif not self.reverse_sleep and left_shoulder_z > right_shoulder_z and tolerance > 0.15:
                 self.all_methods.reset_after_40_sec()
-                self.all_methods.play_after_40_sec(["you are in flat position","Lie on your stomach with your forehead on the ground"],llist=llist)
+                self.all_methods.play_after_40_sec(["you are in flat position","Lie on your stomach, with your, forehead on the ground"],llist=llist)
 
             if self.start_exercise:
                 # check sleep position
@@ -239,7 +240,7 @@ class dhanurasana(yoga_exercise):
                         if self.left_hip is not None:
                             if 151 <= self.left_hip <= 180:
                                     self.all_methods.reset_after_40_sec()
-                                    self.all_methods.play_after_40_sec(["please bend your hip back"], llist=llist)
+                                    self.all_methods.play_after_40_sec(["please raise your upper body up,please bend your hip back"], llist=llist)
                                     return
 
                             elif 0 <= self.left_hip <= 109:
@@ -341,6 +342,8 @@ class dhanurasana(yoga_exercise):
         count = 0
 
         self.all_methods.all_x_values(frames=frames,llist=llist)
+        self.all_methods.all_y_values(frames=frames,llist=llist)
+        self.all_methods.all_z_values(frames=frames,llist=llist)
 
         left_shoulder_x,left_shoulder_y,left_shoulder_z = llist[11][1:]
         right_shoulder_x,right_shoulder_y,right_shoulder_z = llist[12][1:]
@@ -348,12 +351,12 @@ class dhanurasana(yoga_exercise):
         if not right_shoulder_x and not right_shoulder_y and not right_shoulder_z:
             return
 
-        tolerance = abs(int(left_shoulder_z - right_shoulder_z))
-        cv.putText(frames,f"tolerance{tolerance},",(10,80),cv.FONT_HERSHEY_PLAIN,2,(255,0,255))
+        tolerance = abs((left_shoulder_z - right_shoulder_z))
+        # cv.putText(frames,f"tolerance-->{str(tolerance)},",(10,80),cv.FONT_HERSHEY_PLAIN,2,(255,0,255))
 
         # #check legs is in forward side
-        check_left_knee = (self.all_methods.r_hip_x < self.all_methods.l_knee_x)
-        check_right_knee = (self.all_methods.r_hip_x < self.all_methods.r_knee_x)
+        check_left_knee = (self.all_methods.r_hip_x > self.all_methods.l_knee_x)
+        check_right_knee = (self.all_methods.r_hip_x > self.all_methods.r_knee_x)
 
         # #check hands is in forward side
 
@@ -365,8 +368,8 @@ class dhanurasana(yoga_exercise):
 
         middle_hip_shoulder = (hip + shoulder) // 2
 
-        check_left_hand = (middle_hip_shoulder < self.all_methods.l_wrist_x)
-        check_right_hand = (middle_hip_shoulder < self.all_methods.r_wrist_x)
+        check_left_hand = (middle_hip_shoulder > self.all_methods.l_wrist_x)
+        check_right_hand = (middle_hip_shoulder > self.all_methods.r_wrist_x)
 
 
         if not self.right_hip and not self.right_elbow and not self.right_knee and not self.right_shoulder and not self.left_knee1 and not right_shoulder_z and not left_shoulder_z:
@@ -393,19 +396,19 @@ class dhanurasana(yoga_exercise):
         
         if self.check_sleep_position:
 
-            if tolerance <= 40:
+            if tolerance <= 0.15:
 
                 self.all_methods.reset_after_40_sec()
                 self.all_methods.play_after_40_sec(["you are in side sleep position"],llist=llist)
 
-            elif not self.start_exercise and left_shoulder_z > right_shoulder_z and tolerance > 40:
+            elif not self.start_exercise and left_shoulder_z > right_shoulder_z and tolerance > 0.15:
                 self.start_exercise = True
                 self.reverse_sleep = True
 
-            elif not self.reverse_sleep and right_shoulder_z > left_shoulder_z and tolerance > 40:
+            elif not self.reverse_sleep and right_shoulder_z > left_shoulder_z and tolerance > 0.15:
 
                 self.all_methods.reset_after_40_sec([])
-                self.all_methods.play_after_40_sec(["you are in flat position","Lie on your stomach with your forehead on the ground"],llist=llist)
+                self.all_methods.play_after_40_sec(["you are in flat position","Lie on your stomach, with your, forehead on the ground"],llist=llist)
 
             if self.start_exercise:
                 # check sleep position
@@ -429,7 +432,7 @@ class dhanurasana(yoga_exercise):
                         if self.right_hip is not None:
                             if 151 <= self.right_hip <= 180:
                                 self.all_methods.reset_after_40_sec()
-                                self.all_methods.play_after_40_sec(["please bend your hip back"], llist=llist)
+                                self.all_methods.play_after_40_sec(["please raise your upper body up ,bend your hip back"], llist=llist)
                                 return
                             
                             elif (0 <= self.right_hip <= 109):

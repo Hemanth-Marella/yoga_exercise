@@ -40,6 +40,7 @@ class matyasana:
         self.r_leg_on_thigh = False
         self.upper_pose_detected = False
         self.ground_pose_detected = False
+        self.check_sleep_position = False
 
         self.angle =0
         self.all_methods = allmethods()
@@ -73,7 +74,7 @@ class matyasana:
             self.h,self.w,cl = frames.shape
 
             for id,poselms in enumerate(self.results.pose_landmarks.landmark):
-                px,py ,pz= int(poselms.x * self.w) , int(poselms.y * self.h),int(poselms.z)
+                px,py ,pz= (poselms.x * self.w) , (poselms.y * self.h),(poselms.z)
 
                 self.lpslist.append([id,px,py,pz])
 
@@ -88,6 +89,7 @@ class matyasana:
         self.left_ear = self.head_pose_estimator.left_ear_detect(frames=frames,llist=llist,left_point=7)
         self.right_ear = self.head_pose_estimator.right_ear_detect(frames=frames,llist=llist,right_point=8)
         self.head_position = self.head_pose_estimator.head_position_detect(frames=frames,llist=llist)
+
         if self.head_position is None or self.left_ear is None or self.right_ear is None or self.head is None:
             return 
         
@@ -121,17 +123,25 @@ class matyasana:
         self.left_ear = self.head_pose_estimator.left_ear_detect(frames=frames,llist=llist,left_point=7)
         self.right_ear = self.head_pose_estimator.right_ear_detect(frames=frames,llist=llist,right_point=8)
         self.head_position = self.head_pose_estimator.head_position_detect(frames=frames,llist=llist)
+
         if self.head_position is None or self.left_ear is None or self.right_ear is None or self.head is None:
             return 
-    
-        if draw:
         
-            self.right_elbow, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=elbow,lmList=llist)
-            self.right_hip, hip_coords = self.all_methods.calculate_angle(frames=frames, points=hip,lmList=llist)
-            self.right_knee, knee_coords = self.all_methods.calculate_angle(frames=frames,points= knee,lmList=llist)
-            self.right_shoulder,points_cor7 = self.all_methods.calculate_angle(frames=frames,points=shoulder, lmList=llist)
-            self.left_knee1, left_knee1_coords = self.all_methods.calculate_angle(frames=frames,points= left_knee1,lmList=llist)
-            self.left_elbow1, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=left_elbow,lmList=llist)
+        self.right_elbow, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=elbow,lmList=llist)
+        self.right_hip, hip_coords = self.all_methods.calculate_angle(frames=frames, points=hip,lmList=llist)
+        self.right_knee, knee_coords = self.all_methods.calculate_angle(frames=frames,points= knee,lmList=llist)
+        self.right_shoulder,points_cor7 = self.all_methods.calculate_angle(frames=frames,points=shoulder, lmList=llist)
+        self.left_knee1, left_knee1_coords = self.all_methods.calculate_angle(frames=frames,points= left_knee1,lmList=llist)
+        self.left_elbow1, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=left_elbow,lmList=llist)
+
+        if draw:
+
+            cv.putText(frames,f'r_elbow{str(self.right_elbow)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_hip{str(self.right_hip)}',(10,80),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_knee{str(self.right_knee)}',(10,120),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_shoulder{str(self.right_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_knee1{str(self.left_knee1)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'l_elbow{str(self.left_elbow1)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
 
 
         return self.right_elbow,self.right_hip,self.right_knee,self.right_shoulder,left_knee1,self.head_position#self.self.all_methods.r_knee_y,self.right_wrist_y,self.ground_right,self.ground_right_min
@@ -150,6 +160,9 @@ class matyasana:
         # self.all_methods.r_knee_y = llist[26][2]
 
         self.all_methods.all_x_values(frames=frames,llist=llist)
+        self.all_methods.all_y_values(frames=frames,llist=llist)
+        self.all_methods.all_z_values(frames=frames,llist=llist)
+
 
         left_leg_up = (self.all_methods.l_ankle_y < self.all_methods.r_knee_y)
         right_leg_up = (self.all_methods.r_ankle_y < self.all_methods.l_knee_y)
@@ -166,7 +179,7 @@ class matyasana:
 
         left_shoulder_x,left_shoulder_y,left_shoulder_z = llist[11][1:]
         right_shoulder_x,right_shoulder_y,right_shoulder_z = llist[12][1:]
-        tolerance = abs(int(left_shoulder_z - right_shoulder_z))
+        tolerance = abs((left_shoulder_z - right_shoulder_z))
 
 
         l_legs_on_ground = abs(int(self.all_methods.l_knee_y - hip_y))
@@ -183,8 +196,8 @@ class matyasana:
         r_45 = ( 30 <= self.right_knee1 <= 50)
         l_45 = (30 <= self.left_knee <= 50)
 
-        if not self.left_hip and not self.left_elbow and not self.left_knee and not self.left_shoulder and not self.right_knee1 and not left_shoulder_z and not right_shoulder_z:
-            return None
+        # if not self.left_hip and not self.left_elbow and not self.left_knee and not self.left_shoulder and not self.right_knee1 and not left_shoulder_z and not right_shoulder_z:
+        #     return None
         
         #check sleep POSITION
         sleeping_position = self.all_methods.is_person_standing_sitting(frames=frames,llist=llist,leg_points=(23,25,27),hip_points=(11,23,25),elbow_points=(11,13,15),height=height,width=width)
@@ -205,18 +218,18 @@ class matyasana:
 
             count = 0
 
-            if tolerance <= 40:
+            if tolerance <= 0.15:
 
                 self.all_methods.reset_after_40_sec()
                 self.all_methods.play_after_40_sec(["you are in side sleep position","please sleep in flat position"],llist=llist)
 
-            elif not self.start_exercise and left_shoulder_z < right_shoulder_z and tolerance > 40:
+            elif not self.start_exercise and left_shoulder_z < right_shoulder_z and tolerance > 0.15:
 
                 self.all_methods.reset_after_40_sec()
                 self.all_methods.play_after_40_sec(["Lie on your back with legs extended"],llist=llist)
 
 
-            elif not self.start_exercise and left_shoulder_z > right_shoulder_z and tolerance > 40:
+            elif not self.start_exercise and left_shoulder_z > right_shoulder_z and tolerance > 0.15:
                 self.start_exercise = True
 
         #CHECK INITIAL POSITION
@@ -411,6 +424,8 @@ class matyasana:
         hip_y = max(llist[23][2],llist[24][2])
 
         self.all_methods.all_x_values(frames=frames,llist=llist)
+        self.all_methods.all_y_values(frames=frames,llist=llist)
+        self.all_methods.all_z_values(frames=frames,llist=llist)
 
         left_leg_up = (self.all_methods.l_ankle_y < self.all_methods.r_knee_y)
         right_leg_up = (self.all_methods.r_ankle_y < self.all_methods.l_knee_y)
@@ -439,11 +454,11 @@ class matyasana:
         # flat_position = (self.left_hip_knee and 0 <= self.left_hip_knee <= 15 and 
         #                  self.left_hip_ankle and 0 <= self.left_hip_ankle <= 15)
 
-        r_45 = ( 30 <= self.right_knee1 <= 50)
-        l_45 = (30 <= self.left_knee <= 50)
+        r_45 = ( 30 <= self.left_knee1 <= 50)
+        l_45 = (30 <= self.right_knee <= 50)
 
-        if not self.left_hip and not self.left_elbow and not self.left_knee and not self.left_shoulder and not self.right_knee1 and not left_shoulder_z and not right_shoulder_z:
-            return None
+        # if not self.left_hip and not self.left_elbow and not self.left_knee and not self.left_shoulder and not self.right_knee1 and not left_shoulder_z and not right_shoulder_z:
+        #     return None
         
         #check sleep POSITION
         sleeping_position = self.all_methods.is_person_standing_sitting(frames=frames,llist=llist,leg_points=(23,25,27),hip_points=(11,23,25),elbow_points=(11,13,15),height=height,width=width)
@@ -464,18 +479,18 @@ class matyasana:
 
             count = 0
 
-            if tolerance <= 40:
+            if tolerance <= 0.15:
 
                 self.all_methods.reset_after_40_sec()
                 self.all_methods.play_after_40_sec(["you are in side sleep position","please sleep in flat position"],llist=llist)
 
-            elif not self.start_exercise and left_shoulder_z < right_shoulder_z and tolerance > 40:
+            elif not self.start_exercise and left_shoulder_z < right_shoulder_z and tolerance > 0.15:
 
                 self.all_methods.reset_after_40_sec()
                 self.all_methods.play_after_40_sec(["Lie on your back with legs extended"],llist=llist)
 
 
-            elif not self.start_exercise and left_shoulder_z < right_shoulder_z and tolerance > 40:
+            elif not self.start_exercise and left_shoulder_z < right_shoulder_z and tolerance > 0.15:
                 self.start_exercise = True
 
         #CHECK INITIAL POSITION
@@ -714,33 +729,56 @@ class matyasana:
 
     def left_matyasana_name(self,frames):
 
-        # correct = (
-        #     self.right_shoulder_hip and 11 <= self.right_shoulder_hip <= 30 and
-        #     self.head_position and self.head_position == "Right" and
-        #     self.right_elbow and 10 <= self.right_elbow <= 40 and
-        #     self.left_elbow1 and 10 <= self.left_elbow1 <= 40 and
-        #     self.right_hip and 80 <= self.right_hip <= 120 and
-        #     self.right_hip_knee and 30 <= self.right_hip_knee <= 50
+        correct = (
+            self.right_shoulder_hip and 11 <= self.right_shoulder_hip <= 30 and
+            self.head_position and self.head_position == "Right" and
+            self.right_elbow and 10 <= self.right_elbow <= 40 and
+            self.left_elbow1 and 10 <= self.left_elbow1 <= 40 and
+            self.right_hip and 80 <= self.right_hip <= 120 and
+            self.right_hip_knee and 30 <= self.right_hip_knee <= 50
 
-        # )
-        # if correct :
-        #     return True
-        pass
+        )
+        if correct :
+            return True
+        # pass
     def right_matyasana_name(self,frames):
 
-        # correct = (
-        #     self.left_shoulder_hip and 11 <= self.left_shoulder_hip <= 30 and
-        #     self.head_position and self.head_position == "Left" and
-        #     self.left_elbow and 10 <= self.left_elbow <= 40 and
-        #     self.left_elbow1 and 10 <= self.left_elbow1 <= 40 and
-        #     self.left_hip and 80 <= self.left_hip <= 120 and
-        #     self.left_hip_knee and 30 <= self.left_hip_knee <= 50
+        correct = (
+            self.left_shoulder_hip and 11 <= self.left_shoulder_hip <= 30 and
+            self.head_position and self.head_position == "Left" and
+            self.left_elbow and 10 <= self.left_elbow <= 40 and
+            self.left_elbow1 and 10 <= self.left_elbow1 <= 40 and
+            self.left_hip and 80 <= self.left_hip <= 120 and
+            self.left_hip_knee and 30 <= self.left_hip_knee <= 50
 
-        # )
+        )
 
-        # if correct :
-        #     return True
-        pass
+        if correct :
+            return True
+        # pass
+
+    def side_view_detect(self, frames, llist):
+        result = None
+
+        # Check if llist is valid and has enough data
+        if not llist or len(llist[0]) < 2:
+            # print("No human detected or invalid llist structure")
+            return None
+
+        side_view = self.all_methods.findSideView(
+            frame=frames,
+            FLAG_HEAD_OR_TAIL_POSITION="head",
+            head=llist[0][1]
+        )
+
+        if side_view == "left":
+            result = "left"
+        elif side_view == "right":
+            result = "right"
+        else:
+            result = None
+
+        return result
 
 def main():
 
@@ -774,34 +812,34 @@ def main():
         #     ref_frame = cv.resize(ref_frame, (400, 300))
         #     h, w, _ = ref_frame.shape
         #     frames[0:h, 0:w] = ref_frame  # Overlay in corner
-        img = cv.imread("second_images/matyasana.jpg")
-        img1 = cv.resize(img, None, fx=3.0, fy=3.0, interpolation=cv.INTER_LINEAR)
+        # img = cv.imread("second_images/matyasana.jpg")
+        # frames = cv.resize(img, None, fx=3.0, fy=3.0, interpolation=cv.INTER_LINEAR)
         
         if not flag:
 
-            detect.pose_positions(img1,draw=False)
-            llist = detect.pose_landmarks(img1,False)
-            nose_x = llist[0][1]
-            side_view = allmethods.findSideView(frame=frames,FLAG_HEAD_OR_TAIL_POSITION='head',head=nose_x)
+            detect.pose_positions(frames,draw=False)
+            llist = detect.pose_landmarks(frames,False)
+            
+            side_view = detect.side_view_detect(frames=frames,llist=llist)
 
             if side_view == "left":
-                detect.left_matyasana(frames=img1,llist=llist,elbow=(11,13,15), hip=(11,23,25), knee=(23,25,27), shoulder=(13,11,23),right_knee1=(24,26,28),right_elbow=(12,14,16),draw=True)
+                detect.left_matyasana(frames=frames,llist=llist,elbow=(11,13,15), hip=(11,23,25), knee=(23,25,27), shoulder=(13,11,23),right_knee1=(24,26,28),right_elbow=(12,14,16),draw=True)
                 # wrong_left = detect.wrong_matyasana_left(frames=frames,llist=llist,height=height,width=width)
                 if not checking_wrong:
-                    wrong_left = detect.wrong_left(frames=img1,llist=llist,height=height,width=width)
+                    wrong_left = detect.wrong_left(frames=frames,llist=llist,height=height,width=width)
                     if wrong_left:
                         checking_wrong = True
                 
                 if checking_wrong:
                     # correct = detect.left_matyasana_name(frames=frames)
                     if not ready_for_exercise and not flag:
-                        correct = detect.left_matyasana_name(frames=img1)
+                        correct = detect.left_matyasana_name(frames=frames)
                         if correct:
                             ready_for_exercise = True
                             reverse_yoga = True
 
                 if reverse_yoga  and not flag:
-                    left_reverse = detect.left_reverse_position(frames=img1,llist=llist)
+                    left_reverse = detect.left_reverse_position(frames=frames,llist=llist)
                     # ready_for_exercise = False
                     if left_reverse:
                         flag = True
@@ -809,27 +847,27 @@ def main():
 
             #Right Side
             elif side_view == "right":
-                detect.right_matyasana(frames=img1,llist=llist,elbow=(12,14,16), hip=(12,24,26),knee= (24,26,28), shoulder=(14,12,24),left_knee1=(23,25,27),left_elbow=(11,13,15),draw=True)                        
+                detect.right_matyasana(frames=frames,llist=llist,elbow=(12,14,16), hip=(12,24,26),knee= (24,26,28), shoulder=(14,12,24),left_knee1=(23,25,27),left_elbow=(11,13,15),draw=True)                        
                 
                 # correct = detect.right_matyasana_name(frames=frames)
                 if not checking_wrong:
-                    wrong_right = detect.wrong_right(frames=img1,llist=llist,height=height,width=width)
+                    wrong_right = detect.wrong_right(frames=frames,llist=llist,height=height,width=width)
                     if wrong_right:
                         checking_wrong = True
 
                 if checking_wrong:
                     if not ready_for_exercise and not flag:
-                        correct = detect.right_matyasana_name(frames=img1)
+                        correct = detect.right_matyasana_name(frames=frames)
                         if correct:
                             ready_for_exercise = True
                             reverse_yoga = True
 
                     if reverse_yoga and not flag:
-                        right_reverse = detect.right_reverse_position(frames=img1,llist=llist)
+                        right_reverse = detect.right_reverse_position(frames=frames,llist=llist)
                         if right_reverse:
                             flag = True
                         
-        cv.imshow("video",img1)
+        cv.imshow("video",frames)
 
         if cv.waitKey(10) & 0xFF == ord('d'):
             break

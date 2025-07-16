@@ -54,11 +54,11 @@ class allmethods:
         self.RIGHT_SIDE_VIEW = "right"
 
         #shoulder hip
-        self.MAX_BACK_LIMT = 45
+        self.MAX_BACK_LIMT = 30
         self.MIN_BACK_LIMT = 0
         
         #hip knee
-        self.MAX_THIGH_LIMT = 45
+        self.MAX_THIGH_LIMT = 30
         self.MIN_THIGH_LIMT = 0
 
     def pose_positions(self,frames,draw = True):
