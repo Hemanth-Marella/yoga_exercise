@@ -90,46 +90,35 @@ class natrajasana(yoga_exercise):
 
         return self.lmlist
     
-    def left_natrajasana(self, frames,llist, elbow, hip, knee,shoulder,right_knee1,right_elbow,draw =True):
+    def natrajasana(self, frames,llist, l_elbow, l_hip, l_knee,l_shoulder,r_elbow,r_hip,r_knee,r_shoulder,l_draw =True,r_draw = True,draw = True):
         
-        self.left_elbow, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=elbow,lmList=llist)
-        self.left_hip, hip_coords = self.all_methods.calculate_angle(frames=frames,points= hip,lmList=llist)
-        self.left_knee, knee_coords = self.all_methods.calculate_angle(frames=frames,points= knee,lmList=llist)       
-        self.left_shoulder,points_cor8 = self.all_methods.calculate_angle(frames=frames,points=shoulder, lmList=llist)
-        self.right_knee1, right_knee1_coords = self.all_methods.calculate_angle(frames=frames,points= right_knee1,lmList=llist)
-        self.right_elbow1, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=right_elbow,lmList=llist)
-        
+        self.left_elbow, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=l_elbow,lmList=llist,draw=l_draw)
+        self.left_hip, hip_coords = self.all_methods.calculate_angle(frames=frames,points= l_hip,lmList=llist,draw=l_draw)
+        self.left_knee, knee_coords = self.all_methods.calculate_angle(frames=frames,points= l_knee,lmList=llist,draw=l_draw)       
+        self.left_shoulder,points_cor8 = self.all_methods.calculate_angle(frames=frames,points=l_shoulder, lmList=llist,draw=l_draw)
+
+        self.right_elbow, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=r_elbow,lmList=llist,draw=r_draw)
+        self.right_hip, hip_coords = self.all_methods.calculate_angle(frames=frames, points=r_hip,lmList=llist,draw=r_draw)
+        self.right_knee, knee_coords = self.all_methods.calculate_angle(frames=frames,points= r_knee,lmList=llist,draw=r_draw)
+        self.right_shoulder,points_cor7 = self.all_methods.calculate_angle(frames=frames,points=r_shoulder, lmList=llist,draw=r_draw)
+
         if draw:
 
             cv.putText(frames,f'l_elbow{str(self.left_elbow)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
             cv.putText(frames,f'l_hip{str(self.left_hip)}',(10,80),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
             cv.putText(frames,f'l_knee{str(self.left_knee)}',(10,120),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
             cv.putText(frames,f'l_shoulder{str(self.left_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,f'r_knee1{str(self.right_knee1)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,f'r_elbow{str(self.right_elbow1)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-        return self.left_elbow,self.left_hip,self.left_knee,self.left_shoulder,self.right_knee1,self.right_elbow1#self.left_knee_y,self.left_wrist_y,self.ground_left,self.ground_left_min
 
-    def right_natrajasana(self,frames,llist,elbow, hip, knee, shoulder,left_knee1,left_elbow,draw=True):
+            cv.putText(frames,f'r_elbow{str(self.right_elbow)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_hip{str(self.right_hip)}',(10,220),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_knee{str(self.right_knee)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_shoulder{str(self.right_shoulder)}',(10,260),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
 
-        self.right_elbow, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=elbow,lmList=llist)
-        self.right_hip, hip_coords = self.all_methods.calculate_angle(frames=frames, points=hip,lmList=llist)
-        self.right_knee, knee_coords = self.all_methods.calculate_angle(frames=frames,points= knee,lmList=llist)
-        self.right_shoulder,points_cor7 = self.all_methods.calculate_angle(frames=frames,points=shoulder, lmList=llist)
-        self.left_knee1, left_knee1_coords = self.all_methods.calculate_angle(frames=frames,points= left_knee1,lmList=llist)
-        self.left_elbow1, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=left_elbow,lmList=llist)
 
-        if draw:
-
-            cv.putText(frames,f'r_elbow{str(self.right_elbow)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,f'r_hip{str(self.right_hip)}',(10,80),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,f'r_knee{str(self.right_knee)}',(10,120),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,f'r_shoulder{str(self.right_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,f'l_knee1{str(self.left_knee1)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,f'l_elbow{str(self.left_elbow1)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-
-        return self.right_elbow,self.right_hip,self.right_knee,self.right_shoulder,left_knee1,self.left_elbow1#self.right_knee_y,self.right_wrist_y,self.ground_right,self.ground_right_min
-    
     def side_view_detect(self,frames,llist):
+
+        self.all_methods.all_x_values(frames=frames,llist=llist)
+        self.all_methods.all_y_values(frames=frames,llist=llist)
 
         result = None
         
@@ -139,22 +128,22 @@ class natrajasana(yoga_exercise):
         shoulder_diff_z = abs(self.all_methods.l_shoulder_z - self.all_methods.r_shoulder_z)
         hip_diff_z = abs(self.all_methods.l_hip_z - self.all_methods.r_hip_z)
 
-        cv.putText(frames,f"hip diff {str(hip_diff_z)}" , (10,80),cv.FONT_HERSHEY_DUPLEX,2,(255,0,255),2)
-        cv.putText(frames,f"shoulder diff {str(shoulder_diff_z)}" , (10,120),cv.FONT_HERSHEY_DUPLEX,2,(255,0,255),2)
         
-        if shoulder_diff_z > 0.20 and hip_diff_z > 0.15:
+        if shoulder_diff_z > 0.05 and hip_diff_z > 0.05:
             
             if self.all_methods.l_shoulder_z < self.all_methods.r_shoulder_z:
-                if self.all_methods.l_hip_z < self.all_methods.r_hip_z:
+                # if self.all_methods.l_hip_z < self.all_methods.r_hip_z:
                     result = "left"
                 
             elif self.all_methods.r_shoulder_z < self.all_methods.l_shoulder_z:
-                if self.all_methods.r_hip_z < self.all_methods.l_hip_z:
+                # if self.all_methods.r_hip_z < self.all_methods.l_hip_z:
                     result = "right"
         else:
             self.all_methods.reset_after_40_sec()
             self.all_methods.play_after_40_sec(["please turn your body which side you are comfortable"],llist=llist)
             result = "forward" 
+
+        cv.putText(frames,result,(10,50),cv.FONT_HERSHEY_COMPLEX,2,(255,0,255),2)
 
         return result
     
@@ -164,9 +153,7 @@ class natrajasana(yoga_exercise):
         self.all_methods.all_x_values(frames=frames,llist=llist)
         self.all_methods.all_z_values(frames=frames,llist=llist)
 
-        middle_hip = ((llist[24][1] +llist[25][1]) // 2,(llist[24][2] +llist[25][2]) // 2)
-        self.middle_hip_angle = self.all_methods.calculate_angle(frames=frames,lmList=llist,points=(27,middle_hip,28),draw=True)
-        self.init_pos = (21 <= self.middle_hip_angle <= 59)
+       
 
         self.side = self.side_view_detect(frames=frames,llist=llist)
         if not llist:
@@ -176,7 +163,7 @@ class natrajasana(yoga_exercise):
         
         check_stand = (self.left_hip and 160 <= self.left_hip <= 180 and
                         self.left_knee and 160 <= self.left_knee <= 180 and
-                       self.right_knee1 and 160 <= self.right_knee1 <= 180)
+                       self.right_knee and 160 <= self.right_knee <= 180)
         
                 
         if not self.check_stand:#and 
@@ -190,24 +177,9 @@ class natrajasana(yoga_exercise):
                 self.check_stand = True     
             
         if self.check_stand and not self.initial_position:
-
-            if not self.init_pos:
-
-                if self.middle_hip_angle and 0 <= self.middle_hip_angle <= 20:
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["please stretch your both legs 30 degrees"],llist=llist)
-
-                elif self.middle_hip_angle and 60 <= self.middle_hip_angle <= 180:
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["please move your legs little bit closer"],llist=llist)
-
-            if self.init_pos:
-                self.initial_position = True
-
-        if self.initial_position:
                 
-            if self.init_pos:
-                initial_voices = ["you are in initial position please do natrajasana","please, fold ,and, lift your right leg up"]
+            if check_stand:
+                initial_voices = ["you are in initial position please do natrajasana","please, fold ,and, lift your left leg up"]
             
                 if self.initial_count < len(initial_voices):
                     self.all_methods.reset_after_40_sec()
@@ -218,6 +190,15 @@ class natrajasana(yoga_exercise):
                     self.initial_count = 1
                     
             else:
+
+                if self.left_knee and 0<= self.left_knee <= 24 :
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["your left leg is bending too much , please slight stretch your left leg"],llist=llist)
+
+                if self.left_knee and 51 <= self.left_knee <= 180:
+                    # cv.putText(frames,str(self.left_knee),(10,150),cv.FONT_HERSHEY_COMPLEX,2,(255,0,255),2)
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["please bend your left leg slight"],llist=llist)
                 # middle_foot = (self.all_methods.l_ankle_y + self.all_methods.l_toe_y) // 2
                     
                 if self.all_methods.l_ankle_x < self.all_methods.l_hip_x:
@@ -231,32 +212,39 @@ class natrajasana(yoga_exercise):
                 if self.all_methods.r_wrist_y > self.all_methods.nose_y:
                     self.all_methods.reset_after_40_sec()
                     self.all_methods.play_after_40_sec(["please raise your right hand up"],llist=llist)
-
-                if self.left_knee and 0<= self.left_knee <= 24 :
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["your left leg is bending too much , please slight stretch your left leg"],llist=llist)
-
-                if self.left_knee and 51 <= self.left_knee <= 180:
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["please bend your left leg slight"],llist=llist)
                 
-                
-                # elif middle_foot > self.all_methods.l_hip_y :
-                #     self.all_methods.reset_after_40_sec()
-                #     self.all_methods.play_after_40_sec(["please lift your left leg up ankle back side, cross your hip,hold your toe with left hand"],llist=llist)
-                    
+                self.l_touch_hand_foot_x = abs(int(self.all_methods.l_wrist_x - self.all_methods.l_ankle_x))
+                self.l_touch_hand_foot_y = abs(int(self.all_methods.l_wrist_y - self.all_methods.l_ankle_y))
+
+                if self.l_touch_hand_foot_x >= 50 and self.l_touch_hand_foot_y >= 80:
+
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["please touch your left foot with left hand"],llist=llist)
+
                 else:
                     if not self.first_pose_detected:
                         if (self.left_knee and 25 <= self.left_knee <= 50 and
                             self.left_hip and 160 <= self.left_hip <= 180 and
                             self.left_shoulder and 15 <= self.left_shoulder <= 40 and
-                            self.right_knee1 and 160 <= self.right_knee1 <= 180 and
+                            self.right_knee and 160 <= self.right_knee <= 180 and
                             self.left_elbow and 160 <= self.left_elbow <= 180 and
-                            self.all_methods.r_wrist_y < self.all_methods.nose_y):
+                            self.all_methods.r_wrist_y < self.all_methods.nose_y and
+                            self.l_touch_hand_foot_x <= 50 and self.l_touch_hand_foot_y <= 80):
+
+                            cv.putText(frames,str("half pose"),(10,100),cv.FONT_HERSHEY_COMPLEX,2,(255,0,255),2)
 
                             self.first_pose_detected = True
 
+
                     if self.first_pose_detected:
+
+                        self.l_touch_hand_foot_x = abs(int(self.all_methods.l_wrist_x - self.all_methods.l_ankle_x))
+                        self.l_touch_hand_foot_y = abs(int(self.all_methods.l_wrist_y - self.all_methods.l_ankle_y))
+
+                        if self.l_touch_hand_foot_x >= 50 and self.l_touch_hand_foot_y >= 80:
+
+                            self.all_methods.reset_after_40_sec()
+                            self.all_methods.play_after_40_sec(["please touch your left foot with left hand"],llist=llist)
 
                         if self.left_hip and 0 <= self.left_hip <= 99:
                             self.all_methods.reset_after_40_sec()
@@ -268,7 +256,7 @@ class natrajasana(yoga_exercise):
                         
                         else:
                             
-                            if self.left_knee and 0 <= self.left_knee <= 59:
+                            if self.left_knee and 0 <= self.left_knee <= 39:
                                 self.all_methods.reset_after_40_sec()
                                 self.all_methods.play_after_40_sec(["please raise up left leg , maintain lower and upper leg 90 degrees"],llist=llist)
                             
@@ -277,7 +265,7 @@ class natrajasana(yoga_exercise):
                                 self.all_methods.play_after_40_sec(["please bend your left leg , maintain lower and upper leg 90 degrees"],llist=llist)
                                 
                             else:
-                                if self.right_knee1 and 0 <= self.right_knee1 <= 159:   
+                                if self.right_knee and 0 <= self.right_knee <= 159:   
                                     self.all_methods.reset_after_40_sec()
                                     self.all_methods.play_after_40_sec(["please keep your right leg straight"],llist=llist)
                                     
@@ -286,14 +274,27 @@ class natrajasana(yoga_exercise):
                                        self.all_methods.reset_after_40_sec()
                                        self.all_methods.play_after_40_sec(["keep your left elbow straight and hold your toe"],llist=llist)
                                         
+                                    if self.right_elbow and 0 <= self.right_elbow <= 159:
+                                       self.all_methods.reset_after_40_sec()
+                                       self.all_methods.play_after_40_sec(["keep your left elbow straight and hold your toe"],llist=llist)
+                                        
+                                        
                                     else:
-                                        if self.left_shoulder and 0 <= self.left_shoulder <= 60:
+                                        if self.left_shoulder and 0 <= self.left_shoulder <= 30:
                                             self.all_methods.reset_after_40_sec()
                                             self.all_methods.play_after_40_sec(["please raise your left hand up"],llist=llist)
                                             
-                                        elif self.left_shoulder and 100 <= self.left_shoulder <= 180:
+                                        elif self.left_shoulder and 70 <= self.left_shoulder <= 180:
                                             self.all_methods.reset_after_40_sec()
                                             self.all_methods.play_after_40_sec(["please down your left hand"],llist=llist)
+                                            
+                                        if self.right_shoulder and 0 <= self.right_shoulder <= 99:
+                                            self.all_methods.reset_after_40_sec()
+                                            self.all_methods.play_after_40_sec(["please raise your right hand up"],llist=llist)
+                                            
+                                        elif self.right_shoulder and 131 <= self.right_shoulder <= 180:
+                                            self.all_methods.reset_after_40_sec()
+                                            self.all_methods.play_after_40_sec(["please down your right hand"],llist=llist)
                                             
                                         else:
                                             if self.all_methods.r_elbow_x > self.all_methods.l_hip_x:
@@ -301,7 +302,7 @@ class natrajasana(yoga_exercise):
                                                 self.all_methods.play_after_40_sec(["keep your right hand in forward side"],llist=llist)  
                                             
                                             else:
-                                                if self.right_elbow1 and 0 <= self.right_elbow1 <= 159:
+                                                if self.right_elbow and 0 <= self.right_elbow <= 159:
                                                     self.all_methods.reset_after_40_sec()
                                                     self.all_methods.play_after_40_sec(["keep your right hand straight"],llist=llist)
                                                
@@ -314,9 +315,9 @@ class natrajasana(yoga_exercise):
         if not llist:
             return 
         
-        middle_hip = ((llist[24][1] +llist[25][1]) // 2,(llist[24][2] +llist[25][2]) // 2)
-        self.middle_hip_angle = self.all_methods.calculate_angle(frames=frames,lmList=llist,points=(27,middle_hip,28),draw=True)
-        self.init_pos = (21 <= self.middle_hip_angle <= 59)
+        # middle_hip = ((llist[24][1] +llist[25][1]) // 2,(llist[24][2] +llist[25][2]) // 2)
+        # self.middle_hip_angle = self.all_methods.calculate_angle(frames=frames,lmList=llist,points=(27,middle_hip,28),draw=True)
+        # self.init_pos = (21 <= self.middle_hip_angle <= 59)
 
         self.all_methods.all_y_values(frames=frames,llist=llist)
         self.all_methods.all_x_values(frames=frames,llist=llist)
@@ -330,7 +331,7 @@ class natrajasana(yoga_exercise):
         
         check_stand = (self.right_hip and 160 <= self.right_hip <= 180 and
                         self.right_knee and 160 <= self.right_knee <= 180 and
-                       self.left_knee1 and 160 <= self.left_knee1 <= 180)
+                       self.left_knee and 160 <= self.left_knee <= 180)
         
                 
         if not self.check_stand:#and 
@@ -344,23 +345,8 @@ class natrajasana(yoga_exercise):
                 self.check_stand = True     
             
         if self.check_stand and not self.initial_position:
-
-            if not self.init_pos:
-
-                if self.middle_hip_angle and 0 <= self.middle_hip_angle <= 20:
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["please stretch your both legs 30 degrees"],llist=llist)
-
-                elif self.middle_hip_angle and 60 <= self.middle_hip_angle <= 180:
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["please move your legs little bit closer"],llist=llist)
-
-            if self.init_pos:
-                self.initial_position = True
-
-        if self.initial_position:
                 
-            if self.init_pos:
+            if check_stand:
                 initial_voices = ["you are in initial position please do natrajasana","please, fold ,and, lift your right leg up"]
             
                 if self.initial_count < len(initial_voices):
@@ -372,7 +358,14 @@ class natrajasana(yoga_exercise):
                     self.initial_count = 1
                     
             else:
-                # middle_foot = (self.all_methods.l_ankle_y + self.all_methods.l_toe_y) // 2
+
+                if self.right_knee and 0<= self.right_knee <= 24 :
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["your right leg is bending too much , please slight stretch your right leg"],llist=llist)
+
+                if self.right_knee and 51 <= self.right_knee <= 180:
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["please bend your right leg slight"],llist=llist)
                     
                 if self.all_methods.r_ankle_x < self.all_methods.r_hip_x:
                     self.all_methods.reset_after_40_sec()
@@ -386,72 +379,87 @@ class natrajasana(yoga_exercise):
                     self.all_methods.reset_after_40_sec()
                     self.all_methods.play_after_40_sec(["please raise your hand up"],llist=llist)
 
-                if self.right_knee and 0<= self.right_knee <= 24 :
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["your right leg is bending too much , please slight stretch your right leg"],llist=llist)
+                self.r_touch_hand_foot_x = abs(int(self.all_methods.r_wrist_x - self.all_methods.r_ankle_x))
+                self.r_touch_hand_foot_y = abs(int(self.all_methods.r_wrist_y - self.all_methods.r_ankle_y))
 
-                if self.right_knee and 51 <= self.right_knee <= 180:
+                if self.r_touch_hand_foot_x >= 50 and self.r_touch_hand_foot_y >= 80:
+
                     self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["please bend your right leg slight"],llist=llist)
-                
-                
-                # elif middle_foot > self.all_methods.l_hip_y :
-                #     self.all_methods.reset_after_40_sec()
-                #     self.all_methods.play_after_40_sec(["please lift your right leg up ankle back side, cross your hip,hold your toe with right hand"],llist=llist)
-                    
+                    self.all_methods.play_after_40_sec(["please touch your right foot with right hand"],llist=llist)
+                # cv.putText()
+
                 else:
                     if not self.first_pose_detected:
                         if (self.right_knee and 25 <= self.right_knee <= 50 and
                             self.right_hip and 160 <= self.right_hip <= 180 and
                             self.right_shoulder and 15 <= self.right_shoulder <= 30 and
-                            self.left_knee1 and 160 <= self.left_knee1 <= 180 and
+                            self.left_knee and 160 <= self.left_knee <= 180 and
                             self.right_elbow and 160 <= self.right_elbow <= 180 and
-                            self.all_methods.l_wrist_y < self.all_methods.nose_y):
+                            self.all_methods.l_wrist_y < self.all_methods.nose_y and
+                            self.r_touch_hand_foot_x <= 50 and self.r_touch_hand_foot_y <= 79):
+                            
 
                             self.first_pose_detected = True
 
                     if self.first_pose_detected:
 
+                        if self.r_touch_hand_foot_x >= 50 and self.r_touch_hand_foot_y >= 80:
+
+                            self.all_methods.reset_after_40_sec()
+                            self.all_methods.play_after_40_sec(["please touch your right foot with right hand"],llist=llist)
+
                         if self.right_hip and 0 <= self.right_hip <= 99:
                             self.all_methods.reset_after_40_sec()
                             self.all_methods.play_after_40_sec(["you are bending too much please slight relax your hip"],llist=llist)
                             
-                        elif self.right_hip and 141 <= self.right_hip <= 180:
+                        elif self.right_hip and 151 <= self.right_hip <= 180:
                             self.all_methods.reset_after_40_sec()
-                            self.all_methods.play_after_40_sec(["please raise  your right leg"],llist=llist)
+                            self.all_methods.play_after_40_sec(["please raise , your right leg"],llist=llist)
                             
                         else:
-                            if self.right_knee and 0 <= self.right_knee <= 59:
+                            if self.right_knee and 0 <= self.right_knee <= 39:
                                 self.all_methods.reset_after_40_sec()
                                 self.all_methods.play_after_40_sec(["please raise up right leg , maintain lower and upper leg 90 degrees"],llist=llist)
                                 
-                            # elif self.right_knee and right_knee_hip  and 21 <= right_knee_hip <= 90:
-                                
-                            #     self.all_methods.reset_after_40_sec()
-                            #     self.all_methods.play_after_40_sec(["keep your right upper leg in flat position"],llist=llist)
                                 
                             elif self.right_knee and 101 <= self.right_knee <= 180:
                                 self.all_methods.reset_after_40_sec()
                                 self.all_methods.play_after_40_sec(["please bend your right leg , maintain lower and upper leg 90 degrees"],llist=llist)
                                 
                             else:
-                                if self.left_knee1 and 0 <= self.left_knee1 <= 159:   
+                                if self.left_knee and 0 <= self.left_knee <= 89:   
                                     self.all_methods.reset_after_40_sec()
-                                    self.all_methods.play_after_40_sec(["please keep your right leg straight"],llist=llist)
+                                    self.all_methods.play_after_40_sec(["please keep your left leg straight"],llist=llist)
+                                
+                                if self.left_knee and 90 <= self.left_knee <= 159:   
+                                    self.all_methods.reset_after_40_sec()
+                                    self.all_methods.play_after_40_sec(["move little straight your left leg"],llist=llist)
 
                                 else:
-                                    if self.right_elbow and 0 <= self.right_elbow <= 159:
+                                    if self.right_elbow and 0 <= self.right_elbow <= 89:
                                         self.all_methods.reset_after_40_sec()
-                                        self.all_methods.play_after_40_sec(["keep your right elbow straight and hold your toe"],llist=llist)
-                                            
+                                        self.all_methods.play_after_40_sec(["please , keep your right elbow straight, hold your toe"],llist=llist)
+
+                                    elif self.right_elbow and 90 <= self.right_elbow <= 159:
+                                        self.all_methods.reset_after_40_sec()
+                                        self.all_methods.play_after_40_sec(["keep your right elbow straight and hold your toe"],llist=llist)  
+                                    
                                     else:
-                                        if self.right_shoulder and 0 <= self.right_shoulder <= 60:
+                                        if self.right_shoulder and 0 <= self.right_shoulder <= 30:
                                             self.all_methods.reset_after_40_sec()
                                             self.all_methods.play_after_40_sec(["please raise your right hand up"],llist=llist)
                                             
-                                        elif self.right_shoulder and 100 <= self.right_shoulder <= 180:
+                                        elif self.right_shoulder and 70 <= self.right_shoulder <= 180:
                                             self.all_methods.reset_after_40_sec()
                                             self.all_methods.play_after_40_sec(["please down your right hand"],llist=llist)
+                                            
+                                        if self.left_shoulder and 0 <= self.left_shoulder <= 99:
+                                            self.all_methods.reset_after_40_sec()
+                                            self.all_methods.play_after_40_sec(["please raise your left hand up"],llist=llist)
+                                            
+                                        elif self.left_shoulder and 131 <= self.left_shoulder <= 180:
+                                            self.all_methods.reset_after_40_sec()
+                                            self.all_methods.play_after_40_sec(["please down your left hand"],llist=llist)
                                             
                                         else:
                                             if self.all_methods.l_elbow_x < self.all_methods.r_hip_x:
@@ -459,7 +467,7 @@ class natrajasana(yoga_exercise):
                                                 self.all_methods.play_after_40_sec(["keep your left hand in forward side"],llist=llist)  
                                             
                                             else:
-                                                if self.left_elbow1 and 0 <= self.left_elbow1 <= 159:
+                                                if self.left_elbow and 0 <= self.left_elbow <= 159:
                                                     self.all_methods.reset_after_40_sec()
                                                     self.all_methods.play_after_40_sec(["keep your left hand straight"],llist=llist)
                                             
@@ -503,7 +511,7 @@ class natrajasana(yoga_exercise):
             self.all_methods.reset_after_40_sec()
             self.all_methods.play_after_40_sec(["please be staright your left leg"],llist=llist)
          
-        if self.right_knee1 and 0 <= self.right_knee1 <= 159:
+        if self.right_knee and 0 <= self.right_knee <= 159:
             self.all_methods.reset_after_40_sec()
             self.all_methods.play_after_40_sec(["please be staright your right leg"],llist=llist)
         
@@ -517,7 +525,7 @@ class natrajasana(yoga_exercise):
         self.r_r_count = 0
         r_r_voice = ["good stay in same position ","very good get relax and come to stand position"]
         
-        if (self.right_knee and 60 <= self.right_knee <= 100) and (self.left_knee1 and 160 <= self.left_knee1 <= 180):
+        if (self.right_knee and 60 <= self.right_knee <= 100) and (self.left_knee and 160 <= self.left_knee <= 180):
             
             if r_r_voice < len(r_r_voice):
                 self.all_methods.reset_after_40_sec()
@@ -532,7 +540,7 @@ class natrajasana(yoga_exercise):
             self.all_methods.reset_after_40_sec()
             self.all_methods.play_after_40_sec(["please be staright your right leg"],llist=llist)
         
-        elif self.left_knee1 and 0 <= self.left_knee1 <= 159:
+        elif self.left_knee and 0 <= self.left_knee <= 159:
             self.all_methods.reset_after_40_sec()
             self.all_methods.play_after_40_sec(["please be straight your right leg"],llist=llist)
 
@@ -544,12 +552,13 @@ class natrajasana(yoga_exercise):
     
     def left_natrajasana_name(self,frames):
         
-        correct = (self.left_knee and 60 <= self.left_knee <= 100 and
-                   self.right_knee1 and 160 <= self.right_knee1 <= 180 and
-                   self.left_hip and 100 <= self.left_hip <= 140 and
+        correct = (self.left_knee and 40 <= self.left_knee <= 100 and
+                   self.right_knee and 160 <= self.right_knee <= 180 and
+                   self.left_hip and 100 <= self.left_hip <= 150 and
                    self.left_elbow and 160 <= self.left_elbow <= 180 and
-                   self.right_elbow1 and 160 <= self.right_elbow1 <= 180 and
-                   self.left_shoulder and 61 <= self.left_shoulder <= 99 and
+                   self.right_elbow and 160 <= self.right_elbow <= 180 and
+                   self.left_shoulder and 31 <= self.left_shoulder <= 69 and
+                   self.right_shoulder and 100 <= self.right_shoulder <= 130 and
                    self.all_methods.r_elbow_x < self.all_methods.l_hip_x and
                    self.all_methods.l_wrist_x > self.all_methods.l_shoulder_x and
                    self.all_methods.l_ankle_x > self.all_methods.l_hip_x and
@@ -561,12 +570,13 @@ class natrajasana(yoga_exercise):
         
     def right_natrajasana_name(self,frames):
         
-        correct = (self.right_knee and 60 <= self.right_knee <= 100 and
-                   self.left_knee1 and 160 <= self.left_knee1 <= 180 and
-                   self.right_hip and 100 <= self.right_hip <= 140 and
+        correct = (self.right_knee and 40 <= self.right_knee <= 100 and
+                   self.left_knee and 160 <= self.left_knee <= 180 and
+                   self.right_hip and 100 <= self.right_hip <= 150 and
                    self.right_elbow and 160 <= self.right_elbow <= 180 and
-                   self.left_elbow1 and 160 <= self.left_elbow1 <= 180 and
-                   self.right_shoulder and 61 <= self.right_shoulder <= 99 and
+                   self.left_elbow and 160 <= self.left_elbow <= 180 and
+                   self.right_shoulder and 31 <= self.right_shoulder <= 69 and
+                   self.left_shoulder and 100 <= self.left_shoulder <= 130 and
                    self.all_methods.l_elbow_x > self.all_methods.r_hip_x and
                    self.all_methods.r_wrist_x < self.all_methods.r_shoulder_x and
                    self.all_methods.r_ankle_x < self.all_methods.r_hip_x and
@@ -593,14 +603,15 @@ def main():
 
         isTrue,frames = video_capture.read()
         height, width, _ =  frames.shape
+        
+        img = cv.imread("images/natrajasana.jpg")
 
         if not flag:
             
             detect.pose_positions(frames,draw = False)
             llist = detect.pose_landmarks(frames,draw=False)
-            
+            # detect.natrajasana(frames,llist,l_elbow=(12,14,16), l_hip=(12,24,26), l_knee=(24,26,28), l_shoulder=(14,12,24),r_elbow=(11,13,15),r_hip= (11,23,25),r_knee= (23,25,27), r_shoulder=(13,11,23),l_draw=True ,r_draw=True)
 
-                    # print("...............................................................")
             if not check_stand:
                 stand = detect.check_standing(frames=frames,llist=llist,height=height,width=width)
                 if stand:
@@ -615,7 +626,7 @@ def main():
 
                 elif side_view == "right":
                     
-                    detect.right_natrajasana(frames,llist,elbow=(12,14,16), hip=(12,24,26), knee=(24,26,28), shoulder=(14,12,24),left_knee1=(23,25,27),left_elbow=(11,13,15),draw=True)
+                    detect.natrajasana(frames,llist,r_elbow=(12,14,16), r_hip=(12,24,26), r_knee=(24,26,28), r_shoulder=(14,12,24),l_elbow=(11,13,15),l_hip= (11,23,25),l_knee= (23,25,27), l_shoulder=(13,11,23),l_draw=False ,r_draw=True,draw=False)
                     if not checking_wrong:
                         detect.side_view_detect(frames=frames,llist=llist)
                         wrong_right = detect.wrong_right(frames=frames,llist=llist,height=height,width=width)
@@ -634,7 +645,7 @@ def main():
 
                 elif side_view =="left":
                     
-                    detect.left_natrajasana(frames,llist,elbow=(11,13,15),hip= (11,23,25),knee= (23,25,27), shoulder=(13,11,23),right_knee1=(24,26,28),right_elbow=(12,14,16),draw=True)
+                    detect.natrajasana(frames,llist,r_elbow=(12,14,16), r_hip=(12,24,26), r_knee=(24,26,28), r_shoulder=(14,12,24),l_elbow=(11,13,15),l_hip= (11,23,25),l_knee= (23,25,27), l_shoulder=(13,11,23),l_draw=True ,r_draw=False,draw=False)
                     if not checking_wrong:
                         detect.side_view_detect(frames=frames,llist=llist)
                         wrong_right = detect.wrong_left(frames=frames,llist=llist,height=height,width=width)

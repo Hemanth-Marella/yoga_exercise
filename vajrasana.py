@@ -9,12 +9,30 @@ from threading import Thread
 from allMethods import allmethods
 from face_detect import HeadPoseEstimator
 from voiceModule import VoicePlay
-from body_position import bodyPosition
+# from body_position import bodyPosition
 from abstract_class import yoga_exercise
 
 class vajrasana(yoga_exercise):
      
     def __init__(self,mode = False,mindetectconf=0.5,mintrcackconf=0.5):
+
+        self.STOP_WATCH = 0
+        self.oneTimeRun_flag_for_making_rightLeg_straight = 0
+        self.oneTimeRun_flag_for_making_leftLeg_straight = 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         self.mode = mode
         self.mindetectconf = mindetectconf
         self.mintrcackconf = mintrcackconf
@@ -46,7 +64,7 @@ class vajrasana(yoga_exercise):
         self.all_methods = allmethods()
         self.stop = self.all_methods.stop_sometime()
         self.voice = VoicePlay()
-        self.body_position = bodyPosition()
+        # self.body_position = bodyPosition()
         self.head_pose_estimator = HeadPoseEstimator()
         self.round = True
 
@@ -98,8 +116,8 @@ class vajrasana(yoga_exercise):
         self.left_hip, hip_coords = self.all_methods.calculate_angle(frames=frames,points= hip,lmList=llist)
         self.left_knee, knee_coords = self.all_methods.calculate_angle(frames=frames,points= knee,lmList=llist)       
         self.left_shoulder,points_cor8 = self.all_methods.calculate_angle(frames=frames,points=shoulder, lmList=llist)
-        self.right_knee1, right_knee1_coords = self.all_methods.calculate_angle(frames=frames,points= right_knee1,lmList=llist)
-        self.right_elbow1, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=right_elbow,lmList=llist)
+        self.right_knee1, right_knee1_coords = self.all_methods.calculate_angle(frames=frames,points= right_knee1,lmList=llist,draw=False)
+        self.right_elbow1, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=right_elbow,lmList=llist,draw=False)
         
         if draw:
 
@@ -124,8 +142,8 @@ class vajrasana(yoga_exercise):
         self.right_hip, hip_coords = self.all_methods.calculate_angle(frames=frames, points=hip,lmList=llist)
         self.right_knee, knee_coords = self.all_methods.calculate_angle(frames=frames,points= knee,lmList=llist)
         self.right_shoulder,points_cor7 = self.all_methods.calculate_angle(frames=frames,points=shoulder, lmList=llist)
-        self.left_knee1, left_knee1_coords = self.all_methods.calculate_angle(frames=frames,points= left_knee1,lmList=llist)
-        self.left_elbow1, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=left_elbow,lmList=llist)
+        self.left_knee1, left_knee1_coords = self.all_methods.calculate_angle(frames=frames,points= left_knee1,lmList=llist,draw=False)
+        self.left_elbow1, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=left_elbow,lmList=llist,draw=False)
 
         if draw:
 
@@ -149,6 +167,31 @@ class vajrasana(yoga_exercise):
         return self.under_leg_slope
 
     
+    def reset_voiceHoldingTime_AND_oneTimeRunFlag(self, oneTimeRunFlag, ignoringFlag):
+        if getattr(self, oneTimeRunFlag) < 1:
+            setattr(self, oneTimeRunFlag, 1)
+            self.STOP_WATCH=0
+            self.resetOneTimeRunFlag(ignoringFlag=ignoringFlag)
+        
+        if self.voice.isVoicePlaying:
+            self.STOP_WATCH = 0
+        else:
+            self.STOP_WATCH+=1
+
+    def resetOneTimeRunFlag(self, ignoringFlag):
+        attr_map = {
+             "MAKING_RIGHT_LEG_STRAIGHT": "oneTimeRun_flag_for_making_rightLeg_straight",
+             "MAKING_LEFT_LEG_STRAIGHT": "oneTimeRun_flag_for_making_leftLeg_straight"
+        }
+
+        all_attrs = attr_map.values()
+        ignore_attr = attr_map.get(ignoringFlag)
+
+        for attr in all_attrs:
+            if attr != ignore_attr:
+                setattr(self, attr, 0)
+
+
     def wrong_vajrasana_left(self,frames,llist,height,width): 
 
         self.all_methods.all_x_values(frames=frames,llist=llist)
@@ -173,24 +216,31 @@ class vajrasana(yoga_exercise):
                       self.all_methods.l_hip_x > self.all_methods.r_wrist_x)
                       
         if not self.left_count and check_initial_position and check_left_knee and check_right_knee:
-
             self.left_count = True
             self.initial_position = True
-            return 
+
+        elif self.right_knee1 and 0 <= self.right_knee1 <= 159:
+            self.reset_voiceHoldingTime_AND_oneTimeRunFlag(oneTimeRunFlag="oneTimeRun_flag_for_making_rightLeg_straight", ignoringFlag="MAKING_RIGHT_LEG_STRAIGHT")
+            if self.STOP_WATCH//10 > 3:
+                self.voice.playAudio(["keep your right leg straight which side you are in"], play=True)
+            # self.all_methods.reset_after_40_sec()
+            # self.all_methods.play_after_40_sec(["keep your right leg straight which side you are in"],llist= llist)
+
+        elif self.left_knee and 0 <= self.left_knee <= 159:
+            self.reset_voiceHoldingTime_AND_oneTimeRunFlag(oneTimeRunFlag="oneTimeRun_flag_for_making_leftLeg_straight", ignoringFlag="MAKING_LEFT_LEG_STRAIGHT")
+            if self.STOP_WATCH//10 > 3:
+                self.voice.playAudio(["keep your right leg straight which side you are in"], play=True)
+            # self.all_methods.reset_after_40_sec()
+            # self.all_methods.play_after_40_sec(["keep your left leg straight which side you are in"],llist=llist)
+
+        elif not self.left_count and not check_right_knee:
+            self.all_methods.reset_after_40_sec()
+            self.all_methods.play_after_40_sec(["your left leg in back, please put in forward  "],llist=llist)
 
         elif not self.left_count and not check_left_knee:
 
             self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["keep your left leg straight which side you are in"],llist=llist)
-
-        elif not self.left_count and not check_right_knee:
-            self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["keep your right leg straight which side you are in"],llist=llist)
-        
-        elif not self.initial_position and not check_initial_position:
-
-            return
-        
+            self.all_methods.play_after_40_sec(["your left leg in back ,please put in forward "],llist=llist)
 
         if self.left_count:
                     
@@ -718,6 +768,7 @@ def main():
             print("Error: Couldn't read the frame")
             break
         
+        cv.putText(frames, f'TIMES:=> {detect.STOP_WATCH}', (10, 30), cv.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 0), 1)
         if not flag:
 
             detect.pose_positions(frames,draw=False)

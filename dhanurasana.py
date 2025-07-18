@@ -86,57 +86,25 @@ class dhanurasana(yoga_exercise):
         return self.lpslist 
     
 
-    def right_dhanurasana(self,frames,llist,elbow, hip, knee, shoulder,left_knee,left_elbow1, draw = True):
+    def dhanurasana(self, frames,llist, l_elbow, l_hip, l_knee,l_shoulder,r_elbow,r_hip,r_knee,r_shoulder,l_draw =True,r_draw = True,draw = True):
+        
 
-
-        self.head = self.head_pose.head_detect(frames=frames,llist=llist,points=(0,2,5))
-        self.left_ear = self.head_pose.left_ear_detect(frames=frames,llist=llist,left_point=7)
-        self.right_ear = self.head_pose.right_ear_detect(frames=frames,llist=llist,right_point=8)
-        self.head_position = self.head_pose.head_position_detect(frames=frames,llist=llist)
+        self.head = self.head_pose .head_detect(frames=frames,llist=llist,points=(0,2,5))
+        self.left_ear = self.head_pose .left_ear_detect(frames=frames,llist=llist,left_point=7)
+        self.right_ear = self.head_pose .right_ear_detect(frames=frames,llist=llist,right_point=8)
+        self.head_position = self.head_pose .head_position_detect(frames=frames,llist=llist)
         if self.head_position is None or self.left_ear is None or self.right_ear is None or self.head is None:
             return 
         
-        self.ground_right = self.all_methods.ground_distance_right(frames=frames,lmlist=llist)
-        self.min_ground_right = self.ground_right-30
+        self.left_elbow, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=l_elbow,lmList=llist,draw=l_draw)
+        self.left_hip, hip_coords = self.all_methods.calculate_angle(frames=frames,points= l_hip,lmList=llist,draw=l_draw)
+        self.left_knee, knee_coords = self.all_methods.calculate_angle(frames=frames,points= l_knee,lmList=llist,draw=l_draw)       
+        self.left_shoulder,points_cor8 = self.all_methods.calculate_angle(frames=frames,points=l_shoulder, lmList=llist,draw=l_draw)
 
-        self.right_elbow, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=elbow,lmList=llist)
-        self.right_hip, hip_coords = self.all_methods.calculate_angle(frames=frames, points=hip,lmList=llist)
-        self.right_knee, knee_coords = self.all_methods.calculate_angle(frames=frames,points= knee,lmList=llist)
-        self.right_shoulder,points_cor7 = self.all_methods.calculate_angle(frames=frames,points=shoulder, lmList=llist)
-        self.left_knee1,left_knee1_coords = self.all_methods.calculate_angle(frames=frames,lmList=llist,points=left_knee)
-        self.left_elbow1,left_elbow1_coords = self.all_methods.calculate_angle(frames=frames,lmList=llist,points=left_elbow1)
-
-        if draw:
-
-            cv.putText(frames,f'r_elbow{str(self.right_elbow)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,f'r_hip{str(self.right_hip)}',(10,80),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,f'r_knee{str(self.right_knee)}',(10,120),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,f'r_shoulder{str(self.right_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,f'l_knee1{str(self.left_knee1)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,f'l_elbow{str(self.left_elbow1)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,str(self.head_position),(10,280),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-
-        return self.right_elbow,self.right_hip,self.right_knee,self.right_shoulder,self.head_position,self.left_elbow1,self.left_knee1
-       
-    def left_dhanurasana(self,frames,llist,elbow, hip, knee,shoulder,right_knee,right_elbow1,draw = True):
-
-        self.head = self.head_pose.head_detect(frames=frames,llist=llist,points=(0,2,5))
-        self.left_ear = self.head_pose.left_ear_detect(frames=frames,llist=llist,left_point=7)
-        self.right_ear = self.head_pose.right_ear_detect(frames=frames,llist=llist,right_point=8)
-        self.head_position = self.head_pose.head_position_detect(frames=frames,llist=llist)
-        if self.head_position is None or self.left_ear is None or self.right_ear is None or self.head is None:
-            return 
-        
-        self.ground_left = self.all_methods.ground_distance_left(frames=frames,lmlist=llist)
-        self.min_ground_left = self.ground_left-30
-
-        self.left_elbow, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=elbow,lmList=llist)
-        self.left_hip, hip_coords = self.all_methods.calculate_angle(frames=frames,points= hip,lmList=llist)
-        self.left_knee, knee_coords = self.all_methods.calculate_angle(frames=frames,points= knee,lmList=llist)       
-        self.left_shoulder,points_cor8 = self.all_methods.calculate_angle(frames=frames,points=shoulder, lmList=llist)
-        self.right_knee1,right_knee1_coords = self.all_methods.calculate_angle(frames=frames,lmList=llist,points=right_knee)
-        self.right_elbow1, right_elbow1_coords = self.all_methods.calculate_angle(frames=frames, points=right_elbow1,lmList=llist)
-
+        self.right_elbow, elbow_coords = self.all_methods.calculate_angle(frames=frames, points=r_elbow,lmList=llist,draw=r_draw)
+        self.right_hip, hip_coords = self.all_methods.calculate_angle(frames=frames, points=r_hip,lmList=llist,draw=r_draw)
+        self.right_knee, knee_coords = self.all_methods.calculate_angle(frames=frames,points= r_knee,lmList=llist,draw=r_draw)
+        self.right_shoulder,points_cor7 = self.all_methods.calculate_angle(frames=frames,points=r_shoulder, lmList=llist,draw=r_draw)
 
         if draw:
 
@@ -144,12 +112,11 @@ class dhanurasana(yoga_exercise):
             cv.putText(frames,f'l_hip{str(self.left_hip)}',(10,80),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
             cv.putText(frames,f'l_knee{str(self.left_knee)}',(10,120),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
             cv.putText(frames,f'l_shoulder{str(self.left_shoulder)}',(10,160),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,f'r_knee1{str(self.right_knee1)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,f'r_elbow{str(self.right_elbow1)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
-            cv.putText(frames,str(self.head_position),(10,280),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
 
-        return self.left_elbow,self.left_hip,self.left_knee,self.left_shoulder,self.head_position,self.right_elbow1,self.right_knee1
-
+            cv.putText(frames,f'r_elbow{str(self.right_elbow)}',(10,200),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_hip{str(self.right_hip)}',(10,220),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_knee{str(self.right_knee)}',(10,240),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+            cv.putText(frames,f'r_shoulder{str(self.right_shoulder)}',(10,260),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
     
     def wrong_left(self,frames,llist,height,width):
 
@@ -183,7 +150,7 @@ class dhanurasana(yoga_exercise):
         self.left_hip_knee = self.all_methods.slope(frames=frames,lmlist=llist,point1=23,point2=25,height=height,width=width,draw=False)
 
 
-        # if not self.left_hip and not self.left_elbow and not self.left_knee and not self.left_shoulder and not self.right_knee1 and not left_shoulder_z and not right_shoulder_z:
+        # if not self.left_hip and not self.left_elbow and not self.left_knee and not self.left_shoulder and not self.right_knee and not left_shoulder_z and not right_shoulder_z:
         #     return None
         
 
@@ -219,11 +186,11 @@ class dhanurasana(yoga_exercise):
 
             if self.start_exercise:
                 # check sleep position
-                if self.right_shoulder_hip and self.right_hip_knee:
+                if self.left_shoulder_hip and self.left_hip_knee:
 
                     voice_list = ["you are in initial position, start dhanurasana","bend back your hip and hold your legs"]
 
-                    if ((0 <= self.right_shoulder_hip <= 15) and (0 <= self.right_hip_knee <= 15)):
+                    if ((0 <= self.left_shoulder_hip <= 15) and (0 <= self.left_hip_knee <= 15)):
                         # self.l_count = 0
 
                         if self.l_count < len(voice_list):
@@ -236,105 +203,141 @@ class dhanurasana(yoga_exercise):
                             
                     else:
 
-                        # ========== LEFT HIP ==========
-                        if self.left_hip is not None:
-                            if 151 <= self.left_hip <= 180:
-                                    self.all_methods.reset_after_40_sec()
-                                    self.all_methods.play_after_40_sec(["please raise your upper body up,please bend your hip back"], llist=llist)
-                                    return
-
-                            elif 0 <= self.left_hip <= 109:
-                                    self.all_methods.reset_after_40_sec()
-                                    self.all_methods.play_after_40_sec(["your are bend too much your hip"], llist=llist)
-                                    return
+                        # ========== LEFT ELBOW ==========
+                        if self.left_elbow is not None:
+                            if (0 <= self.left_elbow <= 69 and check_left_hand):
+                                self.all_methods.reset_after_40_sec()
+                                self.all_methods.play_after_40_sec(["please be straight your left hand back and hold your foot"], llist=llist)
+                                
                             
+                            elif (70 <= self.left_elbow <= 159 and check_left_hand):
+                                self.all_methods.reset_after_40_sec()
+                                self.all_methods.play_after_40_sec(["move straight your left hand, please hold your hand"], llist=llist)
+                                
+                            
+                            elif not check_left_hand:
+                                self.all_methods.reset_after_40_sec()
+                                self.all_methods.play_after_40_sec(["your left hand must be in back straight"],llist=llist)
+
                             else:
 
-                                # ========== LEFT KNEE ==========
-                                if self.left_knee is not None:
-                                    if (101 <= self.left_knee <= 180 and check_left_knee):
-                                        self.all_methods.reset_after_40_sec()
-                                        self.all_methods.play_after_40_sec(["please fold your left leg line in reference video"], llist=llist)
-                                        return
-                                    
-                                    elif not check_left_knee:
-                                        self.all_methods.reset_after_40_sec()
-                                        self.all_methods.play_after_40_sec(["your left leg must be in back side"],llist=llist)
 
-                                    elif (0 <= self.left_knee <= 69 and check_left_knee):
-                                        self.all_methods.reset_after_40_sec()
-                                        self.all_methods.play_after_40_sec(["you are bending too much left leg please relax little"], llist=llist)
-                                        return
-                                    
+                                if not check_right_hand:
+                                    self.all_methods.reset_after_40_sec()
+                                    self.all_methods.play_after_40_sec(["your right hand must be in back straight"],llist=llist)
+
+                                else:
+                                # ========== RIGHT ELBOW ==========
+                                    if self.right_elbow is not None:
+                                        if (0 <= self.right_elbow <= 69 and check_right_hand):
+                                            self.all_methods.reset_after_40_sec()
+                                            self.all_methods.play_after_40_sec(["please be straight your right hand back and hold your foot"], llist=llist)
+                                            
+                                        elif (70 <= self.right_elbow <= 159 and check_right_hand):
+                                            self.all_methods.reset_after_40_sec()
+                                            self.all_methods.play_after_40_sec(["keep your right hand straight , hold your foot"], llist=llist)
+                                            
+                                        
                                     else:
 
-                                        # ========== RIGHT KNEE ==========
-                                        if self.right_knee1 is not None:
-                                            if (141 <= self.right_knee1 <= 180 and check_right_knee):
+                                        # ========== LEFT KNEE ==========
+                                        if self.left_knee is not None:
+                                            if (101 <= self.left_knee <= 180 and check_left_knee):
                                                 self.all_methods.reset_after_40_sec()
-                                                self.all_methods.play_after_40_sec(["your right leg may be need to fold little bit"], llist=llist)
-                                                return
+                                                self.all_methods.play_after_40_sec(["please fold your left leg line in reference video"], llist=llist)
+                                                
                                             
-                                            elif not check_right_knee:
+                                            elif not check_left_knee:
                                                 self.all_methods.reset_after_40_sec()
-                                                self.all_methods.play_after_40_sec(["your right leg must be in back side"],llist=llist)
+                                                self.all_methods.play_after_40_sec(["your left leg must be in back side"],llist=llist)
 
-                                            elif (0 <= self.right_knee1 <= 79 and check_right_knee):
+                                            elif (0 <= self.left_knee <= 19 and check_left_knee):
                                                 self.all_methods.reset_after_40_sec()
-                                                self.all_methods.play_after_40_sec(["you are bending too much your right leg please relax little bit"], llist=llist)
-                                                return
+                                                self.all_methods.play_after_40_sec(["you are bending too much left leg ,please stretch your left leg little bit"], llist=llist)
+                                                
                                             
                                             else:
 
-                                                # ========== LEFT ELBOW ==========
-                                                if self.left_elbow is not None:
-                                                    if (0 <= self.left_elbow <= 159 and check_left_hand):
+                                                # ========== RIGHT KNEE ==========
+                                                if self.right_knee is not None:
+                                                    if (101 <= self.right_knee <= 180 and check_right_knee):
                                                         self.all_methods.reset_after_40_sec()
-                                                        self.all_methods.play_after_40_sec(["please be straight your left hand back and hold your foot"], llist=llist)
-                                                        return
+                                                        self.all_methods.play_after_40_sec(["your right leg may be need to fold little bit"], llist=llist)
+                                                        
                                                     
-                                                    elif not check_left_hand:
+                                                    elif not check_right_knee:
                                                         self.all_methods.reset_after_40_sec()
-                                                        self.all_methods.play_after_40_sec(["your left hand must be in back straight"],llist=llist)
+                                                        self.all_methods.play_after_40_sec(["your right leg must be in back side"],llist=llist)
 
+                                                    elif (0 <= self.right_knee <= 19 and check_right_knee):
+                                                        self.all_methods.reset_after_40_sec()
+                                                        self.all_methods.play_after_40_sec(["you are bending too much your right leg, please stretch your right leg little bit"], llist=llist)
+                                                        
+                                                    
                                                     else:
-                                                    
-                                                        # ========== RIGHT ELBOW ==========
-                                                        if self.right_elbow1 is not None:
-                                                            if (0 <= self.right_elbow1 <= 159 and check_right_hand):
-                                                                self.all_methods.reset_after_40_sec()
-                                                                self.all_methods.play_after_40_sec(["please be straight your right hand back and hold your foot"], llist=llist)
-                                                                return
-                                                            
-                                                            elif not check_right_hand:
-                                                                self.all_methods.reset_after_40_sec()
-                                                                self.all_methods.play_after_40_sec(["your right hand must be in back straight"],llist=llist)
 
-                                                            else:
-                                                                # ========== LEFT SHOULDER ==========
-                                                                if self.left_shoulder is not None:
-                                                                    if 0 <= self.left_shoulder <= 44:
-                                                                        self.all_methods.reset_after_40_sec()
-                                                                        self.all_methods.play_after_40_sec(["please raise your hands up little bit like in reference video"], llist=llist)
-                                                                        return
+                                                        #check hand is touch to foot or not
+                                                        l_touch_hand_foot_x = abs(int(self.all_methods.l_wrist_x - self.all_methods.l_ankle_x))
+                                                        l_touch_hand_foot_y = abs(int(self.all_methods.l_wrist_y - self.all_methods.l_ankle_y))
 
-                                                                    elif 71 <= self.left_shoulder <= 180:
-                                                                        self.all_methods.reset_after_40_sec()
-                                                                        self.all_methods.play_after_40_sec(["please move your hands inwards little bit like in reference video"], llist=llist)
-                                                                        return
+                                                        if l_touch_hand_foot_x >= 80 and l_touch_hand_foot_y >= 50:
+
+                                                            self.all_methods.reset_after_40_sec()
+                                                            self.all_methods.play_after_40_sec(["please touch your left foot with left hand"],llist=llist)
+
+                                                        r_touch_hand_foot_x = abs(int(self.all_methods.r_wrist_x - self.all_methods.r_ankle_x))
+                                                        r_touch_hand_foot_y = abs(int(self.all_methods.r_wrist_y - self.all_methods.r_ankle_y))
+
+                                                        if r_touch_hand_foot_x >= 80 and r_touch_hand_foot_y >= 50:
+
+                                                            self.all_methods.reset_after_40_sec()
+                                                            self.all_methods.play_after_40_sec(["please touch your right foot with right hand"],llist=llist)
+
+                                                        else:
+                                                            # ========== LEFT HIP ==========
+                                                            if self.left_hip is not None:
+                                                                if 171 <= self.left_hip <= 180:
+                                                                    self.all_methods.reset_after_40_sec()
+                                                                    self.all_methods.play_after_40_sec(["please raise your upper body up , please bend your hip back"], llist=llist)
                                                                     
-                                                                    else:
-                                                                        # ========== HEAD POSITION ==========
-                                                                        if self.head_position is not None:
-                                                                            if self.head_position != "Left":
-                                                                                
-                                                                                self.all_methods.reset_after_40_sec()
-                                                                                self.all_methods.play_after_40_sec(["please turn your head to left side"], llist=llist)
-                                                                                return
-                                                                            
-                                                                            else:
-                                                                                return True
 
+                                                                elif 0 <= self.left_hip <= 59:
+                                                                    self.all_methods.reset_after_40_sec()
+                                                                    self.all_methods.play_after_40_sec(["your are bend too much your hip"], llist=llist)
+                                                                    
+                                                                
+                                                                elif 60 <= self.left_hip <= 139:
+                                                                    self.all_methods.reset_after_40_sec()
+                                                                    self.all_methods.play_after_40_sec(["good , please raise up slight"],llist=llist)
+                                                                
+                                                                else:
+
+                                                                    # ========== LEFT SHOULDER ==========
+                                                                    if self.left_shoulder is not None:
+                                                                        if 0 <= self.left_shoulder <= 14:
+                                                                            self.all_methods.reset_after_40_sec()
+                                                                            self.all_methods.play_after_40_sec(["please raise your hands up little bit"], llist=llist)
+                                                                            
+
+                                                                        elif 41 <= self.left_shoulder <= 150:
+                                                                            self.all_methods.reset_after_40_sec()
+                                                                            self.all_methods.play_after_40_sec(["good, move your left hand little more down"], llist=llist)
+                                                                            
+                                                                        elif 151 <= self.left_shoulder <= 180:
+                                                                            self.all_methods.reset_after_40_sec()
+                                                                            self.all_methods.play_after_40_sec(["please move your left hand down"],llist=llist)
+                                                                        
+                                                                        else:
+                                                                            # ========== HEAD POSITION ==========
+                                                                            if self.head_position is not None:
+                                                                                if self.head_position != "Left":
+                                                                                    
+                                                                                    self.all_methods.reset_after_40_sec()
+                                                                                    self.all_methods.play_after_40_sec(["please turn your head to left side"], llist=llist)
+                                                                                    
+                                                                        
+                                                                                else:
+                                                                                    return True
 
 
     def wrong_right(self,frames,llist,height,width):
@@ -358,11 +361,6 @@ class dhanurasana(yoga_exercise):
         check_left_knee = (self.all_methods.r_hip_x > self.all_methods.l_knee_x)
         check_right_knee = (self.all_methods.r_hip_x > self.all_methods.r_knee_x)
 
-        # #check hands is in forward side
-
-        # # hip = min(self.all_methods.l_hip_x,self.all_methods.r_hip_x)
-        # # shoulder = min(self.all_methods.l_shoulder_x,self.all_methods.l_shoulder_x)
-
         hip = (self.all_methods.r_hip_x)
         shoulder = (self.all_methods.r_shoulder_x)
 
@@ -370,10 +368,6 @@ class dhanurasana(yoga_exercise):
 
         check_left_hand = (middle_hip_shoulder > self.all_methods.l_wrist_x)
         check_right_hand = (middle_hip_shoulder > self.all_methods.r_wrist_x)
-
-
-        if not self.right_hip and not self.right_elbow and not self.right_knee and not self.right_shoulder and not self.left_knee1 and not right_shoulder_z and not left_shoulder_z:
-            return
         
         #right slope condition
         self.right_shoulder_hip = self.all_methods.slope(frames=frames,lmlist=llist,point1=12,point2=24,height=height,width=width,draw=False)
@@ -407,7 +401,7 @@ class dhanurasana(yoga_exercise):
 
             elif not self.reverse_sleep and right_shoulder_z > left_shoulder_z and tolerance > 0.15:
 
-                self.all_methods.reset_after_40_sec([])
+                self.all_methods.reset_after_40_sec()
                 self.all_methods.play_after_40_sec(["you are in flat position","Lie on your stomach, with your, forehead on the ground"],llist=llist)
 
             if self.start_exercise:
@@ -428,106 +422,137 @@ class dhanurasana(yoga_exercise):
                             self.r_count = 1
 
                     else:
-                        # ===== Right Hip =====
-                        if self.right_hip is not None:
-                            if 151 <= self.right_hip <= 180:
+
+                         # ===== Right Elbow =====
+                        if self.right_elbow is not None:
+                            if (0 <= self.right_elbow <= 69 and check_right_hand):
                                 self.all_methods.reset_after_40_sec()
-                                self.all_methods.play_after_40_sec(["please raise your upper body up ,bend your hip back"], llist=llist)
-                                return
+                                self.all_methods.play_after_40_sec(["please straight your right hand and hold your foot"], llist=llist)
+                                
                             
-                            elif (0 <= self.right_hip <= 109):
+                            elif (70 <= self.right_elbow <= 159):
                                 self.all_methods.reset_after_40_sec()
-                                self.all_methods.play_after_40_sec(["you are bending too much your hip"], llist=llist)
-                                return
+                                self.all_methods.play_after_40_sec(["keep your rightt hand straight"],llist=llist)
+                                    
+                            
+                            elif not check_right_hand:
+                                self.all_methods.reset_after_40_sec()
+                                self.all_methods.play_after_40_sec(["your right hand must be in back straight"],llist=llist)
                             
                             else:
-                                # ===== Right Knee =====
-                                if self.right_knee is not None:
-                                    if (101 <= self.right_knee <= 180 and check_right_hand):
+
+                                #======Left Elbow =====
+                                if self.left_elbow is not None:
+                                    if (0 <= self.left_elbow <= 69 and check_left_hand):
+                                
                                         self.all_methods.reset_after_40_sec()
-                                        self.all_methods.play_after_40_sec(["please fold your right leg like in reference video"], llist=llist)
-                                        return
+                                        self.all_methods.play_after_40_sec(["please straight your left hand and hold your foot"], llist=llist)
                                     
-                                    elif not check_right_knee:
+                                    elif (70 <= self.left_elbow <= 159):
                                         self.all_methods.reset_after_40_sec()
-                                        self.all_methods.play_after_40_sec(["your right leg must be in back side"],llist=llist)
-
-
-                                    elif (0 <= self.right_knee <= 69 and check_right_hand):
+                                        self.all_methods.play_after_40_sec(["keep your left hand straight"],llist=llist)
+                                    
+                                    elif not check_left_hand:
                                         self.all_methods.reset_after_40_sec()
-                                        self.all_methods.play_after_40_sec(["you are bending too much right leg, please relax it a little"], llist=llist)
-                                        return
+                                        self.all_methods.play_after_40_sec(["your left hand must be in back straight"],llist=llist)
+
                                     
                                     else:
 
-                                        # ===== Left Knee (right pose check) =====
-                                        if self.left_knee1 is not None:
-                                            if (141 <= self.left_knee1 <= 180 and check_left_knee):
+                                        # ===== Right Knee =====
+                                        if self.right_knee is not None:
+                                            if (101 <= self.right_knee <= 180 and check_right_hand):
                                                 self.all_methods.reset_after_40_sec()
-                                                self.all_methods.play_after_40_sec(["your left leg may need to fold a little bit"], llist=llist)
-                                                return
-                                            
-                                            elif not check_left_knee:
-                                                self.all_methods.reset_after_40_sec()
-                                                self.all_methods.play_after_40_sec(["your left leg must be in back side"],llist=llist)
-                                            
-                                            elif (0 <= self.left_knee1 <= 79 and check_left_knee):
-                                                self.all_methods.reset_after_40_sec()
-                                                self.all_methods.play_after_40_sec(["you are bending too much your left leg, please relax a little bit"], llist=llist)
-                                                return
-                                            else:
+                                                self.all_methods.play_after_40_sec(["please fold your right leg like in reference video"], llist=llist)
                                                 
-                                                # ===== Right Elbow =====
-                                                if self.right_elbow is not None:
-                                                    if (0 <= self.right_elbow <= 159 and check_right_hand):
+                                            
+                                            elif not check_right_knee:
+                                                self.all_methods.reset_after_40_sec()
+                                                self.all_methods.play_after_40_sec(["your right leg must be in back side"],llist=llist)
+
+
+                                            elif (0 <= self.right_knee <= 19 and check_right_hand):
+                                                self.all_methods.reset_after_40_sec()
+                                                self.all_methods.play_after_40_sec(["you are bending too much right leg, please relax it a little"], llist=llist)
+                                                
+                                            
+                                            else:
+
+                                                # ===== Left Knee (right pose check) =====
+                                                if self.left_knee is not None:
+                                                    if (101 <= self.left_knee <= 180 and check_left_knee):
                                                         self.all_methods.reset_after_40_sec()
-                                                        self.all_methods.play_after_40_sec(["please straight your right hand and hold your foot"], llist=llist)
-                                                        return
+                                                        self.all_methods.play_after_40_sec(["your left leg may need to fold a little bit"], llist=llist)
+                                                        
                                                     
-                                                    elif not check_right_hand:
+                                                    elif not check_left_knee:
                                                         self.all_methods.reset_after_40_sec()
-                                                        self.all_methods.play_after_40_sec(["your right hand must be in back straight"],llist=llist)
+                                                        self.all_methods.play_after_40_sec(["your left leg must be in back side"],llist=llist)
                                                     
+                                                    elif (0 <= self.left_knee <= 19 and check_left_knee):
+                                                        self.all_methods.reset_after_40_sec()
+                                                        self.all_methods.play_after_40_sec(["you are bending too much your left leg, please relax a little bit"], llist=llist)
+                                                        
                                                     else:
 
-                                                        #======Left Elbow =====
-                                                        if self.left_elbow1 is not None:
-                                                            if (0 <= self.left_elbow1 <= 159 and check_left_hand):
-                                                                self.all_methods.reset_after_40_sec()
-                                                                self.all_methods.play_after_40_sec(["please straight your left hand and hold your foot"], llist=llist)
-                                                                return
-                                                            
-                                                            elif not check_left_hand:
-                                                                self.all_methods.reset_after_40_sec()
-                                                                self.all_methods.play_after_40_sec(["your left hand must be in back straight"],llist=llist)
+                                                        #check hand is touch to foot or not
 
-                                                            
-                                                            else:
+                                                        r_touch_hand_foot_x = abs(int(self.all_methods.r_wrist_x - self.all_methods.r_ankle_x))
+                                                        r_touch_hand_foot_y = abs(int(self.all_methods.r_wrist_y - self.all_methods.r_ankle_y))
 
-                                                                # ===== Right Shoulder =====
-                                                                if self.right_shoulder is not None:
-                                                                    if 0 <= self.right_shoulder <= 44:
-                                                                        self.all_methods.reset_after_40_sec()
-                                                                        self.all_methods.play_after_40_sec(["please straight your hands slightly like in the reference video"], llist=llist)
-                                                                        return
+                                                        if r_touch_hand_foot_x >= 80 and r_touch_hand_foot_y >= 50:
 
-                                                                    elif 71 <= self.right_shoulder <= 180:
-                                                                        self.all_methods.reset_after_40_sec()
-                                                                        self.all_methods.play_after_40_sec(["please staright your hands slightly like in the reference video"], llist=llist)
-                                                                        return
+                                                            self.all_methods.reset_after_40_sec()
+                                                            self.all_methods.play_after_40_sec(["please touch your right foot with right hand"],llist=llist)
 
-                                                                    else: 
 
-                                                                        # ===== Head Position =====
-                                                                        if self.head_position is not None:
-                                                                            if self.head_position != "Right":
-                                                                                self.all_methods.reset_after_40_sec()
-                                                                                self.all_methods.play_after_40_sec(["please turn your head to right side"], llist=llist)
+                                                        l_touch_hand_foot_x = abs(int(self.all_methods.l_wrist_x - self.all_methods.l_ankle_x))
+                                                        l_touch_hand_foot_y = abs(int(self.all_methods.l_wrist_y - self.all_methods.l_ankle_y))
 
-                                                                                return
+                                                        if l_touch_hand_foot_x >= 80 and l_touch_hand_foot_y >= 50:
+
+                                                            self.all_methods.reset_after_40_sec()
+                                                            self.all_methods.play_after_40_sec(["please touch your left foot with left hand"],llist=llist)
+                                                        else:
+
+                                                            # ===== Right Hip =====
+                                                            if self.right_hip is not None:
+                                                                if 171 <= self.right_hip <= 180:
+                                                                    self.all_methods.reset_after_40_sec()
+                                                                    self.all_methods.play_after_40_sec(["please raise your upper body up ,bend your hip back"], llist=llist)
+                                                                    
+                                                                
+                                                                elif (0 <= self.right_hip <= 139):
+                                                                    self.all_methods.reset_after_40_sec()
+                                                                    self.all_methods.play_after_40_sec(["you are bending too much your hip"], llist=llist)
+                                                                    
+                                                                
+                                                                else:
+                                                                    
+                                                                    # ===== Right Shoulder =====
+                                                                    if self.right_shoulder is not None:
+                                                                        if 0 <= self.right_shoulder <= 14:
+                                                                            self.all_methods.reset_after_40_sec()
+                                                                            self.all_methods.play_after_40_sec(["please straight your hands slightly like in the reference video"], llist=llist)
                                                                             
-                                                                            else:
-                                                                                return True
+
+                                                                        elif 41 <= self.right_shoulder <= 180:
+                                                                            self.all_methods.reset_after_40_sec()
+                                                                            self.all_methods.play_after_40_sec(["please staright your hands slightly like in the reference video"], llist=llist)
+                                                                            
+
+                                                                        else: 
+
+                                                                            # ===== Head Position =====
+                                                                            if self.head_position is not None:
+                                                                                if self.head_position != "Right":
+                                                                                    self.all_methods.reset_after_40_sec()
+                                                                                    self.all_methods.play_after_40_sec(["please turn your head to right side"], llist=llist)
+
+                                                                                    
+                                                                                
+                                                                                else:
+                                                                                    return True
                     
 
     def check_side_view(self,frames,llist,height,width):
@@ -556,12 +581,13 @@ class dhanurasana(yoga_exercise):
         self.right_shoulder_hip = self.all_methods.slope(frames=frames,lmlist=llist,point1=12,point2=24,height=height,width=width,draw=False)
         self.right_hip_knee = self.all_methods.slope(frames=frames,lmlist=llist,point1=24,point2=26,height=height,width=width,draw=False)
 
-        correct = (self.left_elbow1 and 160 <= self.left_elbow1 <= 180 and
+        correct = (self.left_elbow and 160 <= self.left_elbow <= 180 and
             self.right_elbow  and 160 <= self.right_elbow <= 180 and 
-            self.right_hip and 110 <= self.right_hip <= 150 and  
-            self.right_knee and 70 <= self.right_knee <= 100 and
-            self.left_knee1 and 80 <= self.left_knee <= 140 and
-            self.right_shoulder and 45 <= self.right_shoulder <= 70 and
+            self.right_hip and 140 <= self.right_hip <= 170 and  
+            self.right_knee and 20 <= self.right_knee <= 100 and
+            self.left_knee and 20 <= self.left_knee <= 140 and
+            self.right_shoulder and 15 <= self.right_shoulder <= 40 and
+
             self.head_position and self.head_position == "Right")
         
         if correct:
@@ -595,13 +621,16 @@ class dhanurasana(yoga_exercise):
         self.right_hip_knee = self.all_methods.slope(frames=frames,lmlist=llist,point1=24,point2=26,height=height,width=width,draw=False)
 
 
-        correct = (self.right_elbow1 and 160 <= self.right_elbow1 <= 180 and 
+        correct = (
+            self.right_elbow and 160 <= self.right_elbow <= 180 and 
             self.left_elbow and 160 <= self.left_elbow <= 180 and
-            self.left_hip and 110 <= self.left_hip <= 150 and
-            self.left_knee and 70 <= self.left_knee <= 100 and 
-            self.right_knee1 and 80 <= self.right_knee1 <= 140 and
-            self.left_shoulder and 45 <= self.left_shoulder <= 70 and
-            self.head_position and self.head_position == "Left")
+            self.left_hip and 140 <= self.left_hip <= 170 and
+            self.left_knee and 20 <= self.left_knee <= 100 and 
+            self.right_knee and 20 <= self.right_knee <= 100 and
+            self.left_shoulder and 15 <= self.left_shoulder <= 40 and
+
+            self.head_position and self.head_position == "Left"
+            )
         
         if correct:
             voice_list = ["good , stay in same position,wait for other instruction"," very good , back to sleep position"]
@@ -626,34 +655,15 @@ class dhanurasana(yoga_exercise):
         
 
     def right_dhanurasana_name(self,frames):  
-
-        #check legs is in forward side
-        check_left_knee = (self.all_methods.l_hip_x < self.all_methods.l_knee_x)
-        check_right_knee = (self.all_methods.l_hip_x < self.all_methods.r_knee_x)
-
-        #check hands is in forward side
-
-        # hip = min(self.all_methods.l_hip_x,self.all_methods.r_hip_x)
-        # shoulder = min(self.all_methods.l_shoulder_x,self.all_methods.l_shoulder_x)
-
-        hip = (self.all_methods.r_hip_x)
-        shoulder = (self.all_methods.r_shoulder_x)
-
-        middle_hip_shoulder = (hip + shoulder) // 2
-
-        check_left_hand = (middle_hip_shoulder < self.all_methods.l_wrist_x)
-        check_right_hand = (middle_hip_shoulder < self.all_methods.r_wrist_x)
-
        
         if (
-            self.left_elbow1 and 160 <= self.left_elbow1 <= 180 and
+            self.left_elbow and 160 <= self.left_elbow <= 180 and
             self.right_elbow  and 160 <= self.right_elbow <= 180 and 
-            self.right_hip and 110 <= self.right_hip <= 150 and  
-            self.right_knee and 70 <= self.right_knee <= 100 and
-            self.left_knee1 and 80 <= self.left_knee <= 140 and
-            self.right_shoulder and 45 <= self.right_shoulder <= 70 and
-            # check_left_knee and check_right_knee and
-            # check_right_hand and check_left_hand and 
+            self.right_hip and 140 <= self.right_hip <= 170 and  
+            self.right_knee and 20 <= self.right_knee <= 100 and
+            self.left_knee and 20 <= self.left_knee <= 140 and
+            self.right_shoulder and 15 <= self.right_shoulder <= 40 and
+
             self.head_position and self.head_position == "Right" ):
             
                 # self.all_methods.play_voice("Forward Bend, is a yoga pose that involves folding forward from a hasta uttanasana position, with legs straight and hands on the ground or")
@@ -668,32 +678,15 @@ class dhanurasana(yoga_exercise):
 
     def left_dhanurasana_name(self,frames):
 
-        #check legs is in forward side
-        check_left_knee = (self.all_methods.l_hip_x > self.all_methods.l_knee_x)
-        check_right_knee = (self.all_methods.l_hip_x > self.all_methods.r_knee_x)
-
-        #check hands is in forward side
-
-        # hip = max(self.all_methods.l_hip_x,self.all_methods.r_hip_x)
-        # shoulder = max(self.all_methods.l_shoulder_x,self.all_methods.l_shoulder_x)
-        hip = (self.all_methods.l_hip_x)
-        shoulder = (self.all_methods.l_shoulder_x)
-        middle_hip_shoulder = (hip + shoulder) // 2
-
-        check_left_hand = (middle_hip_shoulder > self.all_methods.l_wrist_x)
-        check_right_hand = (middle_hip_shoulder > self.all_methods.r_wrist_x)
-
-
 
         if (
-            self.right_elbow1 and 160 <= self.right_elbow1 <= 180 and 
+            self.right_elbow and 160 <= self.right_elbow <= 180 and 
             self.left_elbow and 160 <= self.left_elbow <= 180 and
-            self.left_hip and 110 <= self.left_hip <= 150 and
-            self.left_knee and 70 <= self.left_knee <= 100 and 
-            self.right_knee1 and 80 <= self.right_knee1 <= 140 and
-            self.left_shoulder and 45 <= self.left_shoulder <= 70 and
-            # check_left_knee and check_right_knee and
-            # check_right_hand and check_left_hand and 
+            self.left_hip and 140 <= self.left_hip <= 170 and
+            self.left_knee and 20 <= self.left_knee <= 100 and 
+            self.right_knee and 20 <= self.right_knee <= 100 and
+            self.left_shoulder and 15 <= self.left_shoulder <= 40 and
+
             self.head_position and self.head_position == "Left"
             ):
 
@@ -760,14 +753,13 @@ def main():
 
             if side_view ==  "right":
 
-                detect.right_dhanurasana(frames=frames,llist=llist,elbow=(12,14,16), hip=(12,24,26),knee= (24,26,28), shoulder=(14,12,24),left_knee=(23,25,27),left_elbow1=(11,13,15),draw=False)
+                detect.dhanurasana(frames,llist,r_elbow=(12,14,16), r_hip=(12,24,26), r_knee=(24,26,28), r_shoulder=(14,12,24),l_elbow=(11,13,15),l_hip= (11,23,25),l_knee= (23,25,27), l_shoulder=(13,11,23),l_draw=False ,r_draw=True,draw=False)
                 wrong_right = detect.wrong_right(frames=frames,llist=llist,height=height,width=width)
                 if not checking_wrong and wrong_right:
                     checking_wrong = True
 
                 if checking_wrong:
                     correct = detect.right_dhanurasana_name(frames=frames)
-
                     if not ready_for_exercise and not flag:
                         if correct:
                             ready_for_exercise = True
@@ -779,14 +771,13 @@ def main():
 
             elif side_view == "left":
 
-                detect.left_dhanurasana(frames=frames,llist=llist,elbow=(11,13 ,15),hip=(11,23,25),knee=(23,25,27) , shoulder=(13,11,23),right_knee= (24,26,28),right_elbow1=(12,14,16),draw=False)
+                detect.dhanurasana(frames,llist,r_elbow=(12,14,16), r_hip=(12,24,26), r_knee=(24,26,28), r_shoulder=(14,12,24),l_elbow=(11,13,15),l_hip= (11,23,25),l_knee= (23,25,27), l_shoulder=(13,11,23),l_draw=True ,r_draw=False,draw=False)
                 wrong_left = detect.wrong_left(frames=frames,llist=llist,height=height,width=width)
                 if not checking_wrong and wrong_left:
                     checking_wrong = True
                 
                 if checking_wrong:
                     correct = detect.left_dhanurasana_name(frames=frames)
-
                     if not ready_for_exercise and not flag:
                         if correct:
                             ready_for_exercise = True

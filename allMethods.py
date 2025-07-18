@@ -477,7 +477,7 @@ class allmethods:
 
     # this voice reset after every 30 sec
     def reset_voice(self):
-
+        # self.after_40 = 0
         if self.voice.isVoicePlaying:
             if self.counter >= 31:
                 self.counter = 0
@@ -499,21 +499,18 @@ class allmethods:
             return True
             
         return False
-    
 
     #this reset after every 40 sec
     def reset_after_40_sec(self):
-
-        # self.first_play = True
+        
         if self.voice.isVoicePlaying:
-            if self.after_40 >= 35:
+            if self.after_40 >= 34:
                 self.after_40 = 0
-                
-
 
     #this voice play after 40 sec
     def play_after_40_sec(self,message,llist):
 
+        # self.after_40 = 0
         if len(llist) == 0 and not llist :
             self.after_40 = 0
             # return 
@@ -621,6 +618,19 @@ class allmethods:
 
         return self.nose_z,self.l_hip_z,self.r_hip_z,self.l_knee_z,self.r_knee_z,self.l_ankle_z,self.r_ankle_z,self.l_elbow_z,self.r_elbow_z,self.l_wrist_z,self.r_wrist_z,self.l_shoulder_z,self.r_shoulder_z
 
+    def check_same_y_axis_between_twoPoints(self, point1, point2, tolerance=40):
+        point1_y = point1[1]
+        point2_y = point2[1]
+        if abs(point1_y - point2_y) <= tolerance :
+            return True
+        return False
+    
+    def check_same_x_axis_between_twoPoints(self, point1, point2, tolerance=40):
+        point1_x = point1[0]
+        point2_x = point2[0]
+        if abs(point1_x - point2_x) <= tolerance :
+            return True
+        return False
 
 def main():
     video_capture = cv.VideoCapture(0)
