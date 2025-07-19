@@ -27,6 +27,7 @@ class natrajasana(yoga_exercise):
         self.initial_position = False
         self.initial_count = 0
         self.first_pose_detected = False
+        
 
         self.mpPose = mp.solutions.pose
         self.pose= self.mpPose.Pose(
@@ -119,10 +120,11 @@ class natrajasana(yoga_exercise):
 
         self.all_methods.all_x_values(frames=frames,llist=llist)
         self.all_methods.all_y_values(frames=frames,llist=llist)
+        self.all_methods.all_z_values(frames=frames,llist=llist)
 
         result = None
         
-        self.all_methods.all_z_values(frames=frames,llist=llist)
+        # self.all_methods.all_z_values(frames=frames,llist=llist)
         # print(self.all_methods.l_ankle_z)
         
         shoulder_diff_z = abs(self.all_methods.l_shoulder_z - self.all_methods.r_shoulder_z)
@@ -212,11 +214,15 @@ class natrajasana(yoga_exercise):
                 if self.all_methods.r_wrist_y > self.all_methods.nose_y:
                     self.all_methods.reset_after_40_sec()
                     self.all_methods.play_after_40_sec(["please raise your right hand up"],llist=llist)
+
+                if (self.left_elbow and 0 <= self.left_elbow <= 159):
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["please keep your left hand straight"],llist=llist)
                 
                 self.l_touch_hand_foot_x = abs(int(self.all_methods.l_wrist_x - self.all_methods.l_ankle_x))
                 self.l_touch_hand_foot_y = abs(int(self.all_methods.l_wrist_y - self.all_methods.l_ankle_y))
 
-                if self.l_touch_hand_foot_x >= 50 and self.l_touch_hand_foot_y >= 80:
+                if self.l_touch_hand_foot_x >= 50 and self.l_touch_hand_foot_y >= 100:
 
                     self.all_methods.reset_after_40_sec()
                     self.all_methods.play_after_40_sec(["please touch your left foot with left hand"],llist=llist)
@@ -228,12 +234,14 @@ class natrajasana(yoga_exercise):
                             self.left_shoulder and 15 <= self.left_shoulder <= 40 and
                             self.right_knee and 160 <= self.right_knee <= 180 and
                             self.left_elbow and 160 <= self.left_elbow <= 180 and
-                            self.all_methods.r_wrist_y < self.all_methods.nose_y and
-                            self.l_touch_hand_foot_x <= 50 and self.l_touch_hand_foot_y <= 80):
+                            self.all_methods.r_wrist_y < self.all_methods.nose_y 
+                            ):
 
-                            cv.putText(frames,str("half pose"),(10,100),cv.FONT_HERSHEY_COMPLEX,2,(255,0,255),2)
+                            self.all_methods.reset_after_40_sec()
 
-                            self.first_pose_detected = True
+                            first_pose = self.all_methods.play_after_40_sec(["good , you completed half pose"],llist=llist)
+                            if first_pose:
+                                self.first_pose_detected = True
 
 
                     if self.first_pose_detected:
@@ -246,70 +254,89 @@ class natrajasana(yoga_exercise):
                             self.all_methods.reset_after_40_sec()
                             self.all_methods.play_after_40_sec(["please touch your left foot with left hand"],llist=llist)
 
-                        if self.left_hip and 0 <= self.left_hip <= 99:
+                        if self.left_hip and 0 <= self.left_hip <= 119:
                             self.all_methods.reset_after_40_sec()
                             self.all_methods.play_after_40_sec(["you are bending too much , please raise up your upper body"],llist=llist)
                                     
-                        elif self.left_hip and 141 <= self.left_hip <= 180:
-                            self.all_methods.reset_after_40_sec()
-                            self.all_methods.play_after_40_sec(["please bend your upper body"],llist=llist)
+                        elif self.left_hip and 166 <= self.left_hip <= 180:   
+                            self.hip_count =0 
+                            hip_list = ["slowly, lift your left leg with help of your hand", "you need to raise your leg little more, and please dont separate the palm and your foot", "doing well, balance your body properly, and atleast lift the leg, until your hip and knee should in same y axis"]
+                        
+                            if self.hip_count < len(hip_list):
+                                self.all_methods.reset_after_40_sec()
+                                hip_voice = self.all_methods.play_after_40_sec([hip_list[self.hip_count]],llist=llist)
+                                if hip_voice:
+                                    self.hip_count += 1
+                            else:
+                                self.hip_count = 0
                         
                         else:
-                            
-                            if self.left_knee and 0 <= self.left_knee <= 39:
+
+                            same_axis_for_knee_hip = abs(int(self.all_methods.l_knee_y - self.all_methods.l_hip_y))
+                            cv.putText(frames,f'axis{str(same_axis_for_knee_hip)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+                            if same_axis_for_knee_hip >= 100:
                                 self.all_methods.reset_after_40_sec()
-                                self.all_methods.play_after_40_sec(["please raise up left leg , maintain lower and upper leg 90 degrees"],llist=llist)
-                            
-                            elif self.left_knee and 101 <= self.left_knee <= 180:
-                                self.all_methods.reset_after_40_sec()
-                                self.all_methods.play_after_40_sec(["please bend your left leg , maintain lower and upper leg 90 degrees"],llist=llist)
+                                self.all_methods.play_after_40_sec(["Ensure your left knee and left hip are in the same line when you raise your right leg."],llist=llist)
                                 
                             else:
-                                if self.right_knee and 0 <= self.right_knee <= 159:   
+                                if self.all_methods.l_ankle_y > self.all_methods.l_hip_y:
                                     self.all_methods.reset_after_40_sec()
-                                    self.all_methods.play_after_40_sec(["please keep your right leg straight"],llist=llist)
+                                    self.all_methods.play_after_40_sec(["please raise your right ankle , and , cross your hip in up"],llist=llist)
+
+                                # if self.left_knee and 0 <= self.left_knee <= 39:
+                                #     self.all_methods.reset_after_40_sec()
+                                #     self.all_methods.play_after_40_sec(["please raise up left leg , maintain lower and upper leg 90 degrees"],llist=llist)
+                                
+                                # elif self.left_knee and 101 <= self.left_knee <= 180:
+                                #     self.all_methods.reset_after_40_sec()
+                                #     self.all_methods.play_after_40_sec(["please bend your left leg , maintain lower and upper leg 90 degrees"],llist=llist)
                                     
                                 else:
-                                    if self.left_elbow and 0 <= self.left_elbow <= 159:
-                                       self.all_methods.reset_after_40_sec()
-                                       self.all_methods.play_after_40_sec(["keep your left elbow straight and hold your toe"],llist=llist)
-                                        
-                                    if self.right_elbow and 0 <= self.right_elbow <= 159:
-                                       self.all_methods.reset_after_40_sec()
-                                       self.all_methods.play_after_40_sec(["keep your left elbow straight and hold your toe"],llist=llist)
-                                        
+                                    if self.right_knee and 0 <= self.right_knee <= 159:   
+                                        self.all_methods.reset_after_40_sec()
+                                        self.all_methods.play_after_40_sec(["please keep your right leg straight"],llist=llist)
                                         
                                     else:
-                                        if self.left_shoulder and 0 <= self.left_shoulder <= 30:
+                                        if self.left_elbow and 0 <= self.left_elbow <= 159:
                                             self.all_methods.reset_after_40_sec()
-                                            self.all_methods.play_after_40_sec(["please raise your left hand up"],llist=llist)
+                                            self.all_methods.play_after_40_sec(["keep your left elbow straight and hold your toe"],llist=llist)
                                             
-                                        elif self.left_shoulder and 70 <= self.left_shoulder <= 180:
-                                            self.all_methods.reset_after_40_sec()
-                                            self.all_methods.play_after_40_sec(["please down your left hand"],llist=llist)
-                                            
-                                        if self.right_shoulder and 0 <= self.right_shoulder <= 99:
-                                            self.all_methods.reset_after_40_sec()
-                                            self.all_methods.play_after_40_sec(["please raise your right hand up"],llist=llist)
-                                            
-                                        elif self.right_shoulder and 131 <= self.right_shoulder <= 180:
-                                            self.all_methods.reset_after_40_sec()
-                                            self.all_methods.play_after_40_sec(["please down your right hand"],llist=llist)
+                                        # if self.right_elbow and 0 <= self.right_elbow <= 159:
+                                        #     self.all_methods.reset_after_40_sec()
+                                        #     self.all_methods.play_after_40_sec(["keep your left elbow straight and hold your toe"],llist=llist)
+                                                
                                             
                                         else:
-                                            if self.all_methods.r_elbow_x > self.all_methods.l_hip_x:
+                                            # if self.left_shoulder and 0 <= self.left_shoulder <= 14:
+                                            #     self.all_methods.reset_after_40_sec()
+                                            #     self.all_methods.play_after_40_sec(["please raise your left hand up"],llist=llist)
+                                                
+                                            # elif self.left_shoulder and 70 <= self.left_shoulder <= 180:
+                                            #     self.all_methods.reset_after_40_sec()
+                                            #     self.all_methods.play_after_40_sec(["please down your left hand"],llist=llist)
+                                                
+                                            if self.right_shoulder and 0 <= self.right_shoulder <= 99:
                                                 self.all_methods.reset_after_40_sec()
-                                                self.all_methods.play_after_40_sec(["keep your right hand in forward side"],llist=llist)  
-                                            
+                                                self.all_methods.play_after_40_sec(["please raise your right hand up"],llist=llist)
+                                                
+                                            elif self.right_shoulder and 131 <= self.right_shoulder <= 180:
+                                                self.all_methods.reset_after_40_sec()
+                                                self.all_methods.play_after_40_sec(["please down your right hand"],llist=llist)
+                                                
                                             else:
-                                                if self.right_elbow and 0 <= self.right_elbow <= 159:
+                                                if self.all_methods.r_elbow_x > self.all_methods.l_hip_x:
                                                     self.all_methods.reset_after_40_sec()
-                                                    self.all_methods.play_after_40_sec(["keep your right hand straight"],llist=llist)
-                                               
+                                                    self.all_methods.play_after_40_sec(["keep your right hand in forward side"],llist=llist)  
+                                                
                                                 else:
-                                                    self.initial_count = 0
-                                                    return True
-            
+                                                    if self.right_elbow and 0 <= self.right_elbow <= 159:
+                                                        self.all_methods.reset_after_40_sec()
+                                                        self.all_methods.play_after_40_sec(["keep your right hand straight"],llist=llist)
+                                                
+                                                    else:
+                                                        self.initial_count = 0
+                                                        return True
+                
     def wrong_right(self,frames,llist,height,width):
         
         if not llist:
@@ -367,11 +394,11 @@ class natrajasana(yoga_exercise):
                     self.all_methods.reset_after_40_sec()
                     self.all_methods.play_after_40_sec(["please bend your right leg slight"],llist=llist)
                     
-                if self.all_methods.r_ankle_x < self.all_methods.r_hip_x:
+                if self.all_methods.r_ankle_x > self.all_methods.r_hip_x:
                     self.all_methods.reset_after_40_sec()
                     self.all_methods.play_after_40_sec(["please keep your right ankle back side"],llist=llist)
 
-                if self.all_methods.r_elbow_x < self.all_methods.r_hip_x:
+                if self.all_methods.r_elbow_x > self.all_methods.r_hip_x:
                     self.all_methods.reset_after_40_sec()
                     self.all_methods.play_after_40_sec(["please keep your right hand back side, and hold your foot"],llist=llist)
 
@@ -379,10 +406,14 @@ class natrajasana(yoga_exercise):
                     self.all_methods.reset_after_40_sec()
                     self.all_methods.play_after_40_sec(["please raise your hand up"],llist=llist)
 
+                if (self.right_elbow and 0 <= self.right_elbow <= 159):
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["please keep your right hand straight"],llist=llist)
+
                 self.r_touch_hand_foot_x = abs(int(self.all_methods.r_wrist_x - self.all_methods.r_ankle_x))
                 self.r_touch_hand_foot_y = abs(int(self.all_methods.r_wrist_y - self.all_methods.r_ankle_y))
 
-                if self.r_touch_hand_foot_x >= 50 and self.r_touch_hand_foot_y >= 80:
+                if self.r_touch_hand_foot_x >= 50 and self.r_touch_hand_foot_y >= 100:
 
                     self.all_methods.reset_after_40_sec()
                     self.all_methods.play_after_40_sec(["please touch your right foot with right hand"],llist=llist)
@@ -395,11 +426,13 @@ class natrajasana(yoga_exercise):
                             self.right_shoulder and 15 <= self.right_shoulder <= 30 and
                             self.left_knee and 160 <= self.left_knee <= 180 and
                             self.right_elbow and 160 <= self.right_elbow <= 180 and
-                            self.all_methods.l_wrist_y < self.all_methods.nose_y and
-                            self.r_touch_hand_foot_x <= 50 and self.r_touch_hand_foot_y <= 79):
-                            
+                            self.all_methods.l_wrist_y < self.all_methods.nose_y):
 
-                            self.first_pose_detected = True
+                            self.all_methods.reset_after_40_sec()
+
+                            first_pose = self.all_methods.play_after_40_sec(["good , you completed half pose "],llist=llist)
+                            if first_pose:
+                                self.first_pose_detected = True
 
                     if self.first_pose_detected:
 
@@ -408,72 +441,91 @@ class natrajasana(yoga_exercise):
                             self.all_methods.reset_after_40_sec()
                             self.all_methods.play_after_40_sec(["please touch your right foot with right hand"],llist=llist)
 
-                        if self.right_hip and 0 <= self.right_hip <= 99:
+                        if self.right_hip and 0 <= self.right_hip <= 119:
                             self.all_methods.reset_after_40_sec()
-                            self.all_methods.play_after_40_sec(["you are bending too much please slight relax your hip"],llist=llist)
-                            
-                        elif self.right_hip and 151 <= self.right_hip <= 180:
-                            self.all_methods.reset_after_40_sec()
-                            self.all_methods.play_after_40_sec(["please raise , your right leg"],llist=llist)
-                            
-                        else:
-                            if self.right_knee and 0 <= self.right_knee <= 39:
+                            self.all_methods.play_after_40_sec(["you are bending too much, please raise up your right leg"],llist=llist)
+
+                        elif self.right_hip and 166 <= self.right_hip <= 180:   
+                            self.hip_count =0 
+                            hip_list = ["slowly, lift your right leg with help of your hand", "you need to raise your leg little more, and please dont separate the palm and your foot", "doing well, balance your body properly, and atleast lift the leg, until your hip and knee should in same y axis"]
+                        
+                            if self.hip_count < len(hip_list):
                                 self.all_methods.reset_after_40_sec()
-                                self.all_methods.play_after_40_sec(["please raise up right leg , maintain lower and upper leg 90 degrees"],llist=llist)
-                                
-                                
-                            elif self.right_knee and 101 <= self.right_knee <= 180:
-                                self.all_methods.reset_after_40_sec()
-                                self.all_methods.play_after_40_sec(["please bend your right leg , maintain lower and upper leg 90 degrees"],llist=llist)
-                                
+                                hip_voice = self.all_methods.play_after_40_sec([hip_list[self.hip_count]],llist=llist)
+                                if hip_voice:
+                                    self.hip_count += 1
                             else:
-                                if self.left_knee and 0 <= self.left_knee <= 89:   
-                                    self.all_methods.reset_after_40_sec()
-                                    self.all_methods.play_after_40_sec(["please keep your left leg straight"],llist=llist)
-                                
-                                if self.left_knee and 90 <= self.left_knee <= 159:   
-                                    self.all_methods.reset_after_40_sec()
-                                    self.all_methods.play_after_40_sec(["move little straight your left leg"],llist=llist)
+                                self.hip_count = 0
 
-                                else:
-                                    if self.right_elbow and 0 <= self.right_elbow <= 89:
-                                        self.all_methods.reset_after_40_sec()
-                                        self.all_methods.play_after_40_sec(["please , keep your right elbow straight, hold your toe"],llist=llist)
+                        else:
 
-                                    elif self.right_elbow and 90 <= self.right_elbow <= 159:
-                                        self.all_methods.reset_after_40_sec()
-                                        self.all_methods.play_after_40_sec(["keep your right elbow straight and hold your toe"],llist=llist)  
+                            same_axis_for_knee_hip = abs(int(self.all_methods.r_knee_y - self.all_methods.r_hip_y))
+                            if same_axis_for_knee_hip >= 100:
+                                self.all_methods.reset_after_40_sec()
+                                self.all_methods.play_after_40_sec(["Ensure your right knee, and right hip, are in the same line, when you raise your right leg."],llist=llist)
+                                cv.putText(frames,f'axis{str(same_axis_for_knee_hip)}',(10,40),cv.FONT_HERSHEY_PLAIN,2,(0,0,0),2)
+                            else:
+                                if self.all_methods.r_ankle_y > self.all_methods.r_hip_y :
+                                    self.all_methods.reset_after_40_sec()
+                                    self.all_methods.play_after_40_sec(["please raise your right leg ankle , and , cross your hip in up"],llist=llist)
+
+                                # if self.right_knee and 0 <= self.right_knee <= 29:
+                                #     self.all_methods.reset_after_40_sec()
+                                #     self.all_methods.play_after_40_sec(["Extend your right lower leg, keeping both the upper and lower leg at a 90-degree angle."],llist=llist)
                                     
+                                    
+                                # elif self.right_knee and 71 <= self.right_knee <= 180:
+                                #     self.all_methods.reset_after_40_sec()
+                                #     self.all_methods.play_after_40_sec(["please bend your right lower leg , maintain lower and upper leg 90 degrees"],llist=llist)
+                                    
+                                else:
+                                    if self.left_knee and 0 <= self.left_knee <= 89:   
+                                        self.all_methods.reset_after_40_sec()
+                                        self.all_methods.play_after_40_sec(["please keep your left leg straight"],llist=llist)
+                                    
+                                    if self.left_knee and 90 <= self.left_knee <= 159:   
+                                        self.all_methods.reset_after_40_sec()
+                                        self.all_methods.play_after_40_sec(["move little straight your left leg"],llist=llist)
+
                                     else:
-                                        if self.right_shoulder and 0 <= self.right_shoulder <= 30:
+                                        if self.right_elbow and 0 <= self.right_elbow <= 89:
                                             self.all_methods.reset_after_40_sec()
-                                            self.all_methods.play_after_40_sec(["please raise your right hand up"],llist=llist)
-                                            
-                                        elif self.right_shoulder and 70 <= self.right_shoulder <= 180:
+                                            self.all_methods.play_after_40_sec(["please , keep your right elbow straight, hold your toe"],llist=llist)
+
+                                        elif self.right_elbow and 90 <= self.right_elbow <= 159:
                                             self.all_methods.reset_after_40_sec()
-                                            self.all_methods.play_after_40_sec(["please down your right hand"],llist=llist)
-                                            
-                                        if self.left_shoulder and 0 <= self.left_shoulder <= 99:
-                                            self.all_methods.reset_after_40_sec()
-                                            self.all_methods.play_after_40_sec(["please raise your left hand up"],llist=llist)
-                                            
-                                        elif self.left_shoulder and 131 <= self.left_shoulder <= 180:
-                                            self.all_methods.reset_after_40_sec()
-                                            self.all_methods.play_after_40_sec(["please down your left hand"],llist=llist)
-                                            
+                                            self.all_methods.play_after_40_sec(["keep your right elbow straight and hold your toe"],llist=llist)  
+                                        
                                         else:
-                                            if self.all_methods.l_elbow_x < self.all_methods.r_hip_x:
+                                            # if self.right_shoulder and 0 <= self.right_shoulder <= 14:
+                                            #     self.all_methods.reset_after_40_sec()
+                                            #     self.all_methods.play_after_40_sec(["please raise your right hand up"],llist=llist)
+                                                
+                                            # elif self.right_shoulder and 70 <= self.right_shoulder <= 180:
+                                            #     self.all_methods.reset_after_40_sec()
+                                            #     self.all_methods.play_after_40_sec(["please down your right hand"],llist=llist)
+                                                
+                                            if self.left_shoulder and 0 <= self.left_shoulder <= 109:
                                                 self.all_methods.reset_after_40_sec()
-                                                self.all_methods.play_after_40_sec(["keep your left hand in forward side"],llist=llist)  
-                                            
+                                                self.all_methods.play_after_40_sec(["please raise your left hand up"],llist=llist)
+                                                
+                                            elif self.left_shoulder and 151 <= self.left_shoulder <= 180:
+                                                self.all_methods.reset_after_40_sec()
+                                                self.all_methods.play_after_40_sec(["please down your left hand"],llist=llist)
+                                                
                                             else:
-                                                if self.left_elbow and 0 <= self.left_elbow <= 159:
+                                                if self.all_methods.l_elbow_x < self.all_methods.r_hip_x:
                                                     self.all_methods.reset_after_40_sec()
-                                                    self.all_methods.play_after_40_sec(["keep your left hand straight"],llist=llist)
-                                            
+                                                    self.all_methods.play_after_40_sec(["keep your left hand in forward side"],llist=llist)  
+                                                
                                                 else:
-                                                    # self.initial_count = 0
-                                                    return True
+                                                    if self.left_elbow and 0 <= self.left_elbow <= 159:
+                                                        self.all_methods.reset_after_40_sec()
+                                                        self.all_methods.play_after_40_sec(["keep your left hand straight"],llist=llist)
+                                                
+                                                    else:
+                                                        # self.initial_count = 0
+                                                        return True
                                             
     def check_standing(self,frames,llist,height,width):
 
@@ -494,89 +546,121 @@ class natrajasana(yoga_exercise):
     def left_reverse(self,frames):
         
         self.l_r_count = 0
-        l_r_voice = ["good stay in same position ","very good get relax and come to stand position"]
+        l_r_voice = ["good stay in same position ","very good get relax and come to half pose","please come to half pose"]
         
-        if (self.left_knee and 60 <= self.left_knee <= 100) and (self.right_knee1 and 160 <= self.right_knee1 <= 180):
+        if (self.right_knee and 160 <= self.right_knee <= 180 and
+            self.left_hip and 120 <= self.left_hip <= 165 and
+            self.left_elbow and 160 <= self.left_elbow <= 180 and
+            self.right_elbow and 160 <= self.right_elbow <= 180 and
+            # self.left_shoulder and 15 <= self.left_shoulder <= 100 and
+            self.right_shoulder and 90 <= self.right_shoulder <= 150):
             
-            if l_r_voice < len(l_r_voice):
+            if self.l_r_count < len(l_r_voice):
                 self.all_methods.reset_after_40_sec()
                 l_r = self.all_methods.play_after_40_sec([l_r_voice[self.l_r_count]],llist=llist)
                 if l_r:
-                    self.l_r_count += 1
+                    # self.l_r_count += 1
+                    return True
                     
             else:
                 self.l_r_count = 1
+
+    #     elif (self.left_knee and 25 <= self.left_knee <= 50 and
+    #         self.left_hip and 160 <= self.left_hip <= 180 and
+    #         self.left_shoulder and 15 <= self.left_shoulder <= 100 and
+    #         self.right_knee and 160 <= self.right_knee <= 180 and
+    #         self.left_elbow and 160 <= self.left_elbow <= 180):
+
+    #         self.all_methods.reset_after_40_sec()
+    #         self.all_methods.play_after_40_sec(["please come to stand position","please back to initial position"],llist=llist)
                 
-        if self.left_knee and 0 <= self.left_knee <= 159:
-            self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["please be staright your left leg"],llist=llist)
+    #     elif self.left_knee and 51 <= self.left_knee <= 159:
+    #         self.all_methods.reset_after_40_sec()
+    #         self.all_methods.play_after_40_sec(["please be straight your left leg"],llist=llist)
          
-        if self.right_knee and 0 <= self.right_knee <= 159:
-            self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["please be staright your right leg"],llist=llist)
+    #     elif self.right_knee and 0 <= self.right_knee <= 159:
+    #         self.all_methods.reset_after_40_sec()
+    #         self.all_methods.play_after_40_sec(["please be straight your right leg"],llist=llist)
         
-        if self.all_methods.is_person_standing_sitting == "standing":    
-            self.all_methods.reset_after_40_sec()
-            voice = self.all_methods.play_after_40_sec(["good job your yoga is perfectly completed"],llist=llist)
-            if voice:
-                return True
+    #     elif self.all_methods.is_person_standing_sitting == "standing":    
+    #         self.all_methods.reset_after_40_sec()
+    #         voice = self.all_methods.play_after_40_sec(["good job your yoga is perfectly completed"],llist=llist)
+    #         if voice:
+    #             return True
                 
     def right_reverse(self,frames):
+
         self.r_r_count = 0
-        r_r_voice = ["good stay in same position ","very good get relax and come to stand position"]
+        r_r_voice = ["good stay in same position ","very good get relax and come to half pose","please back to half pose"]
         
-        if (self.right_knee and 60 <= self.right_knee <= 100) and (self.left_knee and 160 <= self.left_knee <= 180):
+        if ( self.left_knee and 160 <= self.left_knee <= 180 and
+            self.right_hip and 120 <= self.right_hip <= 175 and
+            self.right_elbow and 160 <= self.right_elbow <= 180 and
+            self.left_elbow and 160 <= self.left_elbow <= 180 and
+            # self.right_shoulder and 15 <= self.right_shoulder <= 100 and
+            self.left_shoulder and 90 <= self.left_shoulder <= 150):
             
-            if r_r_voice < len(r_r_voice):
+            if self.r_r_count < len(r_r_voice):
                 self.all_methods.reset_after_40_sec()
                 r_r = self.all_methods.play_after_40_sec([r_r_voice[self.r_r_count]],llist=llist)
                 if r_r:
-                    self.r_r_count += 1
+                    # self.r_r_count += 1
+                    return True
                     
             else:
                 self.r_r_count = 1
-                
-        if self.right_knee and 0 <= self.right_knee <= 159:
-            self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["please be staright your right leg"],llist=llist)
-        
-        elif self.left_knee and 0 <= self.left_knee <= 159:
-            self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["please be straight your right leg"],llist=llist)
 
-        if self.all_methods.is_person_standing_sitting == "standing":    
-            self.all_methods.reset_after_40_sec()
-            voice = self.all_methods.play_after_40_sec(["good job your yoga is perfectly completed"],llist=llist)
-            if voice:
-                return True
+    #     elif (self.right_knee and 25 <= self.right_knee <= 50 and
+    #         self.right_hip and 160 <= self.right_hip <= 180 and
+    #         self.right_shoulder and 15 <= self.right_shoulder <= 30 and
+    #         self.left_knee and 160 <= self.left_knee <= 180 and
+    #         self.right_elbow and 160 <= self.right_elbow <= 180):
+
+    #         self.all_methods.reset_after_40_sec()
+    #         self.all_methods.play_after_40_sec(["please come to stand position","please back to initial position"],llist=llist)
+                
+                
+    #     elif self.right_knee and 51 <= self.right_knee <= 159:
+    #         self.all_methods.reset_after_40_sec()
+    #         self.all_methods.play_after_40_sec(["please be straight your right leg"],llist=llist)
+        
+    #     elif self.left_knee and 0 <= self.left_knee <= 159:
+    #         self.all_methods.reset_after_40_sec()
+    #         self.all_methods.play_after_40_sec(["please be straight your right leg"],llist=llist)
+
+    #     if self.all_methods.is_person_standing_sitting == "standing":    
+    #         self.all_methods.reset_after_40_sec()
+    #         voice = self.all_methods.play_after_40_sec(["good job your yoga is perfectly completed"],llist=llist)
+    #         if voice:
+    #             return True
     
     def left_natrajasana_name(self,frames):
         
-        correct = (self.left_knee and 40 <= self.left_knee <= 100 and
+        correct = (
                    self.right_knee and 160 <= self.right_knee <= 180 and
-                   self.left_hip and 100 <= self.left_hip <= 150 and
+                   self.left_hip and 120 <= self.left_hip <= 165 and
                    self.left_elbow and 160 <= self.left_elbow <= 180 and
                    self.right_elbow and 160 <= self.right_elbow <= 180 and
-                   self.left_shoulder and 31 <= self.left_shoulder <= 69 and
-                   self.right_shoulder and 100 <= self.right_shoulder <= 130 and
+                #    self.left_shoulder and 15 <= self.left_shoulder <= 69 and
+                   self.right_shoulder and 110 <= self.right_shoulder <= 150 and
                    self.all_methods.r_elbow_x < self.all_methods.l_hip_x and
                    self.all_methods.l_wrist_x > self.all_methods.l_shoulder_x and
                    self.all_methods.l_ankle_x > self.all_methods.l_hip_x and
                    self.all_methods.l_knee_x > self.all_methods.l_hip_x)
         
         if correct:
-            return True
+                return True
         
         
     def right_natrajasana_name(self,frames):
         
-        correct = (self.right_knee and 40 <= self.right_knee <= 100 and
+        correct = (
                    self.left_knee and 160 <= self.left_knee <= 180 and
-                   self.right_hip and 100 <= self.right_hip <= 150 and
+                   self.right_hip and 120 <= self.right_hip <= 165 and
                    self.right_elbow and 160 <= self.right_elbow <= 180 and
                    self.left_elbow and 160 <= self.left_elbow <= 180 and
-                   self.right_shoulder and 31 <= self.right_shoulder <= 69 and
-                   self.left_shoulder and 100 <= self.left_shoulder <= 130 and
+                #    self.right_shoulder and 15 <= self.right_shoulder <= 69 and
+                   self.left_shoulder and 110 <= self.left_shoulder <= 150 and
                    self.all_methods.l_elbow_x > self.all_methods.r_hip_x and
                    self.all_methods.r_wrist_x < self.all_methods.r_shoulder_x and
                    self.all_methods.r_ankle_x < self.all_methods.r_hip_x and
@@ -655,6 +739,7 @@ def main():
                     if checking_wrong and not reverse_yoga:
                         correct = detect.right_natrajasana_name(frames=frames)
                         if correct:
+                            # flag = True
                             reverse_yoga = True
                         
                     if reverse_yoga:
