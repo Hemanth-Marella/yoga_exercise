@@ -308,7 +308,7 @@ class natrajasana(yoga_exercise):
                                 
                                 elif self.left_knee and 35 <= self.left_knee <= 70 :
                                     self.all_methods.reset_after_40_sec()
-                                    self.all_methods.play_after_40_sec([" you almost good,please maintain 90 degrees"],llist=llist)
+                                    self.all_methods.play_after_40_sec([" you almost good,move some outwards your left leg"],llist=llist)
 
                                 elif self.left_knee and 111 <= self.left_knee <= 150:
                                     self.all_methods.reset_after_40_sec()
@@ -523,7 +523,7 @@ class natrajasana(yoga_exercise):
 
                                 elif self.right_knee and 35 <= self.right_knee <= 70:
                                     self.all_methods.reset_after_40_sec()
-                                    self.all_methods.play_after_40_sec(["good, you almost close, make some stretch your lower leg."],llist=llist)
+                                    self.all_methods.play_after_40_sec(["good, you almost close, move some outward your lower leg."],llist=llist)
                                     
                                 elif self.right_knee and 111 <= self.right_knee <= 150:
                                     self.all_methods.reset_after_40_sec()
