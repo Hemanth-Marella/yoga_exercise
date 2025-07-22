@@ -538,7 +538,7 @@ class vajrasana(yoga_exercise):
 
             self.all_methods.reset_after_40_sec()
             self.all_methods.play_after_40_sec(["please be in sitting position this yoga may started in sitting position"],llist=llist)
-            return False
+            # return False
        
     def check_side_view(self,frames,llist,height,width,left_knee_angle,right_knee_angle):
 

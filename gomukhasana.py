@@ -25,7 +25,7 @@ class gomukhasana(yoga_exercise):
         self.mindetectconf = mindetectconf
         self.mintrcackconf = mintrcackconf
 
-        self.check_sitting = False
+        
         self.start_exercise = False
         self.initial_position = False
         self.check_body_turn = False
@@ -158,7 +158,7 @@ class gomukhasana(yoga_exercise):
             
             return None
 
-        sitting_position = self.all_methods.is_person_standing_sitting(frames=frames,llist=llist,leg_points=(23,25,27),hip_points=(11,23,25),elbow_points=(11,13,15),height=height,width=width)
+        sitting_position = self.check_sitting(frames=frames,llist=llist,height=height,width=width)
 
         if not self.start_exercise and sitting_position == "sitting":
             self.start_exercise = True
@@ -204,9 +204,9 @@ class gomukhasana(yoga_exercise):
 
                 if self.initial_position:
                     
-                    if 160 <= self.left_knee <= 180 and 160 <= self.right_knee <= 180 and 170 <= self.left_hip <= 180:
+                    if  170 <= self.left_hip <= 180:
 
-                        voice_list = ["you are in initial position , start gomukhasana","please keep your left foot under right thigh"]
+                        voice_list = ["you are in initial position , start gomukhasana","please, keep your left foot under right thigh"]
 
                         if self.count < len(voice_list):
 
@@ -283,6 +283,21 @@ class gomukhasana(yoga_exercise):
                                                     else:
                                                         return True
 
+    def check_sitting(self,frames,llist,height,width):
+
+        if len(llist) == 0:
+            return None
+
+        sitting_position = self.all_methods.is_person_standing_sitting(frames=frames,llist=llist,leg_points=(23,25,27),hip_points=(11,23,25),elbow_points=(11,13,15),height=height,width=width)
+
+        if sitting_position == "sitting":
+            return True
+
+        elif sitting_position != "sitting":
+
+            self.all_methods.reset_after_40_sec()
+            self.all_methods.play_after_40_sec(["please be in sitting position, this yoga may started in sitting position"],llist=llist)
+            # return False
 
     def gomukhasana_name(self,frames):
 
@@ -349,7 +364,7 @@ def main():
         if not isTrue:
             print("Error: Couldn't read the frame")
             break
-        img = cv.imread("images/image1.webp")
+        # img = cv.imread("images/image1.webp")
 
 
 
@@ -357,11 +372,13 @@ def main():
 
             detect.pose_positions(frames,draw=False)
             llist = detect.pose_landmarks(frames,False)
+            sitting_detect = detect.check_sitting(frames=frames,llist=llist,height=height,width=width)
+            print(sitting_detect)
 
             if len(llist) is None:
                 return None
 
-            if len(llist) != 0:
+            if sitting_detect:
 
                 detect.gomukhasana(frames=frames,llist=llist,left_elbow=(11,13,15), left_hip=(11,23,25), left_knee=(23,25,27), left_shoulder=(13,11,23),right_elbow=(12,14,16), right_hip=(12,24,26),right_knee= (24,26,28), right_shoulder=(14,12,24),draw=False)
                 detect.check_slopes(frames=frames,lmlist=llist,height=height,width=width)
