@@ -26,10 +26,10 @@ class gomukhasana(yoga_exercise):
         self.mintrcackconf = mintrcackconf
 
         
-        self.start_exercise = False
         self.initial_position = False
         self.check_body_turn = False
         self.pose_completed = False
+        self.half_pose = False
         self.count = 0
 
         self.mpPose = mp.solutions.pose
@@ -154,134 +154,120 @@ class gomukhasana(yoga_exercise):
         if not llist and len(llist):
             return None
 
-        if not self.left_knee and not self.right_knee and not  self.left_shoulder and not self.right_shoulder and not self.left_shoulder_elbow_slope and not self.right_shoulder_elbow_slope and  not self.left_shoulder_hip_slope and not self.right_shoulder_hip_slope and not self.left_knee_ankle_slope and not self.right_knee_ankle_slope and not self.head_position :
-            
-            return None
+        self.side_view = self.check_turn(frames=frames,llist=llist,height=height,width=width) 
 
-        sitting_position = self.check_sitting(frames=frames,llist=llist,height=height,width=width)
+        if not self.check_body_turn:
 
-        if not self.start_exercise and sitting_position == "sitting":
-            self.start_exercise = True
-            self.check_sitting= True
-            # return True
+            if self.side_view == "side":
+                self.all_methods.reset_after_40_sec()
+                self.all_methods.play_after_40_sec(["you are in side view,please turn forward","keep your legs straight"],llist=llist)
+                
+            elif self.side_view == "forward":
+                self.check_body_turn = True
 
-        elif not self.check_sitting and sitting_position != "sitting":
-            self.all_methods.reset_after_40_sec()
-            self.all_methods.play_after_40_sec(["please be in sitting position","   ","this yoga may started in sitting position"],llist=llist)
-            return False
+        if self.check_body_turn:
 
+            if not self.initial_position and 160 <= self.left_knee <= 180 and 160 <= self.right_knee <= 180 and 160 <= self.left_hip <= 180:
+                self.initial_position = True
 
-        #check person is in forward position or not
-        if self.start_exercise:
+            elif not self.initial_position and 0 <= self.left_knee <= 159 and 0 <= self.right_knee <= 159 and 0 <= self.left_hip <= 159:
+                self.all_methods.reset_after_40_sec()
+                self.all_methods.play_after_40_sec(["you are not in initial position","keep your legs straight"], llist=llist)
 
-            if not self.check_body_turn:
+            if self.initial_position and not self.half_pose:
+                
+                if  160 <= self.left_knee <= 180 and 160 <= self.right_knee <= 180 and 170 <= self.left_hip <= 180:
 
-                side_view = self.all_methods.standing_side_view_detect(frames=frames,llist=llist,height=height,width=width)
-                voice_list = ["you are in left side please turn forward","keep your legs straight"]
-                if side_view == "right":
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["you are in right side ,please turn forward","keep your legs straight"],llist=llist)
-                    return False
+                    voice_list = ["you are in initial position , start gomukhasana","please, keep your left foot under right thigh"]
 
-                elif side_view == "left":
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["you are in left side, please turn forward","keep your legs straight"],llist=llist)
+                    if self.count < len(voice_list):
 
-                elif side_view == "forward":
-                    self.check_body_turn = True
-
-            #check person is in initial position or not
-
-            if self.check_body_turn:
-            
-                if not self.initial_position and 160 <= self.left_knee <= 180 and 160 <= self.right_knee <= 180 and 160 <= self.left_hip <= 180:
-
-                    self.initial_position = True
-
-                elif not self.initial_position and 0 <= self.left_knee <= 159 and 0 <= self.right_knee <= 159 and 0 <= self.left_hip <= 159:
-                    self.all_methods.reset_after_40_sec()
-                    self.all_methods.play_after_40_sec(["you are not in initial position","keep your legs straight"], llist=llist)
-
-                if self.initial_position:
-                    
-                    if  170 <= self.left_hip <= 180:
-
-                        voice_list = ["you are in initial position , start gomukhasana","please, keep your left foot under right thigh"]
-
-                        if self.count < len(voice_list):
-
-                            self.all_methods.reset_after_40_sec()
-                            trigger = self.all_methods.play_after_40_sec([voice_list[self.count]], llist=llist)
-                            if trigger:
-                                self.count += 1
-
-                        else:
-                            self.count = 1
+                        self.all_methods.reset_after_40_sec()
+                        trigger = self.all_methods.play_after_40_sec([voice_list[self.count]], llist=llist)
+                        if trigger:
+                            self.count += 1
 
                     else:
-                        
-                        # LEFT KNEE
-                        if (self.all_methods.l_toe_x > self.all_methods.r_hip_x ):
+                        self.count = 1
+
+                else:
+                    
+                    # LEFT KNEE
+                    if (self.all_methods.l_toe_x > self.all_methods.r_hip_x ):
+
+                        self.all_methods.reset_after_40_sec()
+                        self.all_methods.play_after_40_sec(["Bend your left knee , and place your left foot, under your right thigh"],llist=llist)
+                            
+                    else:
+
+                        # RIGHT KNEE
+                        if (self.all_methods.r_toe_x < self.all_methods.l_hip_x ):
 
                             self.all_methods.reset_after_40_sec()
-                            self.all_methods.play_after_40_sec(["Bend your left knee , and place your left foot under your right thigh"],llist=llist)
-                                
+                            self.all_methods.play_after_40_sec(["please bend your right knee , place on top of your left knee"],llist=llist)
+
+                        else:
+                            x_values_knees_diff = abs(int(self.all_methods.l_knee_x - self.all_methods.r_knee_x))
+                            y_knees_diff = abs(int(self.all_methods.l_knee_y - self.all_methods.r_knee_y))
+                            # cv.putText(frames,f"x_{x_values_knees_diff}",(30,60),2,cv.FONT_HERSHEY_PLAIN,(255,0,255),2)
+                            # cv.putText(frames,f"y_{y_knees_diff}",(30,100),2,cv.FONT_HERSHEY_PLAIN,(255,0,255),2)
+
+                            if x_values_knees_diff > 60 or y_knees_diff > 40:
+                                self.all_methods.reset_after_40_sec()
+                                self.all_methods.play_after_40_sec(["please ,place your both knees in correct position"],llist=llist)
+                            else:
+
+                                if (self.all_methods.l_toe_x < self.all_methods.r_hip_x and
+                                    self.all_methods.r_toe_x > self.all_methods.l_hip_x and
+                                    x_values_knees_diff < 60 and y_knees_diff < 40):
+
+                                    self.all_methods.reset_after_40_sec()
+                                    half_voice = self.all_methods.play_after_40_sec(["excellent , you completed half pose"],llist=llist)
+                                    if half_voice:
+                                        self.half_pose = True
+                        
+            if self.half_pose:
+
+                if (self.right_shoulder and 0 <= self.right_shoulder <= 140):
+                    
+                    self.all_methods.reset_after_40_sec()
+                    self.all_methods.play_after_40_sec(["please raise your right hand up"],llist=llist)
+
+                else:
+                    
+                    if (self.all_methods.r_wrist_y > self.all_methods.r_elbow_y or 
+                        self.right_elbow and 160 <= self.right_elbow <= 180):
+                        
+                        self.all_methods.reset_after_40_sec()
+                        self.all_methods.play_after_40_sec(["good , bend your right hand"],llist=llist)
+
+                    else:
+
+                        if (self.all_methods.r_wrist_z < self.all_methods.l_shoulder_z):
+
+                            self.all_methods.reset_after_40_sec()
+                            self.all_methods.play_after_40_sec(["please keep your right hand back your head"],llist=llist)
+
                         else:
 
-                            # RIGHT KNEE
-                            if (self.all_methods.r_toe_x < self.all_methods.l_hip_x ):
-
+                            if (self.all_methods.l_elbow_y < self.all_methods.l_shoulder_y ):
                                 self.all_methods.reset_after_40_sec()
-                                self.all_methods.play_after_40_sec(["please bend your right knee , lace on top of your left knee"],llist=llist)
+                                self.all_methods.play_after_40_sec(["please keep your hand down of your shoulders"],llist=llist)
 
                             else:
-                                x_values_knees_diff = abs(int(self.all_methods.l_knee_x - self.all_methods.r_knee_x))
-                                y_knees_diff = abs(int(self.all_methods.l_knee_y - self.all_methods.r_knee_y))
-
-                                if x_values_knees_diff > 30 and y_knees_diff > 80:
+                                if (self.all_methods.l_wrist_z < self.all_methods.l_shoulder_z):
+                                                    
                                     self.all_methods.reset_after_40_sec()
-                                    self.all_methods.play_after_40_sec(["please place your both knees in correct position"],llist=llist)
-                            
+                                    self.all_methods.play_after_40_sec(["please keep your left hand ,back of your upper body, and, bend, hold another hand"],llist=llist)
+                                
                                 else:
-
-                                    if (self.right_shoulder and 0 <= self.right_shoulder <= 140):
-                                        
+                                    # HEAD POSITION
+                                    if self.head_position and self.head_position != "Forward":
                                         self.all_methods.reset_after_40_sec()
-                                        self.all_methods.play_after_40_sec(["please raise your right hand up"],llist=llist)
+                                        self.all_methods.play_after_40_sec(["you should face your head to camera side"], llist=llist)
 
                                     else:
-                                        
-                                        if (self.all_methods.r_wrist_y > self.all_methods.r_elbow_y or 
-                                            self.right_elbow and 160 <= self.right_elbow <= 180):
-                                            
-                                            self.all_methods.reset_after_40_sec()
-                                            self.all_methods.play_after_40_sec(["please bend your hand "],llist=llist)
-
-                                        else:
-
-                                            if (self.all_methods.r_wrist_z < self.all_methods.l_shoulder_z):
-
-                                                self.all_methods.reset_after_40_sec()
-                                                self.all_methods.play_after_40_sec(["please keep your right hand back your head"],llist=llist)
-
-                                            else:
-                                            
-                                                if (self.all_methods.l_wrist_z < self.all_methods.r_shoulder_z):
-                                                                    
-                                                    self.all_methods.reset_after_40_sec()
-                                                    self.all_methods.play_after_40_sec(["please keep your left hand back of your upper body, and, bend"],llist=llist)
-
-                                                # else:
-                                                    
-                                                #     if (self.all_methods.)
-                                                else:
-                                                    # HEAD POSITION
-                                                    if self.head_position and self.head_position != "Forward":
-                                                        self.all_methods.reset_after_40_sec()
-                                                        self.all_methods.play_after_40_sec(["you should face your head to camera side"], llist=llist)
-
-                                                    else:
-                                                        return True
+                                        return True
 
     def check_sitting(self,frames,llist,height,width):
 
@@ -298,6 +284,25 @@ class gomukhasana(yoga_exercise):
             self.all_methods.reset_after_40_sec()
             self.all_methods.play_after_40_sec(["please be in sitting position, this yoga may started in sitting position"],llist=llist)
             # return False
+
+    def check_turn(self,frames,llist,height,width):
+
+        result = None
+
+        self.all_methods.all_x_values(frames=frames,llist=llist)
+        self.all_methods.all_y_values(frames=frames,llist=llist)
+        self.all_methods.all_z_values(frames=frames,llist=llist)
+
+        shoulder_z = abs(self.all_methods.l_shoulder_z - self.all_methods.r_shoulder_z)
+        hip_z = abs(self.all_methods.l_hip_z - self.all_methods.r_hip_z)
+
+        if (shoulder_z > 0.15 and hip_z > 0.15):
+            result = "side"
+
+        elif (shoulder_z < 0.15 and hip_z < 0.15):
+            result = "forward"
+
+        return result
 
     def gomukhasana_name(self,frames):
 
@@ -351,6 +356,7 @@ def main():
     video_capture.set(cv.CAP_PROP_FRAME_HEIGHT, 980) 
     global  llist
     detect = gomukhasana()
+    is_person_sitting = False
     check_wrong = False
     check_position = False
     flag = False
@@ -366,19 +372,21 @@ def main():
             break
         # img = cv.imread("images/image1.webp")
 
-
-
         if not flag:
 
             detect.pose_positions(frames,draw=False)
             llist = detect.pose_landmarks(frames,False)
             sitting_detect = detect.check_sitting(frames=frames,llist=llist,height=height,width=width)
-            print(sitting_detect)
+            detect.check_turn(frames=frames,llist=llist,height=height,width=width)
 
             if len(llist) is None:
                 return None
+            
+            if not is_person_sitting:
+                if sitting_detect :
+                    is_person_sitting = True
 
-            if sitting_detect:
+            if is_person_sitting:
 
                 detect.gomukhasana(frames=frames,llist=llist,left_elbow=(11,13,15), left_hip=(11,23,25), left_knee=(23,25,27), left_shoulder=(13,11,23),right_elbow=(12,14,16), right_hip=(12,24,26),right_knee= (24,26,28), right_shoulder=(14,12,24),draw=False)
                 detect.check_slopes(frames=frames,lmlist=llist,height=height,width=width)

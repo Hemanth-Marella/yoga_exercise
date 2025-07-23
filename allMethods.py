@@ -149,8 +149,8 @@ class allmethods:
         self.x3, self.y3,self.z3 = lmList[points[2]][1:]
 
         if draw:
-            cv.line(frames, (int(self.x1), int(self.y1)), (int(self.x2), int(self.y2)), (0, 255, 0), 3)
-            cv.line(frames, (int(self.x3), int(self.y3)), (int(self.x2), int(self.y2)), (0, 255, 0), 3)
+            cv.line(frames, (int(self.x1), int(self.y1)), (int(self.x2), int(self.y2)), (0, 255, 0), 16)
+            cv.line(frames, (int(self.x3), int(self.y3)), (int(self.x2), int(self.y2)), (0, 255, 0), 16)
 
         self.angle = abs(math.degrees(math.atan2(self.y3 - self.y2, self.x3 - self.x2) - math.atan2(self.y1 - self.y2, self.x1 - self.x2)))
         return self.angle if self.angle <= 180 else 360 - self.angle, (self.x1, self.y1, self.x2, self.y2, self.x3, self.y3)
@@ -345,6 +345,44 @@ class allmethods:
         
             return position
         return False
+
+    # def is_person_standing_OR_sitting(self, shoulder_left, shoulder_right, hip_left, hip_right, ankle_left, ankle_right, knee_left, knee_right,
+    #                                   Y_THRESHOLD = 0.05, ANGLE_THRESHOLD = 160, ):
+            
+    #         # Calculate the average Y-values for shoulders, hips, and ankles
+    #         avg_shoulder_y = (shoulder_left[1] + shoulder_right[1]) / 2
+    #         avg_hip_y = (hip_left[1] + hip_right[1]) / 2
+    #         avg_ankle_y = (ankle_left[1] + ankle_right[1]) / 2
+            
+    #         # Calculate the angle between shoulder, hip, and knee
+    #         left_a = [shoulder_left[0] - hip_left[0], shoulder_left[1] - hip_left[1]]
+    #         left_b = [knee_left[0] - hip_left[0], knee_left[1] - hip_left[1]]
+    #         left_dot_product = left_a[0] * left_b[0] + left_a[1] * left_b[1]
+    #         left_magnitude_a = math.sqrt(left_a[0]*2 + left_a[1]*2)
+    #         left_magnitude_b = math.sqrt(left_b[0]*2 + left_b[1]*2)
+    #         left_cos_angle = left_dot_product / (left_magnitude_a * left_magnitude_b)
+    #         # Left_Angle:
+    #         left_angle = math.acos(left_cos_angle) * (180.0 / math.pi)
+            
+            
+    #         right_a = [shoulder_right[0] - hip_right[0], shoulder_right[1] - hip_right[1]]
+    #         right_b = [knee_right[0] - hip_right[0], knee_right[1] - hip_right[1]]
+    #         right_dot_product = right_a[0] * right_b[0] + right_a[1] * right_b[1]
+    #         right_magnitude_a = math.sqrt(right_a[0]*2 + right_a[1]*2)
+    #         right_magnitude_b = math.sqrt(right_b[0]*2 + right_b[1]*2)
+    #         right_cos_angle = right_dot_product / (right_magnitude_a * right_magnitude_b)
+    #         # Right_Angle:
+    #         right_angle = math.acos(right_cos_angle) * (180.0 / math.pi)
+
+    #         # Determine the position (standing or sitting) based on Y-values and angles
+    #         if avg_shoulder_y < avg_hip_y - Y_THRESHOLD and avg_hip_y < avg_ankle_y - Y_THRESHOLD and (left_angle > ANGLE_THRESHOLD and right_angle > ANGLE_THRESHOLD):
+    #             self.POSITION = 1
+    #         elif avg_ankle_y > avg_hip_y + Y_THRESHOLD > avg_shoulder_y and (left_angle < ANGLE_THRESHOLD or right_angle < ANGLE_THRESHOLD):
+    #             self.POSITION = 2
+    #         else:
+    #             self.POSITION = None  # In case the posture is ambiguous or body parts are not well detected
+                
+    #         return self.POSITION
 
     #based on shoulder to detect side
     def standing_side_view_detect(self,frames,llist,height,width,draw = True):
